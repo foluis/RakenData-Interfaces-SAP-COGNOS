@@ -8,5 +8,6 @@ namespace We_are_all_set
 {
     public class Class1
     {
+         //
     }
 }
