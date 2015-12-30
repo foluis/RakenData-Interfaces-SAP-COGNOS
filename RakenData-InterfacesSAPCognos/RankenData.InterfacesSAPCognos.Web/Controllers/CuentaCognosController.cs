@@ -19,19 +19,40 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [HttpPost]
         public ActionResult Upload()
         {
+            CuentaCognos cuentaCognos = null;
+            int anexoid;
             if (Request.Files.Count > 0)
             {
-                var file = Request.Files[0];
+                HttpPostedFileBase file = Request.Files[0];
 
                 if (file != null && file.ContentLength > 0)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
-                    file.SaveAs(path);
-                }
+                    BinaryReader b = new BinaryReader(file.InputStream);
+                    byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+                    string result = System.Text.Encoding.UTF8.GetString(binData);
+                    var records = result.Split('\n');
+                    foreach (var record in records) 
+                    {
+                        var dato = record.Split(',');
+                        if (dato.Length < 3) {
+                            //TODO: IMPLEMENTAR EL ERROR
+                            // ERROR lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO - DESCRIPCION- ANEXO ID
+                        }
+                        if (int.TryParse(dato[2], out anexoid) == false)
+                        { 
+                            //TODO: IMPLEMENTAR EL ERROR
+                            // ERROR EL ID DEL ANEXO NO ES NUMERICO
+                        }
+                        cuentaCognos = new CuentaCognos() { Numero = dato[0], Descripcion = dato[1], AnexoId = anexoid, IsActive = true };
+                        if (ModelState.IsValid)
+                        {
+                            db.CuentaCognos.Add(cuentaCognos);
+                            db.SaveChanges();                         
+                        }
+                    }
+                }                
             }
-
-            return RedirectToAction("UploadDocument");
+            return RedirectToAction("Index");
         }
         // GET: /CuentaCognos/
         public ActionResult Index()
