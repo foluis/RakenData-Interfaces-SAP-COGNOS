@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
 using System.IO;
+using System.Text;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -21,6 +22,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             CuentaCognos cuentaCognos = null;
             int anexoid;
+            int i = 0;
+            StringBuilder errores = new StringBuilder();
             if (Request.Files.Count > 0)
             {
                 HttpPostedFileBase file = Request.Files[0];
@@ -31,15 +34,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     byte[] binData = b.ReadBytes((int)file.InputStream.Length);
                     string result = System.Text.Encoding.UTF8.GetString(binData);
                     var records = result.Split('\n');
-                    foreach (var record in records) 
+                    foreach (var record in records)
                     {
+                        i++;
                         var dato = record.Split(',');
-                        if (dato.Length < 3) {
+                        if (dato.Length < 3)
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO - DESCRIPCION- ANEXO ID");
                             //TODO: IMPLEMENTAR EL ERROR
                             // ERROR lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO - DESCRIPCION- ANEXO ID
                         }
                         if (int.TryParse(dato[2], out anexoid) == false)
-                        { 
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DEL ANEXO NO ES NUMERICO");
+
                             //TODO: IMPLEMENTAR EL ERROR
                             // ERROR EL ID DEL ANEXO NO ES NUMERICO
                         }
@@ -47,10 +55,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         if (ModelState.IsValid)
                         {
                             db.CuentaCognos.Add(cuentaCognos);
-                            db.SaveChanges();                         
+                            db.SaveChanges();
                         }
                     }
-                }                
+                }
+            }
+            if (errores.Length > 0)
+            {
+                //TODO: IMPLEMENTAR EL ERROR
+                // ERROR EL ID DEL ANEXO NO ES NUMERICO
             }
             return RedirectToAction("Index");
         }
@@ -88,7 +101,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Numero,Descripcion,AnexoId,IsActive")] CuentaCognos cuentacognos)
+        public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive")] CuentaCognos cuentacognos)
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +135,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Numero,Descripcion,AnexoId,IsActive")] CuentaCognos cuentacognos)
+        public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive")] CuentaCognos cuentacognos)
         {
             if (ModelState.IsValid)
             {
