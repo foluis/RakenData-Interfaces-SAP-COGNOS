@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="08f52e3e39284e518c753389cced5200" Name="Diagram1">
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.AdministracionAplicacion" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.Anexo" Width="1.5" PointX="7.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.AnioFiscal" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.ArchivoCarga" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.ArchivoCargaDetalle" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.CargaAutomatica" Width="1.5" PointX="8.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.CompaniaCognos" Width="1.5" PointX="7.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.CompaniaRFC" Width="1.5" PointX="10" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.CuentaCognos" Width="1.5" PointX="10" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.CuentaSAP" Width="1.5" PointX="12.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.DatosCabecera" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.TipoArchivoCarga" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.TipoCuentaSAP" Width="1.5" PointX="10" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterfasSAPCognosModel.User" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_CuentaCognos_Anexo" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_ArchivoCarga_TipoArchivoCarga" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_ArchivoCarga_User" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_ArchivoCargaDetalle_ArchivoCarga" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_CargaAutomatica_ArchivoCarga" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_CargaAutomatica_TipoArchivoCarga" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_CompaniaRFC_CompaniaCognos" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_CuentaSAP_CuentaCognos" ManuallyRouted="false" />
+        <AssociationConnector Association="InterfasSAPCognosModel.FK_CuentaSAP_TipoCuentaSAP" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
