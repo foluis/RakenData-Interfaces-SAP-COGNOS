@@ -62,7 +62,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             if (errores.Length > 0)
             {
-                //prueba de sincronizacion
+                //prueba de sincronizacion 2
+
+                //prueba 2
 
                 //TODO: IMPLEMENTAR EL ERROR
                 
