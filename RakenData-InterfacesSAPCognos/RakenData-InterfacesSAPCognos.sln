@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{521A5903-C1D8-48FC-8A5C-40D1AE01C023}"
 EndProject
@@ -34,6 +34,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RankenData.InterfacesSAPCognos.Domain", "RankenData.InterfacesSAPCognos.Domain\RankenData.InterfacesSAPCognos.Domain.csproj", "{97722C1C-ED20-44F4-BA92-CFFB543B574F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RankenData.InterfacesSAPCognos.Console", "RankenData.InterfacesSAPCognos.Console\RankenData.InterfacesSAPCognos.Console.csproj", "{9EB121A2-733A-4B7A-BA2A-ECEDBB0887EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RankenData.InterfacesSAPCognos.Web", "RankenData.InterfacesSAPCognos.Web\RankenData.InterfacesSAPCognos.Web.csproj", "{7FD825C8-0234-4626-806D-F5966E817578}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RankenData.InterfacesSAPCognos.Web.Tests", "RankenData.InterfacesSAPCognos.Web.Tests\RankenData.InterfacesSAPCognos.Web.Tests.csproj", "{8675F932-5B2A-4F05-B4D1-68C76D5178F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
