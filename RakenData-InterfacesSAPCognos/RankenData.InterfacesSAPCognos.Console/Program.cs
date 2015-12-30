@@ -10,6 +10,22 @@ namespace RankenData.InterfacesSAPCognos.Console
     {
         static void Main(string[] args)
         {
+            //GetCuentaCognos();
+            //Console.WriteLine("Hola");
+            //Console
+            //Console
+        }
+
+        private static void GetCuentaCognos()
+        {
+            //    using (var context = new Model.InterfasSAPCognosEntities())
+            //    {
+            //        foreach (var cuentaCognos in context.CuentaCognos)
+            //        {
+
+            //        }
+            //    }
+
         }
     }
 }
