@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RankenData.InterfacesSAPCognos.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,13 @@ namespace RankenData.InterfacesSAPCognos.Consola
     {
         static void Main(string[] args)
         {
+            GetTiposCuentaSAP();
+        }
+
+        private static void GetTiposCuentaSAP()
+        {
+            InterfasSAPCognosEntities db = new InterfasSAPCognosEntities();
+            var TipoCuentaSAP = db.TipoCuentaSAP.ToList();
         }
     }
 }
