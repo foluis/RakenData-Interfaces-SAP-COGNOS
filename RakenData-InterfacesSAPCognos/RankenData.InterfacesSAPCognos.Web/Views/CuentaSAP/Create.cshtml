@@ -1,0 +1,134 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.CuentaSAP
+
+@{
+    ViewBag.Title = "Crear";
+}
+
+<h2>Crear</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Cuenta SAP</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Id)
+                @Html.ValidationMessageFor(model => model.Id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Numero)
+                @Html.ValidationMessageFor(model => model.Numero)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Descripcion)
+                @Html.ValidationMessageFor(model => model.Descripcion)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CuentaCognos, "CuentaCognos", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CuentaCognos", String.Empty)
+                @Html.ValidationMessageFor(model => model.CuentaCognos)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoCuentaSAP, "TipoCuentaSAP", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TipoCuentaSAP", String.Empty)
+                @Html.ValidationMessageFor(model => model.TipoCuentaSAP)
+            </div>
+        </div>
+       
+        <div id="divEsOpen" class="form-group">
+            @Html.LabelFor(model => model.EsOpen, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EsOpen,"EsOpen")
+                @Html.ValidationMessageFor(model => model.EsOpen)
+            </div>
+        </div>
+
+        <div id="divCuentaCargo" class="form-group">
+            @Html.LabelFor(model => model.CuentaCargo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CuentaCargo)
+                @Html.ValidationMessageFor(model => model.CuentaCargo)
+            </div>
+        </div>
+
+        <div id="divCuentaAbono" class="form-group">
+            @Html.LabelFor(model => model.CuentaAbono, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CuentaAbono)
+                @Html.ValidationMessageFor(model => model.CuentaAbono)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+    $(document).ready(function (e) {       
+        $('#divEsOpen').hide();
+        $('#divCuentaCargo').hide();
+        $('#divCuentaAbono').hide();
+
+        $('#TipoCuentaSAP').change(function () {
+            if ($('#TipoCuentaSAP').val() == 1) {
+                $('#divEsOpen').hide();
+                $('#divCuentaCargo').hide();
+                $('#divCuentaAbono').hide();
+            }
+            else {
+                $('#divEsOpen').show();
+            }            
+        });
+        $('#EsOpen').change(function () {
+            if ($('#EsOpen').val() == "true") {
+                $('#divCuentaCargo').show();
+                $('#divCuentaAbono').show();
+            }
+            else {
+                $('#divCuentaCargo').hide();
+                $('#divCuentaAbono').hide();
+            }
+        });
+    });
+</script>

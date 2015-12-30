@@ -1,0 +1,849 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ModelRankenData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdministracionAplicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Valor" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Grupo" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Anexo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AnioFiscal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Anio" Type="smallint" Nullable="false" />
+          <Property Name="Inicio" Type="tinyint" Nullable="false" />
+          <Property Name="Fin" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchivoCarga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Identificador" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="TipoArchivoCarga" Type="int" Nullable="false" />
+          <Property Name="Anio_Col3" Type="smallint" Nullable="false" />
+          <Property Name="Mes_Col4" Type="tinyint" Nullable="false" />
+          <Property Name="Usuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchivoCargaDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArchivoCarga" Type="int" Nullable="false" />
+          <Property Name="Escenario" Type="int" Nullable="false" />
+          <Property Name="Versión" Type="tinyint" Nullable="false" />
+          <Property Name="Anio" Type="smallint" Nullable="false" />
+          <Property Name="Mes" Type="tinyint" Nullable="false" />
+          <Property Name="UnidadDeNegocio" Type="tinyint" Nullable="false" />
+          <Property Name="Cuenta" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Moneda" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="GAAP" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Interfase" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="NominalAjustado" Type="tinyint" Nullable="false" />
+          <Property Name="Compania" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="CopaniaRelacionada" Type="varchar" MaxLength="13" />
+          <Property Name="MovimientoDebitoPeriodo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MovimientoCreditoPeriodo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MovimientoDebitoAcumulado" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MovimientoCreditoAcumulado" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SaldoAcumuladoPeriodo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="HoraActualizacion" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="UsuarioActualizacion" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CargaAutomatica">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FechaProgramada" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="FechaProgramada" Type="datetime" Nullable="false" />
+          <Property Name="Usuario" Type="int" Nullable="false" />
+          <Property Name="TipoArchivo" Type="int" Nullable="false" />
+          <Property Name="ArchivoCarga" Type="int" />
+          <Property Name="FechaFinalizacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CompaniaCognos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Clave" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompaniaRFC">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RFC" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="CompaniaCognos" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CuentaCognos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Numero" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="AnexoId" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CuentaSAP">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Numero" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="CuentaCognos" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="TipoCuentaSAP" Type="int" Nullable="false" />
+          <Property Name="EsOpen" Type="bit" />
+          <Property Name="CuentaCargo" Type="varchar" MaxLength="10" />
+          <Property Name="CuentaAbono" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="DatosCabecera">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Valor" Type="varchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoArchivoCarga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoCuentaSAP">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ArchivoCarga_TipoArchivoCarga">
+          <End Role="TipoArchivoCarga" Type="Self.TipoArchivoCarga" Multiplicity="1" />
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoCarga">
+              <PropertyRef Name="TipoArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoCarga_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoCarga">
+              <PropertyRef Name="Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoCargaDetalle_ArchivoCarga">
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="1" />
+          <End Role="ArchivoCargaDetalle" Type="Self.ArchivoCargaDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoCargaDetalle">
+              <PropertyRef Name="ArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CargaAutomatica_ArchivoCarga">
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="0..1" />
+          <End Role="CargaAutomatica" Type="Self.CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="ArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CargaAutomatica_TipoArchivoCarga">
+          <End Role="TipoArchivoCarga" Type="Self.TipoArchivoCarga" Multiplicity="1" />
+          <End Role="CargaAutomatica" Type="Self.CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="TipoArchivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompaniaRFC_CompaniaCognos">
+          <End Role="CompaniaCognos" Type="Self.CompaniaCognos" Multiplicity="1" />
+          <End Role="CompaniaRFC" Type="Self.CompaniaRFC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompaniaRFC">
+              <PropertyRef Name="CompaniaCognos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaCognos_Anexo">
+          <End Role="Anexo" Type="Self.Anexo" Multiplicity="1" />
+          <End Role="CuentaCognos" Type="Self.CuentaCognos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anexo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CuentaCognos">
+              <PropertyRef Name="AnexoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaSAP_CuentaCognos">
+          <End Role="CuentaCognos" Type="Self.CuentaCognos" Multiplicity="1" />
+          <End Role="CuentaSAP" Type="Self.CuentaSAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaSAP">
+              <PropertyRef Name="CuentaCognos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaSAP_TipoCuentaSAP">
+          <End Role="TipoCuentaSAP" Type="Self.TipoCuentaSAP" Multiplicity="1" />
+          <End Role="CuentaSAP" Type="Self.CuentaSAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoCuentaSAP">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CuentaSAP">
+              <PropertyRef Name="TipoCuentaSAP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelRankenDataStoreContainer">
+          <EntitySet Name="AdministracionAplicacion" EntityType="Self.AdministracionAplicacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Anexo" EntityType="Self.Anexo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AnioFiscal" EntityType="Self.AnioFiscal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArchivoCarga" EntityType="Self.ArchivoCarga" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArchivoCargaDetalle" EntityType="Self.ArchivoCargaDetalle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CargaAutomatica" EntityType="Self.CargaAutomatica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompaniaCognos" EntityType="Self.CompaniaCognos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompaniaRFC" EntityType="Self.CompaniaRFC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CuentaCognos" EntityType="Self.CuentaCognos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CuentaSAP" EntityType="Self.CuentaSAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DatosCabecera" EntityType="Self.DatosCabecera" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoArchivoCarga" EntityType="Self.TipoArchivoCarga" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoCuentaSAP" EntityType="Self.TipoCuentaSAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ArchivoCarga_TipoArchivoCarga" Association="Self.FK_ArchivoCarga_TipoArchivoCarga">
+            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoCarga_User" Association="Self.FK_ArchivoCarga_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoCargaDetalle_ArchivoCarga" Association="Self.FK_ArchivoCargaDetalle_ArchivoCarga">
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+            <End Role="ArchivoCargaDetalle" EntitySet="ArchivoCargaDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CargaAutomatica_ArchivoCarga" Association="Self.FK_CargaAutomatica_ArchivoCarga">
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CargaAutomatica_TipoArchivoCarga" Association="Self.FK_CargaAutomatica_TipoArchivoCarga">
+            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompaniaRFC_CompaniaCognos" Association="Self.FK_CompaniaRFC_CompaniaCognos">
+            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
+            <End Role="CompaniaRFC" EntitySet="CompaniaRFC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaCognos_Anexo" Association="Self.FK_CuentaCognos_Anexo">
+            <End Role="Anexo" EntitySet="Anexo" />
+            <End Role="CuentaCognos" EntitySet="CuentaCognos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaSAP_CuentaCognos" Association="Self.FK_CuentaSAP_CuentaCognos">
+            <End Role="CuentaCognos" EntitySet="CuentaCognos" />
+            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaSAP_TipoCuentaSAP" Association="Self.FK_CuentaSAP_TipoCuentaSAP">
+            <End Role="TipoCuentaSAP" EntitySet="TipoCuentaSAP" />
+            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ModelRankenData" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AdministracionAplicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Valor" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Grupo" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Anexo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Clave" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CuentaCognos" Relationship="Self.FK_CuentaCognos_Anexo" FromRole="Anexo" ToRole="CuentaCognos" />
+        </EntityType>
+        <EntityType Name="AnioFiscal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Anio" Type="Int16" Nullable="false" />
+          <Property Name="Inicio" Type="Byte" Nullable="false" />
+          <Property Name="Fin" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchivoCarga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Identificador" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TipoArchivoCarga" Type="Int32" Nullable="false" />
+          <Property Name="Anio_Col3" Type="Int16" Nullable="false" />
+          <Property Name="Mes_Col4" Type="Byte" Nullable="false" />
+          <Property Name="Usuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TipoArchivoCarga1" Relationship="Self.FK_ArchivoCarga_TipoArchivoCarga" FromRole="ArchivoCarga" ToRole="TipoArchivoCarga" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ArchivoCarga_User" FromRole="ArchivoCarga" ToRole="User" />
+          <NavigationProperty Name="ArchivoCargaDetalle" Relationship="Self.FK_ArchivoCargaDetalle_ArchivoCarga" FromRole="ArchivoCarga" ToRole="ArchivoCargaDetalle" />
+          <NavigationProperty Name="CargaAutomatica" Relationship="Self.FK_CargaAutomatica_ArchivoCarga" FromRole="ArchivoCarga" ToRole="CargaAutomatica" />
+        </EntityType>
+        <EntityType Name="ArchivoCargaDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArchivoCarga" Type="Int32" Nullable="false" />
+          <Property Name="Escenario" Type="Int32" Nullable="false" />
+          <Property Name="Versión" Type="Byte" Nullable="false" />
+          <Property Name="Anio" Type="Int16" Nullable="false" />
+          <Property Name="Mes" Type="Byte" Nullable="false" />
+          <Property Name="UnidadDeNegocio" Type="Byte" Nullable="false" />
+          <Property Name="Cuenta" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Moneda" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GAAP" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Interfase" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NominalAjustado" Type="Byte" Nullable="false" />
+          <Property Name="Compania" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CopaniaRelacionada" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="MovimientoDebitoPeriodo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MovimientoCreditoPeriodo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MovimientoDebitoAcumulado" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MovimientoCreditoAcumulado" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SaldoAcumuladoPeriodo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="HoraActualizacion" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UsuarioActualizacion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ArchivoCarga1" Relationship="Self.FK_ArchivoCargaDetalle_ArchivoCarga" FromRole="ArchivoCargaDetalle" ToRole="ArchivoCarga" />
+        </EntityType>
+        <EntityType Name="CargaAutomatica">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FechaProgramada" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="FechaProgramada" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Usuario" Type="Int32" Nullable="false" />
+          <Property Name="TipoArchivo" Type="Int32" Nullable="false" />
+          <Property Name="ArchivoCarga" Type="Int32" />
+          <Property Name="FechaFinalizacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ArchivoCarga1" Relationship="Self.FK_CargaAutomatica_ArchivoCarga" FromRole="CargaAutomatica" ToRole="ArchivoCarga" />
+          <NavigationProperty Name="TipoArchivoCarga" Relationship="Self.FK_CargaAutomatica_TipoArchivoCarga" FromRole="CargaAutomatica" ToRole="TipoArchivoCarga" />
+        </EntityType>
+        <EntityType Name="CompaniaCognos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Clave" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CompaniaRFC" Relationship="Self.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaCognos" ToRole="CompaniaRFC" />
+        </EntityType>
+        <EntityType Name="CompaniaRFC">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RFC" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CompaniaCognos" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompaniaCognos1" Relationship="Self.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaRFC" ToRole="CompaniaCognos" />
+        </EntityType>
+        <EntityType Name="CuentaCognos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Numero" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnexoId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Anexo" Relationship="Self.FK_CuentaCognos_Anexo" FromRole="CuentaCognos" ToRole="Anexo" />
+          <NavigationProperty Name="CuentaSAP" Relationship="Self.FK_CuentaSAP_CuentaCognos" FromRole="CuentaCognos" ToRole="CuentaSAP" />
+        </EntityType>
+        <EntityType Name="CuentaSAP">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Numero" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CuentaCognos" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="TipoCuentaSAP" Type="Int32" Nullable="false" />
+          <Property Name="EsOpen" Type="Boolean" />
+          <Property Name="CuentaCargo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CuentaAbono" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CuentaCognos1" Relationship="Self.FK_CuentaSAP_CuentaCognos" FromRole="CuentaSAP" ToRole="CuentaCognos" />
+          <NavigationProperty Name="TipoCuentaSAP1" Relationship="Self.FK_CuentaSAP_TipoCuentaSAP" FromRole="CuentaSAP" ToRole="TipoCuentaSAP" />
+        </EntityType>
+        <EntityType Name="DatosCabecera">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Valor" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoArchivoCarga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ArchivoCarga" Relationship="Self.FK_ArchivoCarga_TipoArchivoCarga" FromRole="TipoArchivoCarga" ToRole="ArchivoCarga" />
+          <NavigationProperty Name="CargaAutomatica" Relationship="Self.FK_CargaAutomatica_TipoArchivoCarga" FromRole="TipoArchivoCarga" ToRole="CargaAutomatica" />
+        </EntityType>
+        <EntityType Name="TipoCuentaSAP">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CuentaSAP" Relationship="Self.FK_CuentaSAP_TipoCuentaSAP" FromRole="TipoCuentaSAP" ToRole="CuentaSAP" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ArchivoCarga" Relationship="Self.FK_ArchivoCarga_User" FromRole="User" ToRole="ArchivoCarga" />
+        </EntityType>
+        <Association Name="FK_CuentaCognos_Anexo">
+          <End Role="Anexo" Type="Self.Anexo" Multiplicity="1" />
+          <End Role="CuentaCognos" Type="Self.CuentaCognos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anexo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CuentaCognos">
+              <PropertyRef Name="AnexoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoCarga_TipoArchivoCarga">
+          <End Role="TipoArchivoCarga" Type="Self.TipoArchivoCarga" Multiplicity="1" />
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoCarga">
+              <PropertyRef Name="TipoArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoCarga_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoCarga">
+              <PropertyRef Name="Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoCargaDetalle_ArchivoCarga">
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="1" />
+          <End Role="ArchivoCargaDetalle" Type="Self.ArchivoCargaDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoCargaDetalle">
+              <PropertyRef Name="ArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CargaAutomatica_ArchivoCarga">
+          <End Role="ArchivoCarga" Type="Self.ArchivoCarga" Multiplicity="0..1" />
+          <End Role="CargaAutomatica" Type="Self.CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="ArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CargaAutomatica_TipoArchivoCarga">
+          <End Role="TipoArchivoCarga" Type="Self.TipoArchivoCarga" Multiplicity="1" />
+          <End Role="CargaAutomatica" Type="Self.CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="TipoArchivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompaniaRFC_CompaniaCognos">
+          <End Role="CompaniaCognos" Type="Self.CompaniaCognos" Multiplicity="1" />
+          <End Role="CompaniaRFC" Type="Self.CompaniaRFC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompaniaRFC">
+              <PropertyRef Name="CompaniaCognos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaSAP_CuentaCognos">
+          <End Role="CuentaCognos" Type="Self.CuentaCognos" Multiplicity="1" />
+          <End Role="CuentaSAP" Type="Self.CuentaSAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaSAP">
+              <PropertyRef Name="CuentaCognos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaSAP_TipoCuentaSAP">
+          <End Role="TipoCuentaSAP" Type="Self.TipoCuentaSAP" Multiplicity="1" />
+          <End Role="CuentaSAP" Type="Self.CuentaSAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoCuentaSAP">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CuentaSAP">
+              <PropertyRef Name="TipoCuentaSAP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EntitiesRakenData" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AdministracionAplicacion" EntityType="Self.AdministracionAplicacion" />
+          <EntitySet Name="Anexo" EntityType="Self.Anexo" />
+          <EntitySet Name="AnioFiscal" EntityType="Self.AnioFiscal" />
+          <EntitySet Name="ArchivoCarga" EntityType="Self.ArchivoCarga" />
+          <EntitySet Name="ArchivoCargaDetalle" EntityType="Self.ArchivoCargaDetalle" />
+          <EntitySet Name="CargaAutomatica" EntityType="Self.CargaAutomatica" />
+          <EntitySet Name="CompaniaCognos" EntityType="Self.CompaniaCognos" />
+          <EntitySet Name="CompaniaRFC" EntityType="Self.CompaniaRFC" />
+          <EntitySet Name="CuentaCognos" EntityType="Self.CuentaCognos" />
+          <EntitySet Name="CuentaSAP" EntityType="Self.CuentaSAP" />
+          <EntitySet Name="DatosCabecera" EntityType="Self.DatosCabecera" />
+          <EntitySet Name="TipoArchivoCarga" EntityType="Self.TipoArchivoCarga" />
+          <EntitySet Name="TipoCuentaSAP" EntityType="Self.TipoCuentaSAP" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_CuentaCognos_Anexo" Association="Self.FK_CuentaCognos_Anexo">
+            <End Role="Anexo" EntitySet="Anexo" />
+            <End Role="CuentaCognos" EntitySet="CuentaCognos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoCarga_TipoArchivoCarga" Association="Self.FK_ArchivoCarga_TipoArchivoCarga">
+            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoCarga_User" Association="Self.FK_ArchivoCarga_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoCargaDetalle_ArchivoCarga" Association="Self.FK_ArchivoCargaDetalle_ArchivoCarga">
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+            <End Role="ArchivoCargaDetalle" EntitySet="ArchivoCargaDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CargaAutomatica_ArchivoCarga" Association="Self.FK_CargaAutomatica_ArchivoCarga">
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CargaAutomatica_TipoArchivoCarga" Association="Self.FK_CargaAutomatica_TipoArchivoCarga">
+            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompaniaRFC_CompaniaCognos" Association="Self.FK_CompaniaRFC_CompaniaCognos">
+            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
+            <End Role="CompaniaRFC" EntitySet="CompaniaRFC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaSAP_CuentaCognos" Association="Self.FK_CuentaSAP_CuentaCognos">
+            <End Role="CuentaCognos" EntitySet="CuentaCognos" />
+            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaSAP_TipoCuentaSAP" Association="Self.FK_CuentaSAP_TipoCuentaSAP">
+            <End Role="TipoCuentaSAP" EntitySet="TipoCuentaSAP" />
+            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelRankenDataStoreContainer" CdmEntityContainer="EntitiesRakenData">
+          <EntitySetMapping Name="AdministracionAplicacion">
+            <EntityTypeMapping TypeName="ModelRankenData.AdministracionAplicacion">
+              <MappingFragment StoreEntitySet="AdministracionAplicacion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Grupo" ColumnName="Grupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Anexo">
+            <EntityTypeMapping TypeName="ModelRankenData.Anexo">
+              <MappingFragment StoreEntitySet="Anexo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnioFiscal">
+            <EntityTypeMapping TypeName="ModelRankenData.AnioFiscal">
+              <MappingFragment StoreEntitySet="AnioFiscal">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+                <ScalarProperty Name="Inicio" ColumnName="Inicio" />
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArchivoCarga">
+            <EntityTypeMapping TypeName="ModelRankenData.ArchivoCarga">
+              <MappingFragment StoreEntitySet="ArchivoCarga">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="TipoArchivoCarga" ColumnName="TipoArchivoCarga" />
+                <ScalarProperty Name="Anio_Col3" ColumnName="Anio_Col3" />
+                <ScalarProperty Name="Mes_Col4" ColumnName="Mes_Col4" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArchivoCargaDetalle">
+            <EntityTypeMapping TypeName="ModelRankenData.ArchivoCargaDetalle">
+              <MappingFragment StoreEntitySet="ArchivoCargaDetalle">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ArchivoCarga" ColumnName="ArchivoCarga" />
+                <ScalarProperty Name="Escenario" ColumnName="Escenario" />
+                <ScalarProperty Name="Versión" ColumnName="Versión" />
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="UnidadDeNegocio" ColumnName="UnidadDeNegocio" />
+                <ScalarProperty Name="Cuenta" ColumnName="Cuenta" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="GAAP" ColumnName="GAAP" />
+                <ScalarProperty Name="Interfase" ColumnName="Interfase" />
+                <ScalarProperty Name="NominalAjustado" ColumnName="NominalAjustado" />
+                <ScalarProperty Name="Compania" ColumnName="Compania" />
+                <ScalarProperty Name="CopaniaRelacionada" ColumnName="CopaniaRelacionada" />
+                <ScalarProperty Name="MovimientoDebitoPeriodo" ColumnName="MovimientoDebitoPeriodo" />
+                <ScalarProperty Name="MovimientoCreditoPeriodo" ColumnName="MovimientoCreditoPeriodo" />
+                <ScalarProperty Name="MovimientoDebitoAcumulado" ColumnName="MovimientoDebitoAcumulado" />
+                <ScalarProperty Name="MovimientoCreditoAcumulado" ColumnName="MovimientoCreditoAcumulado" />
+                <ScalarProperty Name="SaldoAcumuladoPeriodo" ColumnName="SaldoAcumuladoPeriodo" />
+                <ScalarProperty Name="HoraActualizacion" ColumnName="HoraActualizacion" />
+                <ScalarProperty Name="UsuarioActualizacion" ColumnName="UsuarioActualizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CargaAutomatica">
+            <EntityTypeMapping TypeName="ModelRankenData.CargaAutomatica">
+              <MappingFragment StoreEntitySet="CargaAutomatica">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FechaProgramada" ColumnName="FechaProgramada" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="TipoArchivo" ColumnName="TipoArchivo" />
+                <ScalarProperty Name="ArchivoCarga" ColumnName="ArchivoCarga" />
+                <ScalarProperty Name="FechaFinalizacion" ColumnName="FechaFinalizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompaniaCognos">
+            <EntityTypeMapping TypeName="ModelRankenData.CompaniaCognos">
+              <MappingFragment StoreEntitySet="CompaniaCognos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompaniaRFC">
+            <EntityTypeMapping TypeName="ModelRankenData.CompaniaRFC">
+              <MappingFragment StoreEntitySet="CompaniaRFC">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RFC" ColumnName="RFC" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="CompaniaCognos" ColumnName="CompaniaCognos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CuentaCognos">
+            <EntityTypeMapping TypeName="ModelRankenData.CuentaCognos">
+              <MappingFragment StoreEntitySet="CuentaCognos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="AnexoId" ColumnName="AnexoId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CuentaSAP">
+            <EntityTypeMapping TypeName="ModelRankenData.CuentaSAP">
+              <MappingFragment StoreEntitySet="CuentaSAP">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="CuentaCognos" ColumnName="CuentaCognos" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TipoCuentaSAP" ColumnName="TipoCuentaSAP" />
+                <ScalarProperty Name="EsOpen" ColumnName="EsOpen" />
+                <ScalarProperty Name="CuentaCargo" ColumnName="CuentaCargo" />
+                <ScalarProperty Name="CuentaAbono" ColumnName="CuentaAbono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatosCabecera">
+            <EntityTypeMapping TypeName="ModelRankenData.DatosCabecera">
+              <MappingFragment StoreEntitySet="DatosCabecera">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoArchivoCarga">
+            <EntityTypeMapping TypeName="ModelRankenData.TipoArchivoCarga">
+              <MappingFragment StoreEntitySet="TipoArchivoCarga">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoCuentaSAP">
+            <EntityTypeMapping TypeName="ModelRankenData.TipoCuentaSAP">
+              <MappingFragment StoreEntitySet="TipoCuentaSAP">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="ModelRankenData.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

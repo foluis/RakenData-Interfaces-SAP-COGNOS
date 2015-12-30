@@ -1,0 +1,82 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.CuentaSAP
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CuentaSAP</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Numero)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EsOpen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EsOpen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CuentaCargo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaCargo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CuentaAbono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaAbono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CuentaCognos1.Numero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaCognos1.Numero)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoCuentaSAP1.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoCuentaSAP1.Nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
