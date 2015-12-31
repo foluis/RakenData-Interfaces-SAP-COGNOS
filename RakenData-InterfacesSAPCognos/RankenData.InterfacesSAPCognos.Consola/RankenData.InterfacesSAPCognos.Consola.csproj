@@ -60,6 +60,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ranken.ISC.Contracts\Ranken.ISC.Contracts.csproj">
+      <Project>{e3574300-95e7-4a4d-9665-1f62712f41c6}</Project>
+      <Name>Ranken.ISC.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RankenData.InterfacesSAPCognos.Domain\RankenData.InterfacesSAPCognos.Domain.csproj">
       <Project>{97722c1c-ed20-44f4-ba92-cffb543b574f}</Project>
       <Name>RankenData.InterfacesSAPCognos.Domain</Name>

@@ -62,6 +62,9 @@
       <DependentUpon>InterfasSAPCognosModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CuentaCognosRepository.cs" />
+    <Compile Include="Repositories\CuentaSAPRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="InterfasSAPCognosModel.edmx">
@@ -87,11 +90,16 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ranken.ISC.Contracts\Ranken.ISC.Contracts.csproj">
+      <Project>{e3574300-95e7-4a4d-9665-1f62712f41c6}</Project>
+      <Name>Ranken.ISC.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RankenData.InterfacesSAPCognos.Domain\RankenData.InterfacesSAPCognos.Domain.csproj">
       <Project>{97722c1c-ed20-44f4-ba92-cffb543b574f}</Project>
       <Name>RankenData.InterfacesSAPCognos.Domain</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
