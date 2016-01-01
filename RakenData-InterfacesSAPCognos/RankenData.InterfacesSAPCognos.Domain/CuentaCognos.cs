@@ -18,6 +18,8 @@ namespace RankenData.InterfacesSAPCognos.Domain
         public CuentaCognos()
         {
             this.CuentaSAP = new HashSet<CuentaSAP>();
+            this.CuentaSAP1 = new HashSet<CuentaSAP>();
+            this.CuentaSAP2 = new HashSet<CuentaSAP>();
         }
     
         public int Id { get; set; }
@@ -29,5 +31,9 @@ namespace RankenData.InterfacesSAPCognos.Domain
         public virtual Anexo Anexo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CuentaSAP> CuentaSAP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CuentaSAP> CuentaSAP1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CuentaSAP> CuentaSAP2 { get; set; }
     }
 }

@@ -14,7 +14,6 @@ namespace RankenData.InterfacesSAPCognos.Model
     using System.Data.Entity.Infrastructure;
     using RankenData.InterfacesSAPCognos.Domain;
     
-    
     public partial class InterfasSAPCognosEntities : DbContext
     {
         public InterfasSAPCognosEntities()
@@ -28,18 +27,18 @@ namespace RankenData.InterfacesSAPCognos.Model
         }
     
         public virtual DbSet<AdministracionAplicacion> AdministracionAplicacion { get; set; }
+        public virtual DbSet<Anexo> Anexo { get; set; }
+        public virtual DbSet<AnioFiscal> AnioFiscal { get; set; }
         public virtual DbSet<ArchivoCarga> ArchivoCarga { get; set; }
         public virtual DbSet<ArchivoCargaDetalle> ArchivoCargaDetalle { get; set; }
         public virtual DbSet<CargaAutomatica> CargaAutomatica { get; set; }
         public virtual DbSet<CompaniaCognos> CompaniaCognos { get; set; }
         public virtual DbSet<CompaniaRFC> CompaniaRFC { get; set; }
-        public virtual DbSet<DatosCabecera> DatosCabecera { get; set; }
-        public virtual DbSet<TipoArchivoCarga> TipoArchivoCarga { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<Anexo> Anexo { get; set; }
         public virtual DbSet<CuentaCognos> CuentaCognos { get; set; }
         public virtual DbSet<CuentaSAP> CuentaSAP { get; set; }
+        public virtual DbSet<DatosCabecera> DatosCabecera { get; set; }
+        public virtual DbSet<TipoArchivoCarga> TipoArchivoCarga { get; set; }
         public virtual DbSet<TipoCuentaSAP> TipoCuentaSAP { get; set; }
-        public virtual DbSet<AnioFiscal> AnioFiscal { get; set; }
+        public virtual DbSet<User> User { get; set; }
     }
 }
