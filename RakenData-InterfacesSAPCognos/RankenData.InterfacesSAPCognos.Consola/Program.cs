@@ -16,9 +16,15 @@ namespace RankenData.InterfacesSAPCognos.Consola
         static void Main(string[] args)
         {
             GetTiposCuentaSAP();
-            InsertCuentaCognos();
+            //InsertCuentaCognos();
+            GetCuentasCognos();
 
             Console.ReadLine();
+        }
+
+        private static void GetCuentasCognos()
+        {
+            
         }
 
         private static void InsertCuentaCognos()
@@ -74,9 +80,9 @@ namespace RankenData.InterfacesSAPCognos.Consola
             //var valor = cuentaCognos.GetAll();
 
             ////3, Agregando las Interfaces de los repositorios
-            IRepository<CuentaCognos> repository = new CuentaCognosRepository(new InterfasSAPCognosEntities());
-            var valor2 = repository.GetAll();
-            var valor3 = repository.GetAll().ToList();
+            IRepository<CuentaCognos> db = new CuentaCognosRepository(new InterfasSAPCognosEntities());
+            var valor2 = db.GetAll();
+            var valor3 = db.GetAll().ToList();
         }
     }
 }
