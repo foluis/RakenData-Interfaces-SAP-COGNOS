@@ -1,4 +1,5 @@
 ﻿using Ranken.ISC.Contracts.Repositories;
+using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 using RankenData.InterfacesSAPCognos.Domain;
 using RankenData.InterfacesSAPCognos.Model;
 using RankenData.InterfacesSAPCognos.Model.Repositories;
@@ -15,16 +16,71 @@ namespace RankenData.InterfacesSAPCognos.Consola
     {
         static void Main(string[] args)
         {
-            GetTiposCuentaSAP();
+            //StartReadingAsync_MEX_SALINT();
+            //LoadFile_MEX_SALINT();
+            //LoadFile_MEXSALCTA();
+            
+            //GetCuentasCognos();
             //InsertCuentaCognos();
-            GetCuentasCognos();
 
             Console.ReadLine();
         }
 
+        private static void StartReadingAsync_MEX_SALINT()
+        {
+            DAT_Reader dAT_Reader = new FileMethods.ReadFiles.DAT_Reader();
+            string path = @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\MEX_SALINT_20151211.DAT";
+            try
+            {
+                dAT_Reader.StartReadingAsync_MEX_SALINT(path);
+            }
+            catch (Exception ex)
+            {
+                string fieldName = ((FileHelpers.ConvertException)ex).FieldName;
+                string lineNumber = ((FileHelpers.ConvertException)ex).LineNumber.ToString();
+                Console.WriteLine("lineNumber: " + lineNumber + " - " + "FieldName: " + fieldName + " - " + ex.Message);
+            }
+        }
+
+        private static void LoadFile_MEX_SALINT()
+        {
+            DAT_Reader dAT_Reader = new FileMethods.ReadFiles.DAT_Reader();
+            string path = @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\MEX_SALINT_20151211.DAT";
+            try
+            {
+                dAT_Reader.StartReading_MEX_SALINT(path);
+            }
+            catch (Exception ex)
+            {
+                string fieldName = ((FileHelpers.ConvertException)ex).FieldName;
+                string lineNumber = ((FileHelpers.ConvertException)ex).LineNumber.ToString();
+                Console.WriteLine("lineNumber: " + lineNumber + " - " + "FieldName: " + fieldName + " - " + ex.Message);
+            }
+
+        }
+
+        private static void LoadFile_MEXSALCTA()
+        {
+            DAT_Reader dAT_Reader = new FileMethods.ReadFiles.DAT_Reader();
+            string path = @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\MEX_SALCTA_20151211.DAT";
+            dAT_Reader.StartReading_MEXSALCTA(path);
+        }
+
         private static void GetCuentasCognos()
         {
-            
+            //1. Agregando un nuevo Modelo 
+            //InterfasSAPCognosEntities db = new InterfasSAPCognosEntities();
+            //var cuentaCognos = db.CuentaCognos;
+            //var cuentaCognos2 = cuentaCognos.ToList();
+
+            ////2. Agregando los repositosios
+            //CuentaCognosRepository cuentaCognos = new CuentaCognosRepository(new InterfasSAPCognosEntities());
+            //var valor = cuentaCognos.GetAll();
+
+            ////3, Agregando las Interfaces de los repositorios
+            IRepository<CuentaCognos> db = new CuentaCognosRepository(new InterfasSAPCognosEntities());
+            var valor2 = db.GetAll();
+            var valor3 = db.GetAll().ToList();
         }
 
         private static void InsertCuentaCognos()
@@ -68,21 +124,6 @@ namespace RankenData.InterfacesSAPCognos.Consola
             }
         }
 
-        private static void GetTiposCuentaSAP()
-        {            
-            //1. Agregando un nuevo Modelo 
-            //InterfasSAPCognosEntities db = new InterfasSAPCognosEntities();
-            //var cuentaCognos = db.CuentaCognos;
-            //var cuentaCognos2 = cuentaCognos.ToList();
-
-            ////2. Agregando los repositosios
-            //CuentaCognosRepository cuentaCognos = new CuentaCognosRepository(new InterfasSAPCognosEntities());
-            //var valor = cuentaCognos.GetAll();
-
-            ////3, Agregando las Interfaces de los repositorios
-            IRepository<CuentaCognos> db = new CuentaCognosRepository(new InterfasSAPCognosEntities());
-            var valor2 = db.GetAll();
-            var valor3 = db.GetAll().ToList();
-        }
+       
     }
 }
