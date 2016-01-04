@@ -59,6 +59,8 @@
     <Compile Include="FileMethods\ReadFiles\MEXSALCTA.cs" />
     <Compile Include="FileMethods\ReadFiles\DAT_Reader.cs" />
     <Compile Include="FileMethods\ReadFiles\MEX_SALINT.cs" />
+    <Compile Include="FileMethods\WriteFiles\ArchivoResultado.cs" />
+    <Compile Include="FileMethods\WriteFiles\CSV_Writer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

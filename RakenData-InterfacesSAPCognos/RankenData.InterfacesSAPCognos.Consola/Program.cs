@@ -1,5 +1,6 @@
 ﻿using Ranken.ISC.Contracts.Repositories;
 using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
+using RankenData.InterfacesSAPCognos.Consola.FileMethods.WriteFiles;
 using RankenData.InterfacesSAPCognos.Domain;
 using RankenData.InterfacesSAPCognos.Model;
 using RankenData.InterfacesSAPCognos.Model.Repositories;
@@ -16,7 +17,9 @@ namespace RankenData.InterfacesSAPCognos.Consola
     {
         static void Main(string[] args)
         {
-            //StartReadingAsync_MEX_SALINT();
+            CreateFileBalance();
+
+            //LoadFileAsync_MEX_SALINT();
             //LoadFile_MEX_SALINT();
             //LoadFile_MEXSALCTA();
             
@@ -26,7 +29,71 @@ namespace RankenData.InterfacesSAPCognos.Consola
             Console.ReadLine();
         }
 
-        private static void StartReadingAsync_MEX_SALINT()
+        private static void CreateFileBalance()
+        {
+            List<ArchivoResultado> file = new List<ArchivoResultado>();
+            Encabezados(ref file);
+        }
+
+        private static void Encabezados(ref List<ArchivoResultado> file)
+        {
+            ArchivoResultado fileRowHeader1 = new ArchivoResultado()
+            {
+                Company = string.Empty
+
+                
+        //public string Period;
+
+       
+        //public string Actuality;
+
+     
+        //public string Account;
+
+      
+        ////Counter-Company
+        //public string CounterCompany;
+
+      
+        //public string Dim1;
+
+      
+        //public string Dim2;
+
+      
+        //public string Dim3;
+
+     
+        ////IT Opex
+        //public string ITOpex;
+
+       
+        //public string Amount;
+
+      
+        ////Transaction Currency
+        //public string TransactionCurrency;
+
+      
+        ////Transaction amount
+        //public string TransactionAmount;
+
+        //[FieldOrder(13)]
+        //public string Form;
+
+        //[FieldOrder(14)]
+        ////Account name
+        //public string AccountName;
+
+        //[FieldOrder(15)]
+        //public string Retrieve;
+
+        //[FieldOrder(16)]
+        //public string Variance;
+    };
+        }
+
+        private static void LoadFileAsync_MEX_SALINT()
         {
             DAT_Reader dAT_Reader = new FileMethods.ReadFiles.DAT_Reader();
             string path = @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\MEX_SALINT_20151211.DAT";
