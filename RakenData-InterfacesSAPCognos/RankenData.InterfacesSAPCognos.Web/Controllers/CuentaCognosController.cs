@@ -9,6 +9,9 @@ using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
 using System.IO;
 using System.Text;
+using Ranken.ISC.FileManager.ReadFiles;
+using System.Data.Entity.Infrastructure;
+using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -34,6 +37,30 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     byte[] binData = b.ReadBytes((int)file.InputStream.Length);
                     string result = System.Text.Encoding.UTF8.GetString(binData);
                     var records = result.Split('\n');
+
+                    DAT_Reader datReader = new DAT_Reader();
+                    MEXSALCTA[] MEXSALCTA=datReader.StartReading_MEXSALCTA(result);
+
+                    /*
+                     * 
+                     * 
+                     insert tabla archivocarga
+                      
+                     * [Nombre]  = file name
+      ,[Identificador] = MEXSALCTA (balance) o MEX_SALINT  (intercompañias)
+      ,[Fecha] = fecha del sistema
+      ,[TipoArchivoCarga]= id de la tabla TipoArchivoCarga lo puedo hacer con un enumerable
+      ,[Anio_Col3] = public int Anio es del primer registro;
+      ,[Mes_Col4] = public int Mes es del primer registro;
+      ,[Usuario] = el que este logeado en la app
+                     * 
+                     * for MEXSALCTA[]
+                            insert tabla archivo carga detalle
+                         *  ,[ArchivoCarga] = id del que acabe de crear en archivo carga
+                         *  if mexsalcta => [CopaniaRelacionada]= null
+                     *  exit for
+                     *  llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
+                     */
                     foreach (var record in records)
                     {
                         i++;
@@ -109,8 +136,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             if (ModelState.IsValid)
             {
                 db.CuentaCognos.Add(cuentacognos);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                  
+                }
             }
 
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
@@ -131,11 +166,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return HttpNotFound();
             }
 
-            var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).First();
-            if (cuentaSAP == false)
-            { 
-                //TODO: mostrar error: Primero debe desasignar las cuentas SAP asociadas
-            }
+           
 
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
             return View(cuentacognos);
@@ -170,6 +201,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
+
+            var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).First();
+            if (cuentaSAP == false)
+            {
+              
+                    ModelState.AddModelError("Error", "Ex: This login failed");
+                    return View();               
+                //TODO: mostrar error: Primero debe desasignar las cuentas SAP asociadas
+            }
             return View(cuentacognos);
         }
 
@@ -179,6 +219,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CuentaCognos cuentacognos = db.CuentaCognos.Find(id);
+            var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).First();
+            if (cuentaSAP)
+            {
+                ModelState.AddModelError("Error", "Ex: Primero debe desasignar las cuentas SAP asociadas");
+                return View();               
+            }
+
             db.CuentaCognos.Remove(cuentacognos);
             db.SaveChanges();
             return RedirectToAction("Index");
