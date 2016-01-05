@@ -2,12 +2,21 @@
 <html ng-app="interface">
 <head>
     <title>Interface</title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="vieport" content="with=device-width, initial-scale=1" />
     <link href="Content/bootstrap.css" rel="stylesheet" />
+
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+
     <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-route.js"></script>
 </head>
-<body>
+<body>    
+    <!--{{3+4}}-->
+    <div class="container" ng-view></div>
+
     <script src="App/app.js"></script>
+    <script src="App/components/login/login.js"></script>
+    <script src="Scripts/angular-route.js"></script>
 </body>
 </html>
