@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.Anexo>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Indice";
 }
 
-<h2>Index</h2>
+<h2>Anexos</h2>
+
+<p>Administración de Anexos</p>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Nuevo", "Create")
 </p>
 <table class="table">
     <tr>
@@ -35,9 +37,9 @@
             @Html.DisplayFor(modelItem => item.IsActive)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Editar", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Detalle", "Details", new { id=item.id }) |
+            @Html.ActionLink("Borrar", "Delete", new { id=item.id })
         </td>
     </tr>
 }

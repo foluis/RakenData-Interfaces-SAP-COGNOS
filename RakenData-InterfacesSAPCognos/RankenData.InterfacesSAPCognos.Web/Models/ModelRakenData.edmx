@@ -30,9 +30,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Anio" Type="smallint" Nullable="false" />
-          <Property Name="AnioInicio" Type="tinyint" Nullable="false" />
+          <Property Name="AnioInicio" Type="smallint" Nullable="false" />
           <Property Name="MesInicio" Type="tinyint" Nullable="false" />
-          <Property Name="AnioFin" Type="tinyint" Nullable="false" />
+          <Property Name="AnioFin" Type="smallint" Nullable="false" />
           <Property Name="MesFin" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="ArchivoCarga">
@@ -355,16 +355,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ModelRankenData" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="DatosCabecera">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Valor" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="EntitiesRakenData" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="DatosCabecera" EntityType="Self.DatosCabecera" />
           <EntitySet Name="AdministracionAplicacion" EntityType="ModelRankenData.AdministracionAplicacion" />
           <EntitySet Name="Anexo" EntityType="ModelRankenData.Anexo" />
           <EntitySet Name="AnioFiscal" EntityType="ModelRankenData.AnioFiscal" />
@@ -375,6 +366,7 @@
           <EntitySet Name="CompaniaRFC" EntityType="ModelRankenData.CompaniaRFC" />
           <EntitySet Name="CuentaCognos" EntityType="ModelRankenData.CuentaCognos" />
           <EntitySet Name="CuentaSAP" EntityType="ModelRankenData.CuentaSAP" />
+          <EntitySet Name="DatosCabecera" EntityType="ModelRankenData.DatosCabecera" />
           <EntitySet Name="TipoArchivoCarga" EntityType="ModelRankenData.TipoArchivoCarga" />
           <EntitySet Name="TipoCuentaSAP" EntityType="ModelRankenData.TipoCuentaSAP" />
           <EntitySet Name="User" EntityType="ModelRankenData.User" />
@@ -422,7 +414,7 @@
             <End Role="TipoCuentaSAP" EntitySet="TipoCuentaSAP" />
             <End Role="CuentaSAP" EntitySet="CuentaSAP" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <EntityType Name="AdministracionAplicacion">
           <Key>
             <PropertyRef Name="Id" />
@@ -449,9 +441,9 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Anio" Type="Int16" Nullable="false" />
-          <Property Name="AnioInicio" Type="Byte" Nullable="false" />
+          <Property Name="AnioInicio" Type="Int16" Nullable="false" />
           <Property Name="MesInicio" Type="Byte" Nullable="false" />
-          <Property Name="AnioFin" Type="Byte" Nullable="false" />
+          <Property Name="AnioFin" Type="Int16" Nullable="false" />
           <Property Name="MesFin" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="ArchivoCarga">
@@ -562,6 +554,14 @@
           <NavigationProperty Name="CuentaCognos2" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos1" FromRole="CuentaSAP" ToRole="CuentaCognos" />
           <NavigationProperty Name="CuentaCognos3" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos2" FromRole="CuentaSAP" ToRole="CuentaCognos" />
           <NavigationProperty Name="TipoCuentaSAP1" Relationship="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP" FromRole="CuentaSAP" ToRole="TipoCuentaSAP" />
+        </EntityType>
+        <EntityType Name="DatosCabecera">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Valor" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TipoArchivoCarga">
           <Key>
@@ -729,15 +729,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ModelRankenDataStoreContainer" CdmEntityContainer="EntitiesRakenData">
-          <EntitySetMapping Name="DatosCabecera">
-            <EntityTypeMapping TypeName="ModelRankenData.DatosCabecera">
-              <MappingFragment StoreEntitySet="DatosCabecera">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Valor" ColumnName="Valor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AdministracionAplicacion">
             <EntityTypeMapping TypeName="ModelRankenData.AdministracionAplicacion">
               <MappingFragment StoreEntitySet="AdministracionAplicacion">
@@ -869,6 +860,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DatosCabecera">
+            <EntityTypeMapping TypeName="ModelRankenData.DatosCabecera">
+              <MappingFragment StoreEntitySet="DatosCabecera">
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TipoArchivoCarga">
             <EntityTypeMapping TypeName="ModelRankenData.TipoArchivoCarga">
               <MappingFragment StoreEntitySet="TipoArchivoCarga">
@@ -896,7 +896,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

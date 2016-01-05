@@ -40,6 +40,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero");
+            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero");
+            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero");
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre");
             return View();
         }
@@ -59,6 +61,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
 
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
+            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
+            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
+
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
             return View(cuentasap);
         }

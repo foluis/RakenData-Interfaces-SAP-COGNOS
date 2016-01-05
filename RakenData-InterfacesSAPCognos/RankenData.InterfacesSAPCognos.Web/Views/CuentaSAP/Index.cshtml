@@ -4,7 +4,10 @@
     ViewBag.Title = "Cuentas de Mayor";
 }
 
-<h2>Creación de cuentas SAP</h2>
+<h2>Cuentas de mayor</h2>
+
+<p>Administración de cuentas de SAP</p>
+
 
 <p>
     @Html.ActionLink("Crear Nuevo", "Create")
@@ -66,7 +69,7 @@
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
             @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
         </td>
     </tr>

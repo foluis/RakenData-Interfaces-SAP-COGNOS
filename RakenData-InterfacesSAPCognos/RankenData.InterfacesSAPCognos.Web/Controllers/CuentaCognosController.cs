@@ -136,16 +136,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             if (ModelState.IsValid)
             {
                 db.CuentaCognos.Add(cuentacognos);
-
-
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                  
-                }
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
@@ -201,15 +193,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-
-            var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).First();
-            if (cuentaSAP == false)
-            {
-              
-                    ModelState.AddModelError("Error", "Ex: This login failed");
-                    return View();               
-                //TODO: mostrar error: Primero debe desasignar las cuentas SAP asociadas
-            }
+                       
             return View(cuentacognos);
         }
 
@@ -219,10 +203,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CuentaCognos cuentacognos = db.CuentaCognos.Find(id);
-            var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).First();
+            var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).FirstOrDefault();
             if (cuentaSAP)
             {
-                ModelState.AddModelError("Error", "Ex: Primero debe desasignar las cuentas SAP asociadas");
+                ModelState.AddModelError("Error: ", "Primero debe desasignar las cuentas SAP asociadas");
                 return View();               
             }
 

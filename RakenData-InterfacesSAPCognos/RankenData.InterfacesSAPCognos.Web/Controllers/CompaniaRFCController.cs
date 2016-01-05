@@ -51,7 +51,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existCompania = db.CompaniaRFC.Select(crfc => crfc.CompaniaCognos == companiarfc.CompaniaCognos).First();
+                var existCompania = db.CompaniaRFC.Select(crfc => crfc.CompaniaCognos == companiarfc.CompaniaCognos).FirstOrDefault();
                 if (existCompania)
                 {
                     ModelState.AddModelError("Error", "Ex: La compañia Cognos, ya se encuentra asociada a otra vuenta RFC");

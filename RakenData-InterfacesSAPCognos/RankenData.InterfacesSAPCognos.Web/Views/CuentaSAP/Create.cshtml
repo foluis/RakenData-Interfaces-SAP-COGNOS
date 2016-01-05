@@ -15,13 +15,13 @@
         <hr />
         @Html.ValidationSummary(true)
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Id)
                 @Html.ValidationMessageFor(model => model.Id)
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })
@@ -74,7 +74,9 @@
         <div id="divCuentaCargo" class="form-group">
             @Html.LabelFor(model => model.CuentaCargo, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CuentaCargo)
+                @*@Html.EditorFor(model => model.CuentaCargo)
+                @Html.ValidationMessageFor(model => model.CuentaCargo)*@
+                @Html.DropDownList("CuentaCargo", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaCargo)
             </div>
         </div>
@@ -82,7 +84,9 @@
         <div id="divCuentaAbono" class="form-group">
             @Html.LabelFor(model => model.CuentaAbono, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CuentaAbono)
+                @*@Html.EditorFor(model => model.CuentaAbono)
+                @Html.ValidationMessageFor(model => model.CuentaAbono)*@
+                @Html.DropDownList("CuentaAbono", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaAbono)
             </div>
         </div>
@@ -96,7 +100,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar a la lista", "Index")
 </div>
 
 @section Scripts {

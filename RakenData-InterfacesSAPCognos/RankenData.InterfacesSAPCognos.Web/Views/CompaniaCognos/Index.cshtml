@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.CompaniaCognos>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Indice";
 }
 
-<h2>Index</h2>
+<h2>Sociedades Cognos</h2>
+
+<p>Administración de Sociedades Cognos</p>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Nuevo", "Create")
 </p>
 <table class="table">
     <tr>
@@ -29,9 +31,9 @@
             @Html.DisplayFor(modelItem => item.Descripcion)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

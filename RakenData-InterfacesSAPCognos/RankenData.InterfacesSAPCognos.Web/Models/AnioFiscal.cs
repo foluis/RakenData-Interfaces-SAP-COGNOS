@@ -16,9 +16,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     {
         public int Id { get; set; }
         public short Anio { get; set; }
-        public byte AnioInicio { get; set; }
+        public short AnioInicio { get; set; }
         public byte MesInicio { get; set; }
-        public byte AnioFin { get; set; }
+        public short AnioFin { get; set; }
         public byte MesFin { get; set; }
     }
 }

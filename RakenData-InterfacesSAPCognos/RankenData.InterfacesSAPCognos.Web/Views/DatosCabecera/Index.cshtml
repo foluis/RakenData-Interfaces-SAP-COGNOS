@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.DatosCabecera>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Indice";
 }
 
-<h2>Index</h2>
+<h2>Datos de cabecera</h2>
+
+<p>Administración de datos de cabecera</p>
 
 
 <table class="table">
@@ -27,7 +29,7 @@
             @Html.DisplayFor(modelItem => item.Valor)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id })         
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id })         
         </td>
     </tr>
 }

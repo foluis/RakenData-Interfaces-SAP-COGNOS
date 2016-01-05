@@ -9,7 +9,7 @@
 <p>Administración de cuentas de Cognos</p>
 
 <p>
-    @Html.ActionLink("Crer Nuevo", "Create")
+    @Html.ActionLink("Crear Nuevo", "Create")
 </p>
 <table class="table">
     <tr>
@@ -44,7 +44,7 @@
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
             @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
         </td>
     </tr>
@@ -53,7 +53,7 @@
 </table>
 @using (Html.BeginForm("Upload", "CuentaCognos", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-   <input type="file" name="file" />
+   <input type="file" name="file" /><br>
     <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />
 }
 

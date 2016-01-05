@@ -25,7 +25,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<DatosCabecera> DatosCabecera { get; set; }
         public virtual DbSet<AdministracionAplicacion> AdministracionAplicacion { get; set; }
         public virtual DbSet<Anexo> Anexo { get; set; }
         public virtual DbSet<AnioFiscal> AnioFiscal { get; set; }
@@ -36,6 +35,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<CompaniaRFC> CompaniaRFC { get; set; }
         public virtual DbSet<CuentaCognos> CuentaCognos { get; set; }
         public virtual DbSet<CuentaSAP> CuentaSAP { get; set; }
+        public virtual DbSet<DatosCabecera> DatosCabecera { get; set; }
         public virtual DbSet<TipoArchivoCarga> TipoArchivoCarga { get; set; }
         public virtual DbSet<TipoCuentaSAP> TipoCuentaSAP { get; set; }
         public virtual DbSet<User> User { get; set; }

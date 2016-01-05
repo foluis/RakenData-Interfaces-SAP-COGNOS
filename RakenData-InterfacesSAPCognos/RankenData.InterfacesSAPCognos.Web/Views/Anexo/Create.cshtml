@@ -1,10 +1,12 @@
 ﻿@model RankenData.InterfacesSAPCognos.Web.Models.Anexo
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Crear";
 }
 
-<h2>Create</h2>
+<h2>Anexos</h2>
+
+<p>Creación de Anexos</p>
 
 
 @using (Html.BeginForm()) 
@@ -42,14 +44,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Crear" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar a la lista", "Index")
 </div>
 
 @section Scripts {
