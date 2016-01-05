@@ -62,11 +62,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             if (errores.Length > 0)
             {
-                //prueba de sincronizacion 2
-
-                //prueba 888
-
-                //prueba 3
+                
 
                 //TODO: IMPLEMENTAR EL ERROR
                 
@@ -129,10 +125,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CuentaCognos cuentacognos = db.CuentaCognos.Find(id);
+                       
             if (cuentacognos == null)
             {
                 return HttpNotFound();
             }
+
+            var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).First();
+            if (cuentaSAP == false)
+            { 
+                //TODO: mostrar error: Primero debe desasignar las cuentas SAP asociadas
+            }
+
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
             return View(cuentacognos);
         }

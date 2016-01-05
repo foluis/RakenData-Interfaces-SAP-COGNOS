@@ -1,0 +1,57 @@
+﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.AnioFiscal>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Anio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AnioInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MesInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AnioFin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MesFin)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Anio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnioInicio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MesInicio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnioFin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MesFin)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -163,8 +163,12 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnexoController.cs" />
+    <Compile Include="Controllers\AnioFiscalController.cs" />
+    <Compile Include="Controllers\CompaniaCognosController.cs" />
+    <Compile Include="Controllers\CompaniaRFCController.cs" />
     <Compile Include="Controllers\CuentaCognosController.cs" />
     <Compile Include="Controllers\CuentaSAPController.cs" />
+    <Compile Include="Controllers\DatosCabeceraController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -312,6 +316,26 @@
     <Content Include="Views\CuentaSAP\Details.cshtml" />
     <Content Include="Views\CuentaSAP\Edit.cshtml" />
     <Content Include="Views\CuentaSAP\Index.cshtml" />
+    <Content Include="Views\CompaniaCognos\Create.cshtml" />
+    <Content Include="Views\CompaniaCognos\Delete.cshtml" />
+    <Content Include="Views\CompaniaCognos\Details.cshtml" />
+    <Content Include="Views\CompaniaCognos\Edit.cshtml" />
+    <Content Include="Views\CompaniaCognos\Index.cshtml" />
+    <Content Include="Views\CompaniaRFC\Create.cshtml" />
+    <Content Include="Views\CompaniaRFC\Delete.cshtml" />
+    <Content Include="Views\CompaniaRFC\Details.cshtml" />
+    <Content Include="Views\CompaniaRFC\Edit.cshtml" />
+    <Content Include="Views\CompaniaRFC\Index.cshtml" />
+    <Content Include="Views\DatosCabecera\Create.cshtml" />
+    <Content Include="Views\DatosCabecera\Delete.cshtml" />
+    <Content Include="Views\DatosCabecera\Details.cshtml" />
+    <Content Include="Views\DatosCabecera\Edit.cshtml" />
+    <Content Include="Views\DatosCabecera\Index.cshtml" />
+    <Content Include="Views\AnioFiscal\Create.cshtml" />
+    <Content Include="Views\AnioFiscal\Delete.cshtml" />
+    <Content Include="Views\AnioFiscal\Details.cshtml" />
+    <Content Include="Views\AnioFiscal\Edit.cshtml" />
+    <Content Include="Views\AnioFiscal\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

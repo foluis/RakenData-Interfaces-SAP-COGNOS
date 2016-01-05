@@ -1,0 +1,58 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.AnioFiscal
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AnioFiscal</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Anio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Anio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnioInicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnioInicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MesInicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MesInicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnioFin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnioFin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MesFin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MesFin)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,4 +1,4 @@
-﻿@model RankenData.InterfacesSAPCognos.Web.Models.CuentaCognos
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.CompaniaRFC
 
 @{
     ViewBag.Title = "Edit";
@@ -12,17 +12,16 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>CuentaCognos</h4>
+        <h4>CompaniaRFC</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.RFC, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayNameFor(model => model.Numero)
-                @*@Html.EditorFor(model => model.Numero)
-                @Html.ValidationMessageFor(model => model.Numero)*@
+                @Html.EditorFor(model => model.RFC)
+                @Html.ValidationMessageFor(model => model.RFC)
             </div>
         </div>
 
@@ -35,21 +34,12 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AnexoId, "AnexoId", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.CompaniaCognos, "CompaniaCognos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.Anexo.Clave)
-                @*@Html.DropDownList("AnexoId", String.Empty)
-                @Html.ValidationMessageFor(model => model.AnexoId)*@
+                @Html.DropDownList("CompaniaCognos", String.Empty)
+                @Html.ValidationMessageFor(model => model.CompaniaCognos)
             </div>
         </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsActive)
-                @Html.ValidationMessageFor(model => model.IsActive)
-            </div>
-        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

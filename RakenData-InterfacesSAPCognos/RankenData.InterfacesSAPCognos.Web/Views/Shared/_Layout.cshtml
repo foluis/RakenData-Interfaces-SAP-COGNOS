@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Raken Data</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Site.css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 
@@ -18,17 +19,43 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("Interface SAP Cognos", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="nav">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Anexo", "Index", "Anexo")</li>
-                    <li>@Html.ActionLink("Cuenta Cognos", "Index", "CuentaCognos")</li>
-                    <li>@Html.ActionLink("Cuenta SAP", "Index", "CuentaSAP")</li>
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>
+                        <a href="">Datos Maestros</a>
+                        <ul>
+                            <li>
+                                <a href="">Cuentas de mayor</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Cuenta Cognos", "Index", "CuentaCognos")</li>
+                                    <li>@Html.ActionLink("Cuenta SAP", "Index", "CuentaSAP")</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">Sociedades</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Sociedad por RFC", "Index", "CompaniaRFC")</li>
+                                    <li>@Html.ActionLink("Sociedad por Cognos", "Index", "CompaniaCognos")</li>
+                                </ul>
+                            </li>
+                            <li>@Html.ActionLink("Año Fiscal", "Index", "AnioFiscal")</li>
+                            <li>@Html.ActionLink("Anexo", "Index", "Anexo")</li>
+                            <li>@Html.ActionLink("Datos de Cabecera", "Index", "DatosCabecera")</li>
+                        </ul>
+                    </li>
+                    <li> <a href="">Carga de Información</a></li>
+                    <li><a href="">Generación de archivos</a></li>
                 </ul>
+                @*<ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Anexo", "Index", "Anexo")</li>
+                <li>@Html.ActionLink("Cuenta Cognos", "Index", "CuentaCognos")</li>
+                <li>@Html.ActionLink("Cuenta SAP", "Index", "CuentaSAP")</li>
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("About", "About", "Home")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            </ul>*@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
