@@ -295,6 +295,10 @@
         <Function Name="ValidateFileLoaded" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fileLoadedId" Type="int" Mode="In" />
         </Function>
+        <Function Name="ValidateFileToLoad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Anio" Type="int" Mode="In" />
+          <Parameter Name="Mes" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelRankenDataStoreContainer">
           <EntitySet Name="AdministracionAplicacion" EntityType="Self.AdministracionAplicacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Anexo" EntityType="Self.Anexo" Schema="dbo" store:Type="Tables" />
@@ -420,6 +424,10 @@
           </AssociationSet>
           <FunctionImport Name="ValidateFileLoaded" ReturnType="Collection(ModelRankenData.ValidateFileLoaded_Result)">
           <Parameter Name="fileLoadedId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ValidateFileToLoad" ReturnType="Collection(ModelRankenData.ValidateFileToLoad_Result)">
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+            <Parameter Name="Mes" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="AdministracionAplicacion">
@@ -732,10 +740,14 @@
           </ReferentialConstraint>
         </Association>
         <ComplexType Name="ValidateFileLoaded_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="IdTipo" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Value" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Description_Value" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="ValidateFileToLoad_Result">
+          <Property Type="Int32" Name="IdTipo" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="40" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -914,10 +926,18 @@
           <FunctionImportMapping FunctionImportName="ValidateFileLoaded" FunctionName="ModelRankenData.Store.ValidateFileLoaded" >
             <ResultMapping>
               <ComplexTypeMapping TypeName="ModelRankenData.ValidateFileLoaded_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Description_Value" ColumnName="Description_Value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ValidateFileToLoad" FunctionName="ModelRankenData.Store.ValidateFileToLoad">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModelRankenData.ValidateFileToLoad_Result">
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

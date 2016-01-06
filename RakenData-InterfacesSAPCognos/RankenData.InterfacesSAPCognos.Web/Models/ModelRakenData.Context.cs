@@ -50,5 +50,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileLoaded_Result>("ValidateFileLoaded", fileLoadedIdParameter);
         }
+    
+        public virtual ObjectResult<ValidateFileToLoad_Result> ValidateFileToLoad(Nullable<int> anio, Nullable<int> mes)
+        {
+            var anioParameter = anio.HasValue ?
+                new ObjectParameter("Anio", anio) :
+                new ObjectParameter("Anio", typeof(int));
+    
+            var mesParameter = mes.HasValue ?
+                new ObjectParameter("Mes", mes) :
+                new ObjectParameter("Mes", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileToLoad_Result>("ValidateFileToLoad", anioParameter, mesParameter);
+        }
     }
 }

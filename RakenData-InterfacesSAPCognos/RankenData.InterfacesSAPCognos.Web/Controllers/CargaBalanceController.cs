@@ -16,13 +16,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CargaBalanceController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-       
+
 
         // Cargue balance / resultados
         [HttpPost]
         public ActionResult CargarBalance()
         {
-                        ArchivoCarga archivoCarga = new ArchivoCarga();
+            ArchivoCarga archivoCarga = new ArchivoCarga();
             List<ArchivoCargaDetalle> lstarchivoCargaDetalle = new List<ArchivoCargaDetalle>();
             StringBuilder errores = new StringBuilder();
             Random r = new Random();
@@ -40,6 +40,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     DAT_Reader datReader = new DAT_Reader();
                     MEXSALCTA[] Mexsalcta = datReader.StartReading_MEXSALCTA(result);
 
+                    List<ValidateFileToLoad_Result> anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
+
+                    ModelState.AddModelError("No se carga el archivo si el periodo ya existe", "AnnioMesYaExiste");// --->ValidateFileToLoad_Result.IdTipo = -1
+                    ModelState.AddModelError("Si se carga el archivo", "cuentas"); //---> ValidateFileToLoad_Result.IdTipo = 0
+
                     //Insert tabla archivocarga
                     archivoCarga.Nombre = file.FileName + r.Next(100); //todo: random para pruebas
                     archivoCarga.Identificador = "B/R" + DateTime.Today.Month.ToString() + DateTime.Today.Year.ToString().Substring(2);
@@ -53,7 +58,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     db.SaveChanges();
 
                     // Insert tabla archivo carga detalle
-                   
+
                     for (int i = 0; i < Mexsalcta.Length; i++)
                     {
                         lstarchivoCargaDetalle.Add(
@@ -91,12 +96,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     catch (DbEntityValidationException e)
                     {
                         string error = e.Message;
-                        ModelState.AddModelError("Error:", e.Message) ;
+                        ModelState.AddModelError("Error:", e.Message);
                         throw;
                     }
 
                     List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
-                    
+
+                    string mensaje = "Se cargó el archivo exitosamente";// --->ValidateFileLoaded_Result.Id = 0
                     ModelState.AddModelError("No se han cargado las siguientes companias:", "companias");// --->ValidateFileLoaded_Result.Id = 2
                     ModelState.AddModelError("No se han cargado las siguientes cuentas:", "cuentas"); //---> ValidateFileLoaded_Result.Id = 1
 
@@ -105,26 +111,26 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
             }
             return RedirectToAction("Index");
-                    /*
-                     * 
-                     * 
-                     insert tabla archivocarga
-                      
-                     * [Nombre]  = file name
-      ,[Identificador] = MEXSALCTA (balance) o MEX_SALINT  (intercompañias)
-      ,[Fecha] = fecha del sistema
-      ,[TipoArchivoCarga]= id de la tabla TipoArchivoCarga lo puedo hacer con un enumerable
-      ,[Anio_Col3] = public int Anio es del primer registro;
-      ,[Mes_Col4] = public int Mes es del primer registro;
-      ,[Usuario] = el que este logeado en la app
-                     * 
-                     * for MEXSALCTA[]
-                            insert tabla archivo carga detalle
-                         *  ,[ArchivoCarga] = id del que acabe de crear en archivo carga
-                         *  if mexsalcta => [CopaniaRelacionada]= null
-                     *  exit for
-                     *  llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
-                     */
+            /*
+             * 
+             * 
+             insert tabla archivocarga
+
+             * [Nombre]  = file name
+,[Identificador] = MEXSALCTA (balance) o MEX_SALINT  (intercompañias)
+,[Fecha] = fecha del sistema
+,[TipoArchivoCarga]= id de la tabla TipoArchivoCarga lo puedo hacer con un enumerable
+,[Anio_Col3] = public int Anio es del primer registro;
+,[Mes_Col4] = public int Mes es del primer registro;
+,[Usuario] = el que este logeado en la app
+             * 
+             * for MEXSALCTA[]
+                    insert tabla archivo carga detalle
+                 *  ,[ArchivoCarga] = id del que acabe de crear en archivo carga
+                 *  if mexsalcta => [CopaniaRelacionada]= null
+             *  exit for
+             *  llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
+             */
             //        foreach (var record in records)
             //        {
             //            i++;
@@ -158,7 +164,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             //    // ERROR EL ID DEL ANEXO NO ES NUMERICO
             //}
-           // return RedirectToAction("Index");
+            // return RedirectToAction("Index");
         }
 
         //
