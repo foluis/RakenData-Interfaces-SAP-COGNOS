@@ -95,14 +95,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         throw;
                     }
 
-                    var validacionDatos = db.ValidateFileLoaded(archivoCarga.Id);
+                    List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
+                    
+                    ModelState.AddModelError("No se han cargado las siguientes companias:", "companias");// --->ValidateFileLoaded_Result.Id = 2
+                    ModelState.AddModelError("No se han cargado las siguientes cuentas:", "cuentas"); //---> ValidateFileLoaded_Result.Id = 1
 
-                    ObjectResult<string> validacionDatos1 = db.ValidateFileLoaded(archivoCarga.Id);
-                   
-
-                    ModelState.AddModelError("No se han cargado las siguientes cuentas:", "cuentas");
-
-                   // llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
+                    // llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
                     return RedirectToAction("Index");
                 }
             }

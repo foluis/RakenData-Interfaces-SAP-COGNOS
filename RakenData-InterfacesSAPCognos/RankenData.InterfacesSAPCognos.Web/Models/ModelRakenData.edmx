@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ModelRankenData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelRankenData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AdministracionAplicacion">
           <Key>
             <PropertyRef Name="Id" />
@@ -418,7 +418,7 @@
             <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
             <End Role="ArchivoCargaDetalle" EntitySet="ArchivoCargaDetalle" />
           </AssociationSet>
-          <FunctionImport Name="ValidateFileLoaded" ReturnType="Collection(String)">
+          <FunctionImport Name="ValidateFileLoaded" ReturnType="Collection(ModelRankenData.ValidateFileLoaded_Result)">
           <Parameter Name="fileLoadedId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -731,6 +731,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="ValidateFileLoaded_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Description_Value" Nullable="false" MaxLength="30" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -905,7 +911,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="ValidateFileLoaded" FunctionName="ModelRankenData.Store.ValidateFileLoaded" />
+          <FunctionImportMapping FunctionImportName="ValidateFileLoaded" FunctionName="ModelRankenData.Store.ValidateFileLoaded" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModelRankenData.ValidateFileLoaded_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Description_Value" ColumnName="Description_Value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -42,13 +42,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<ArchivoCargaDetalle> ArchivoCargaDetalle { get; set; }
     
-        public virtual ObjectResult<string> ValidateFileLoaded(Nullable<int> fileLoadedId)
+        public virtual ObjectResult<ValidateFileLoaded_Result> ValidateFileLoaded(Nullable<int> fileLoadedId)
         {
             var fileLoadedIdParameter = fileLoadedId.HasValue ?
                 new ObjectParameter("fileLoadedId", fileLoadedId) :
                 new ObjectParameter("fileLoadedId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ValidateFileLoaded", fileLoadedIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileLoaded_Result>("ValidateFileLoaded", fileLoadedIdParameter);
         }
     }
 }
