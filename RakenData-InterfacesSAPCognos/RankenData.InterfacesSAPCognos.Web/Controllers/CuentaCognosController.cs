@@ -19,7 +19,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-
+        // Carga masiva de cuentas cognos
         [HttpPost]
         public ActionResult Upload()
         {
@@ -37,46 +37,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     byte[] binData = b.ReadBytes((int)file.InputStream.Length);
                     string result = System.Text.Encoding.UTF8.GetString(binData);
                     var records = result.Split('\n');
-
-                    DAT_Reader datReader = new DAT_Reader();
-                    MEXSALCTA[] MEXSALCTA=datReader.StartReading_MEXSALCTA(result);
-
-                    /*
-                     * 
-                     * 
-                     insert tabla archivocarga
-                      
-                     * [Nombre]  = file name
-      ,[Identificador] = MEXSALCTA (balance) o MEX_SALINT  (intercompañias)
-      ,[Fecha] = fecha del sistema
-      ,[TipoArchivoCarga]= id de la tabla TipoArchivoCarga lo puedo hacer con un enumerable
-      ,[Anio_Col3] = public int Anio es del primer registro;
-      ,[Mes_Col4] = public int Mes es del primer registro;
-      ,[Usuario] = el que este logeado en la app
-                     * 
-                     * for MEXSALCTA[]
-                            insert tabla archivo carga detalle
-                         *  ,[ArchivoCarga] = id del que acabe de crear en archivo carga
-                         *  if mexsalcta => [CopaniaRelacionada]= null
-                     *  exit for
-                     *  llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
-                     */
+                    DAT_Reader datReader = new DAT_Reader();   
+               
                     foreach (var record in records)
                     {
                         i++;
                         var dato = record.Split(',');
                         if (dato.Length < 3)
                         {
-                            errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO - DESCRIPCION- ANEXO ID");
-                            //TODO: IMPLEMENTAR EL ERROR
-                            // ERROR lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO - DESCRIPCION- ANEXO ID
+                            errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
+                            
                         }
                         if (int.TryParse(dato[2], out anexoid) == false)
                         {
                             errores.AppendLine("No. Registro" + i + "ERROR: EL ID DEL ANEXO NO ES NUMERICO");
-
-                            //TODO: IMPLEMENTAR EL ERROR
-                            // ERROR EL ID DEL ANEXO NO ES NUMERICO
                         }
                         cuentaCognos = new CuentaCognos() { Numero = dato[0], Descripcion = dato[1], AnexoId = anexoid, IsActive = true };
                         if (ModelState.IsValid)
@@ -88,15 +62,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
             }
             if (errores.Length > 0)
-            {
-                
-
-                //TODO: IMPLEMENTAR EL ERROR
-                
-                // ERROR EL ID DEL ANEXO NO ES NUMERICO
+            {               
+                ModelState.AddModelError("Error: ", errores.ToString());
+                return View();    
             }
             return RedirectToAction("Index");
         }
+
+
         // GET: /CuentaCognos/
         public ActionResult Index()
         {

@@ -54,6 +54,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ArchivoCarga" Type="int" Nullable="false" />
+          <Property Name="FilaArchivo" Type="int" Nullable="false" />
           <Property Name="Escenario" Type="int" Nullable="false" />
           <Property Name="Versión" Type="tinyint" Nullable="false" />
           <Property Name="Anio" Type="smallint" Nullable="false" />
@@ -62,7 +63,7 @@
           <Property Name="Cuenta" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Moneda" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="GAAP" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="Interfase" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="Interfase" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="NominalAjustado" Type="tinyint" Nullable="false" />
           <Property Name="Compania" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="CopaniaRelacionada" Type="varchar" MaxLength="13" />
@@ -291,6 +292,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ValidateFileLoaded" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fileLoadedId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelRankenDataStoreContainer">
           <EntitySet Name="AdministracionAplicacion" EntityType="Self.AdministracionAplicacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Anexo" EntityType="Self.Anexo" Schema="dbo" store:Type="Tables" />
@@ -360,7 +364,6 @@
           <EntitySet Name="Anexo" EntityType="ModelRankenData.Anexo" />
           <EntitySet Name="AnioFiscal" EntityType="ModelRankenData.AnioFiscal" />
           <EntitySet Name="ArchivoCarga" EntityType="ModelRankenData.ArchivoCarga" />
-          <EntitySet Name="ArchivoCargaDetalle" EntityType="ModelRankenData.ArchivoCargaDetalle" />
           <EntitySet Name="CargaAutomatica" EntityType="ModelRankenData.CargaAutomatica" />
           <EntitySet Name="CompaniaCognos" EntityType="ModelRankenData.CompaniaCognos" />
           <EntitySet Name="CompaniaRFC" EntityType="ModelRankenData.CompaniaRFC" />
@@ -381,10 +384,6 @@
           <AssociationSet Name="FK_ArchivoCarga_User" Association="ModelRankenData.FK_ArchivoCarga_User">
             <End Role="User" EntitySet="User" />
             <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ArchivoCargaDetalle_ArchivoCarga" Association="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga">
-            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
-            <End Role="ArchivoCargaDetalle" EntitySet="ArchivoCargaDetalle" />
           </AssociationSet>
           <AssociationSet Name="FK_CargaAutomatica_ArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_ArchivoCarga">
             <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
@@ -414,6 +413,14 @@
             <End Role="TipoCuentaSAP" EntitySet="TipoCuentaSAP" />
             <End Role="CuentaSAP" EntitySet="CuentaSAP" />
           </AssociationSet>
+          <EntitySet Name="ArchivoCargaDetalle" EntityType="ModelRankenData.ArchivoCargaDetalle" />
+          <AssociationSet Name="FK_ArchivoCargaDetalle_ArchivoCarga" Association="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga">
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+            <End Role="ArchivoCargaDetalle" EntitySet="ArchivoCargaDetalle" />
+          </AssociationSet>
+          <FunctionImport Name="ValidateFileLoaded" ReturnType="Collection(String)">
+          <Parameter Name="fileLoadedId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="AdministracionAplicacion">
           <Key>
@@ -460,35 +467,8 @@
           <Property Name="Usuario" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TipoArchivoCarga1" Relationship="ModelRankenData.FK_ArchivoCarga_TipoArchivoCarga" FromRole="ArchivoCarga" ToRole="TipoArchivoCarga" />
           <NavigationProperty Name="User" Relationship="ModelRankenData.FK_ArchivoCarga_User" FromRole="ArchivoCarga" ToRole="User" />
-          <NavigationProperty Name="ArchivoCargaDetalle" Relationship="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga" FromRole="ArchivoCarga" ToRole="ArchivoCargaDetalle" />
           <NavigationProperty Name="CargaAutomatica" Relationship="ModelRankenData.FK_CargaAutomatica_ArchivoCarga" FromRole="ArchivoCarga" ToRole="CargaAutomatica" />
-        </EntityType>
-        <EntityType Name="ArchivoCargaDetalle">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ArchivoCarga" Type="Int32" Nullable="false" />
-          <Property Name="Escenario" Type="Int32" Nullable="false" />
-          <Property Name="Versión" Type="Byte" Nullable="false" />
-          <Property Name="Anio" Type="Int16" Nullable="false" />
-          <Property Name="Mes" Type="Byte" Nullable="false" />
-          <Property Name="UnidadDeNegocio" Type="Byte" Nullable="false" />
-          <Property Name="Cuenta" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Moneda" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="GAAP" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Interfase" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="NominalAjustado" Type="Byte" Nullable="false" />
-          <Property Name="Compania" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
-          <Property Name="CopaniaRelacionada" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
-          <Property Name="MovimientoDebitoPeriodo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="MovimientoCreditoPeriodo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="MovimientoDebitoAcumulado" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="MovimientoCreditoAcumulado" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="SaldoAcumuladoPeriodo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="HoraActualizacion" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
-          <Property Name="UsuarioActualizacion" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ArchivoCarga1" Relationship="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga" FromRole="ArchivoCargaDetalle" ToRole="ArchivoCarga" />
+          <NavigationProperty Name="ArchivoCargaDetalle" Relationship="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga" FromRole="ArchivoCarga" ToRole="ArchivoCargaDetalle" />
         </EntityType>
         <EntityType Name="CargaAutomatica">
           <Key>
@@ -627,18 +607,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ArchivoCargaDetalle_ArchivoCarga">
-          <End Type="ModelRankenData.ArchivoCarga" Role="ArchivoCarga" Multiplicity="1" />
-          <End Type="ModelRankenData.ArchivoCargaDetalle" Role="ArchivoCargaDetalle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArchivoCarga">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ArchivoCargaDetalle">
-              <PropertyRef Name="ArchivoCarga" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CargaAutomatica_ArchivoCarga">
           <End Type="ModelRankenData.ArchivoCarga" Role="ArchivoCarga" Multiplicity="0..1" />
           <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
@@ -723,6 +691,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ArchivoCargaDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArchivoCarga" Type="Int32" Nullable="false" />
+          <Property Name="FilaArchivo" Type="Int32" Nullable="false" />
+          <Property Name="Escenario" Type="Int32" Nullable="false" />
+          <Property Name="Versión" Type="Byte" Nullable="false" />
+          <Property Name="Anio" Type="Int16" Nullable="false" />
+          <Property Name="Mes" Type="Byte" Nullable="false" />
+          <Property Name="UnidadDeNegocio" Type="Byte" Nullable="false" />
+          <Property Name="Cuenta" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Moneda" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="GAAP" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Interfase" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="NominalAjustado" Type="Byte" Nullable="false" />
+          <Property Name="Compania" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="CopaniaRelacionada" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="MovimientoDebitoPeriodo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MovimientoCreditoPeriodo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MovimientoDebitoAcumulado" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MovimientoCreditoAcumulado" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SaldoAcumuladoPeriodo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="HoraActualizacion" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioActualizacion" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ArchivoCarga1" Relationship="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga" FromRole="ArchivoCargaDetalle" ToRole="ArchivoCarga" />
+        </EntityType>
+        <Association Name="FK_ArchivoCargaDetalle_ArchivoCarga">
+          <End Type="ModelRankenData.ArchivoCarga" Role="ArchivoCarga" Multiplicity="1" />
+          <End Type="ModelRankenData.ArchivoCargaDetalle" Role="ArchivoCargaDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoCargaDetalle">
+              <PropertyRef Name="ArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -772,33 +780,6 @@
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
                 <ScalarProperty Name="Identificador" ColumnName="Identificador" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ArchivoCargaDetalle">
-            <EntityTypeMapping TypeName="ModelRankenData.ArchivoCargaDetalle">
-              <MappingFragment StoreEntitySet="ArchivoCargaDetalle">
-                <ScalarProperty Name="UsuarioActualizacion" ColumnName="UsuarioActualizacion" />
-                <ScalarProperty Name="HoraActualizacion" ColumnName="HoraActualizacion" />
-                <ScalarProperty Name="SaldoAcumuladoPeriodo" ColumnName="SaldoAcumuladoPeriodo" />
-                <ScalarProperty Name="MovimientoCreditoAcumulado" ColumnName="MovimientoCreditoAcumulado" />
-                <ScalarProperty Name="MovimientoDebitoAcumulado" ColumnName="MovimientoDebitoAcumulado" />
-                <ScalarProperty Name="MovimientoCreditoPeriodo" ColumnName="MovimientoCreditoPeriodo" />
-                <ScalarProperty Name="MovimientoDebitoPeriodo" ColumnName="MovimientoDebitoPeriodo" />
-                <ScalarProperty Name="CopaniaRelacionada" ColumnName="CopaniaRelacionada" />
-                <ScalarProperty Name="Compania" ColumnName="Compania" />
-                <ScalarProperty Name="NominalAjustado" ColumnName="NominalAjustado" />
-                <ScalarProperty Name="Interfase" ColumnName="Interfase" />
-                <ScalarProperty Name="GAAP" ColumnName="GAAP" />
-                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
-                <ScalarProperty Name="Cuenta" ColumnName="Cuenta" />
-                <ScalarProperty Name="UnidadDeNegocio" ColumnName="UnidadDeNegocio" />
-                <ScalarProperty Name="Mes" ColumnName="Mes" />
-                <ScalarProperty Name="Anio" ColumnName="Anio" />
-                <ScalarProperty Name="Versión" ColumnName="Versión" />
-                <ScalarProperty Name="Escenario" ColumnName="Escenario" />
-                <ScalarProperty Name="ArchivoCarga" ColumnName="ArchivoCarga" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -896,6 +877,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ArchivoCargaDetalle">
+            <EntityTypeMapping TypeName="ModelRankenData.ArchivoCargaDetalle">
+              <MappingFragment StoreEntitySet="ArchivoCargaDetalle">
+                <ScalarProperty Name="UsuarioActualizacion" ColumnName="UsuarioActualizacion" />
+                <ScalarProperty Name="HoraActualizacion" ColumnName="HoraActualizacion" />
+                <ScalarProperty Name="SaldoAcumuladoPeriodo" ColumnName="SaldoAcumuladoPeriodo" />
+                <ScalarProperty Name="MovimientoCreditoAcumulado" ColumnName="MovimientoCreditoAcumulado" />
+                <ScalarProperty Name="MovimientoDebitoAcumulado" ColumnName="MovimientoDebitoAcumulado" />
+                <ScalarProperty Name="MovimientoCreditoPeriodo" ColumnName="MovimientoCreditoPeriodo" />
+                <ScalarProperty Name="MovimientoDebitoPeriodo" ColumnName="MovimientoDebitoPeriodo" />
+                <ScalarProperty Name="CopaniaRelacionada" ColumnName="CopaniaRelacionada" />
+                <ScalarProperty Name="Compania" ColumnName="Compania" />
+                <ScalarProperty Name="NominalAjustado" ColumnName="NominalAjustado" />
+                <ScalarProperty Name="Interfase" ColumnName="Interfase" />
+                <ScalarProperty Name="GAAP" ColumnName="GAAP" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="Cuenta" ColumnName="Cuenta" />
+                <ScalarProperty Name="UnidadDeNegocio" ColumnName="UnidadDeNegocio" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+                <ScalarProperty Name="Versión" ColumnName="Versión" />
+                <ScalarProperty Name="Escenario" ColumnName="Escenario" />
+                <ScalarProperty Name="FilaArchivo" ColumnName="FilaArchivo" />
+                <ScalarProperty Name="ArchivoCarga" ColumnName="ArchivoCarga" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ValidateFileLoaded" FunctionName="ModelRankenData.Store.ValidateFileLoaded" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

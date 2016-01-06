@@ -164,6 +164,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnexoController.cs" />
     <Compile Include="Controllers\AnioFiscalController.cs" />
+    <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CompaniaCognosController.cs" />
     <Compile Include="Controllers\CompaniaRFCController.cs" />
     <Compile Include="Controllers\CuentaCognosController.cs" />
@@ -336,6 +337,7 @@
     <Content Include="Views\AnioFiscal\Details.cshtml" />
     <Content Include="Views\AnioFiscal\Edit.cshtml" />
     <Content Include="Views\AnioFiscal\Index.cshtml" />
+    <Content Include="Views\CargaBalance\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

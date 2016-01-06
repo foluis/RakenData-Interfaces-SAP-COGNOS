@@ -12,6 +12,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class EntitiesRakenData : DbContext
     {
@@ -29,7 +31,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<Anexo> Anexo { get; set; }
         public virtual DbSet<AnioFiscal> AnioFiscal { get; set; }
         public virtual DbSet<ArchivoCarga> ArchivoCarga { get; set; }
-        public virtual DbSet<ArchivoCargaDetalle> ArchivoCargaDetalle { get; set; }
         public virtual DbSet<CargaAutomatica> CargaAutomatica { get; set; }
         public virtual DbSet<CompaniaCognos> CompaniaCognos { get; set; }
         public virtual DbSet<CompaniaRFC> CompaniaRFC { get; set; }
@@ -39,5 +40,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<TipoArchivoCarga> TipoArchivoCarga { get; set; }
         public virtual DbSet<TipoCuentaSAP> TipoCuentaSAP { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<ArchivoCargaDetalle> ArchivoCargaDetalle { get; set; }
+    
+        public virtual ObjectResult<string> ValidateFileLoaded(Nullable<int> fileLoadedId)
+        {
+            var fileLoadedIdParameter = fileLoadedId.HasValue ?
+                new ObjectParameter("fileLoadedId", fileLoadedId) :
+                new ObjectParameter("fileLoadedId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ValidateFileLoaded", fileLoadedIdParameter);
+        }
     }
 }

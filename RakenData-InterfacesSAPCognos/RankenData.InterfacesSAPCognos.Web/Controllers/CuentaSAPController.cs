@@ -7,12 +7,94 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using System.Text;
+using System.IO;
+using Ranken.ISC.FileManager.ReadFiles;
+using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
     public class CuentaSAPController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
+
+        // Carga masiva de cuentas cognos
+        [HttpPost]
+        public ActionResult Upload()
+        {
+            CuentaSAP cuentaSAP = null;
+            int cuentaCognos, tipoCuentaSAP, cuentaCargo, cuentaAbono;
+            bool esOpen;
+            int i = 0;
+            StringBuilder errores = new StringBuilder();
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    BinaryReader b = new BinaryReader(file.InputStream);
+                    byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+                    string result = System.Text.Encoding.UTF8.GetString(binData);
+                    var records = result.Split('\n');
+                    DAT_Reader datReader = new DAT_Reader();
+
+                    foreach (var record in records)
+                    {
+                        i++;
+                        var dato = record.Split(',');
+                        if (dato.Length < 3)
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
+
+                        }
+                        if (int.TryParse(dato[2], out cuentaCognos) == false)
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA COGNOS NO ES NUMERICO");
+                        }
+                        if (int.TryParse(dato[3], out tipoCuentaSAP) == false)
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
+                        }
+                        if (bool.TryParse(dato[3], out esOpen) == false)
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: ES OPEN NO ES BOOL");
+                        }
+                        if (int.TryParse(dato[3], out cuentaCargo) == false)
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
+                        }
+                        if (int.TryParse(dato[3], out cuentaAbono) == false)
+                        {
+                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA ABONO NO ES NUMERICO");
+                        }
+                        cuentaSAP = new CuentaSAP()
+                        {
+                            Numero = dato[0],
+                            Descripcion = dato[1],
+                            CuentaCognos = cuentaCognos,
+                            IsActive = true,
+                            TipoCuentaSAP = tipoCuentaSAP,
+                            EsOpen = esOpen,
+                            CuentaCargo = cuentaCargo,
+                            CuentaAbono = cuentaAbono,
+                        };
+                        if (ModelState.IsValid)
+                        {
+                            db.CuentaSAP.Add(cuentaSAP);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+            }
+            if (errores.Length > 0)
+            {
+                ModelState.AddModelError("Error: ", errores.ToString());
+                return View();
+            }
+            return RedirectToAction("Index");
+        }
+
 
         // GET: /CuentaSAP/
         public ActionResult Index()

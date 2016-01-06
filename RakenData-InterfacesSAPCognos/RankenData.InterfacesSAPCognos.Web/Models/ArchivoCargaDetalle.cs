@@ -16,6 +16,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     {
         public long Id { get; set; }
         public int ArchivoCarga { get; set; }
+        public int FilaArchivo { get; set; }
         public int Escenario { get; set; }
         public byte Versión { get; set; }
         public short Anio { get; set; }
