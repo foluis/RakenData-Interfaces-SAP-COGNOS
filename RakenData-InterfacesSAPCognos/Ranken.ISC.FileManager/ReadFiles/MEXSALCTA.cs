@@ -21,10 +21,10 @@ namespace RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles
         public string Version;
 
         [FieldFixedLength(4)]
-        public int Anio;
+        public short Anio;
 
         [FieldFixedLength(2)]
-        public int Mes;
+        public byte Mes;
 
         [FieldFixedLength(2)]
         [FieldTrim(TrimMode.Right)]
