@@ -350,7 +350,6 @@
     <Content Include="Views\AnioFiscal\Index.cshtml" />
     <Content Include="Views\CargaBalance\Index.cshtml" />
     <Content Include="Views\CargaIntercompanias\Index.cshtml" />
-    <Content Include="Views\CargaBalance\EliminarBalance.cshtml" />
     <Content Include="Views\ArchivoCarga\Create.cshtml" />
     <Content Include="Views\ArchivoCarga\Delete.cshtml" />
     <Content Include="Views\ArchivoCarga\Details.cshtml" />
