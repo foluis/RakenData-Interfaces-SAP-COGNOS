@@ -49,6 +49,8 @@
     <Compile Include="ReadFiles\MEXSALCTA.cs" />
     <Compile Include="ReadFiles\MEX_SALINT.cs" />
     <Compile Include="ReadFiles\DAT_Reader.cs" />
+    <Compile Include="WriteFiles\ArchivoResultado.cs" />
+    <Compile Include="WriteFiles\CSV_Writer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
