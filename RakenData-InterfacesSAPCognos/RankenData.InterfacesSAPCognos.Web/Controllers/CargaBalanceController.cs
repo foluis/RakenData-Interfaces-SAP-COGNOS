@@ -41,6 +41,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     MEXSALCTA[] Mexsalcta = datReader.StartReading_MEXSALCTA(result);
 
                     List<ValidateFileToLoad_Result> anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
+                   
                     if (anioMes_YaExistentes.Count == 0)
                     { 
                         ModelState.AddModelError("Error al cargar","Error al cargar");
@@ -112,31 +113,34 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
 
-                             // Companias no cargadas
-                             List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc=> cc.IdTipo ==1).ToList();
-                             StringBuilder sbcompaniasNoCargadas = new StringBuilder();
-                             if(companiasNoCargadas.Count >0)
-                             {
-                                 companiasNoCargadas.ForEach(cnc=>
-                                     sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
-                                     );
+                        // Companias no cargadas
+                        List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 1).ToList();
+                        StringBuilder sbcompaniasNoCargadas = new StringBuilder();
+                        if (companiasNoCargadas.Count > 0)
+                        {
+                            companiasNoCargadas.ForEach(cnc =>
+                                sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
+                                );
 
-                                  ModelState.AddModelError("ERROR:", sbcompaniasNoCargadas.ToString());
-                                  return RedirectToAction("Index");
-                             }
+                            ModelState.AddModelError("ERROR:", sbcompaniasNoCargadas.ToString());                          
+                        }
 
-                              // Cuentas no cargadas
-                             List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc=> cc.IdTipo ==1).ToList();
-                             StringBuilder sbcuentasNoCargadas = new StringBuilder();
-                             if(cuentasNoCargadas.Count >0)
-                             {
-                                 cuentasNoCargadas.ForEach(cnc=>
-                                     sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
-                                     );
+                        // Cuentas no cargadas
+                        List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 2).ToList();
+                        StringBuilder sbcuentasNoCargadas = new StringBuilder();
+                        if (cuentasNoCargadas.Count > 0)
+                        {
+                            cuentasNoCargadas.ForEach(cnc =>
+                                sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
+                                );
+                                                        
+                            ModelState.AddModelError("ERROR:", sbcuentasNoCargadas.ToString());                          
+                        }
 
-                                   ModelState.AddModelError("ERROR:", sbcuentasNoCargadas.ToString());
-                                  return RedirectToAction("Index");
-                             }
+                        if (sbcompaniasNoCargadas.ToString() != string.Empty || sbcuentasNoCargadas.ToString() != string.Empty)
+                         {
+                               return RedirectToAction("Index");
+                         }
 
                         //string mensaje = "Se cargó el archivo exitosamente";// --->ValidateFileLoaded_Result.Id = 0
                         //ModelState.AddModelError("No se han cargado las siguientes companias:", "companias");// --->ValidateFileLoaded_Result.Id = 2
@@ -158,7 +162,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         }
 
         //
-        // GET: /EliminarBalance/
+        // GET: /EliminarBalance/Default1
         public ActionResult EliminarBalance()
         {
 

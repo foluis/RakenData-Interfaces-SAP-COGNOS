@@ -76,3 +76,8 @@
 }
 
 </table>
+@using (Html.BeginForm("Upload", "CuentaSAP", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" /><br>
+    <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />
+}
