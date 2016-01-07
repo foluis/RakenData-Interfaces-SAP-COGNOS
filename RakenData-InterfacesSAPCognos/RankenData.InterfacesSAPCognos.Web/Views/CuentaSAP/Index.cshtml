@@ -76,8 +76,11 @@
 }
 
 </table>
-@using (Html.BeginForm("Upload", "CuentaSAP", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@*@using (Html.BeginForm("CargeMasivoCuentaSAP", "CuentaSAP", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{*@
+
+@using (Html.BeginForm())
 {
-    <input type="file" name="file" /><br>
+    <input type="file" name="file" id="file" /><br>
     <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />
-}
+@*  *@}

@@ -11,6 +11,8 @@ using System.Text;
 using System.IO;
 using Ranken.ISC.FileManager.ReadFiles;
 using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -20,12 +22,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // Carga masiva de cuentas cognos
         [HttpPost]
-        public ActionResult Upload()
+        public ActionResult CargeMasivoCuentaSAP()
         {
             CuentaSAP cuentaSAP = null;
             int cuentaCognos, tipoCuentaSAP, cuentaCargo, cuentaAbono;
             bool esOpen;
-            int i = 0;
+           
             StringBuilder errores = new StringBuilder();
             if (Request.Files.Count > 0)
             {
@@ -39,10 +41,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     var records = result.Split('\n');
                     DAT_Reader datReader = new DAT_Reader();
 
-                    foreach (var record in records)
+                    for(int i=1; i< records.Count();i++) 
                     {
-                        i++;
-                        var dato = record.Split(',');
+                       
+                        var dato = records[i].Split(',');
                         if (dato.Length < 3)
                         {
                             errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
@@ -56,17 +58,25 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         {
                             errores.AppendLine("No. Registro" + i + "ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
                         }
-                        if (bool.TryParse(dato[3], out esOpen) == false)
+                        if (bool.TryParse(dato[4], out esOpen) == false)
                         {
                             errores.AppendLine("No. Registro" + i + "ERROR: ES OPEN NO ES BOOL");
                         }
-                        if (int.TryParse(dato[3], out cuentaCargo) == false)
+                        if (int.TryParse(dato[5], out cuentaCargo) == false)
                         {
                             errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
                         }
-                        if (int.TryParse(dato[3], out cuentaAbono) == false)
+                        if (int.TryParse(dato[6], out cuentaAbono) == false)
                         {
                             errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA ABONO NO ES NUMERICO");
+                        }
+                        if (errores.Length > 0)
+                        {
+                           // ModelState.AddModelError("Error: ", errores.ToString());
+                            ViewBag.Error = "errores";
+                            TempData["Error"] = "Error";
+                            Session["Error"] = "Error";
+                            return RedirectToAction("Index");
                         }
                         cuentaSAP = new CuentaSAP()
                         {
@@ -82,16 +92,25 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         if (ModelState.IsValid)
                         {
                             db.CuentaSAP.Add(cuentaSAP);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.SaveChanges();
+                            }
+                            catch (DbEntityValidationException e)
+                            {
+                                string error = e.Message;
+                                ModelState.AddModelError("Error:", e.Message);                               
+                            }
+                            catch (DbUpdateException e)
+                            {
+                                string error = e.Message;
+                                ModelState.AddModelError("Error:", e.Message);                               
+                            }                           
                         }
                     }
                 }
             }
-            if (errores.Length > 0)
-            {
-                ModelState.AddModelError("Error: ", errores.ToString());
-                return View();
-            }
+          
             return RedirectToAction("Index");
         }
 
@@ -99,6 +118,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /CuentaSAP/
         public ActionResult Index()
         {
+            var a = Request.Files.Count;
             var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1);
             return View(cuentasap.ToList());
         }

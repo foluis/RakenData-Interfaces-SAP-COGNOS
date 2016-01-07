@@ -166,7 +166,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult EliminarBalance()
         {
 
-            // List<string> identificadores = db.ArchivoCarga.Select(ac => ac.Identificador).ToList();
+            //TODO: revisar si solo debe traer informacion filtrada solo por las base
             ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Identificador", "Identificador");
             return View();
         }
@@ -175,8 +175,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EliminarBalanceConfirmed(string Identificador)
         {
-            var a = ViewBag.Identificador;
-            // List<string> identificadores = db.ArchivoCarga.Select(ac => ac.Identificador).ToList();
+           //TODO: llamar al store procedure que 
             ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Identificador", "Identificador");
             return View();
         }

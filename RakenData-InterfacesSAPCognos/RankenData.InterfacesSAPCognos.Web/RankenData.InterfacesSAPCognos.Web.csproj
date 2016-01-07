@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AnexoController.cs" />
     <Compile Include="Controllers\AnioFiscalController.cs" />
     <Compile Include="Controllers\ArchivoCargaController.cs" />
+    <Compile Include="Controllers\CargaAutomaticaController.cs" />
     <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CargaIntercompaniasController.cs" />
     <Compile Include="Controllers\CompaniaCognosController.cs" />
@@ -354,6 +355,11 @@
     <Content Include="Views\ArchivoCarga\Details.cshtml" />
     <Content Include="Views\ArchivoCarga\Edit.cshtml" />
     <Content Include="Views\ArchivoCarga\Index.cshtml" />
+    <Content Include="Views\CargaAutomatica\Create.cshtml" />
+    <Content Include="Views\CargaAutomatica\Delete.cshtml" />
+    <Content Include="Views\CargaAutomatica\Details.cshtml" />
+    <Content Include="Views\CargaAutomatica\Edit.cshtml" />
+    <Content Include="Views\CargaAutomatica\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

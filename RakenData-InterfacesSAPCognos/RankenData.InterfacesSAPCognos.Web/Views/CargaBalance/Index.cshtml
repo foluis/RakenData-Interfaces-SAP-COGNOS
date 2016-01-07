@@ -10,6 +10,10 @@
     @Html.ValidationMessage("Error")
 }
 
+@ViewBag.Error
+@TempData["Error"]
+@Session["Error"]
+
 <div>        
     @using (Html.BeginForm("CargarBalance", "CargaBalance", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
