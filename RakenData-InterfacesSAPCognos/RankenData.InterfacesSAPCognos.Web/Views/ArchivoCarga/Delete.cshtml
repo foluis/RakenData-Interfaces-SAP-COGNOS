@@ -1,0 +1,80 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.ArchivoCarga
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ArchivoCarga</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Identificador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Identificador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Anio_Col3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Anio_Col3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mes_Col4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mes_Col4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoArchivoCarga1.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoArchivoCarga1.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Username)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
