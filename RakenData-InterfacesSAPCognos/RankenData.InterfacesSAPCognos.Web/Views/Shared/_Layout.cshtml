@@ -48,8 +48,19 @@
                     <li> 
                         <a href="">Carga de Información</a>
                         <ul>
-                            <li>@Html.ActionLink("Carga Balance/Resultados", "Index", "CargaBalance")</li>
-                           
+                            <li>
+                                <a href="">Carga Balance/Resultados</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaBalance")</li>
+                                    <li>@Html.ActionLink("Eliminar Carga", "EliminarBalance", "CargaBalance")</li>
+                                </ul>
+                            </li>   
+                            <li>
+                                <a href="">Carga Intercompañia</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaIntercompanias")</li>
+                                </ul>
+                            </li>                             
                         </ul>
                     </li>
                     <li><a href="">Generación de archivos</a></li>

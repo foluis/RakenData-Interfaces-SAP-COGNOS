@@ -1,17 +1,8 @@
 ﻿@{
     ViewBag.Title = "Carga Balance / Resultados";
 }
-@{
-    Layout = null;
-}
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
+<h2>Carga Balance / Resultados </h2>
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -19,15 +10,11 @@
     @Html.ValidationMessage("Error")
 }
 
-
-<body>
-    <div>
-        Carga Balance / Resultados 
-        @using (Html.BeginForm("CargarBalance", "CargaBalance", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<div>        
+    @using (Html.BeginForm("CargarBalance", "CargaBalance", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <input type="file" name="file" /><br>
-    <input type="submit" name="Submit" id="Submit" value="Carga Balance / Resultados" />
+            <input type="submit" name="Submit" id="Submit" value="Carga Balance / Resultados" />
         }
-    </div>
-</body>
-</html>
+</div>
+

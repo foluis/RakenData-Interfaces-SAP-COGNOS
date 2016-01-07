@@ -41,130 +41,113 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     MEXSALCTA[] Mexsalcta = datReader.StartReading_MEXSALCTA(result);
 
                     List<ValidateFileToLoad_Result> anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
-
-                    ModelState.AddModelError("No se carga el archivo si el periodo ya existe", "AnnioMesYaExiste");// --->ValidateFileToLoad_Result.IdTipo = -1
-                    ModelState.AddModelError("Si se carga el archivo", "cuentas"); //---> ValidateFileToLoad_Result.IdTipo = 0
-
-                    //Insert tabla archivocarga
-                    archivoCarga.Nombre = file.FileName + r.Next(100); //todo: random para pruebas
-                    archivoCarga.Identificador = "B/R" + DateTime.Today.Month.ToString() + DateTime.Today.Year.ToString().Substring(2);
-                    archivoCarga.Fecha = DateTime.Now;
-                    archivoCarga.TipoArchivoCarga = 1; //todo: cambiar por un enumerable
-                    archivoCarga.Anio_Col3 = Mexsalcta[0].Anio; // deberian ser el mismo tipo
-                    archivoCarga.Mes_Col4 = Mexsalcta[0].Mes;// deberian ser el mismo tipo
-                    archivoCarga.Usuario = 1; // todo: id del usuario
-
-                    db.ArchivoCarga.Add(archivoCarga);
-                    db.SaveChanges();
-
-                    // Insert tabla archivo carga detalle
-
-                    for (int i = 0; i < Mexsalcta.Length; i++)
-                    {
-                        lstarchivoCargaDetalle.Add(
-                             new ArchivoCargaDetalle()
-                             {
-                                 ArchivoCarga = archivoCarga.Id,
-                                 FilaArchivo = i + 1,
-                                 Escenario = int.Parse(Mexsalcta[i].Escenario),
-                                 Versión = byte.Parse(Mexsalcta[i].Version),
-                                 Anio = Mexsalcta[i].Anio,
-                                 Mes = Mexsalcta[i].Mes,
-                                 UnidadDeNegocio = byte.Parse(Mexsalcta[i].UnidadNegocio),
-                                 Cuenta = Mexsalcta[i].Cuenta,
-                                 Moneda = Mexsalcta[i].Moneda,
-                                 GAAP = Mexsalcta[i].GAAP,
-                                 Interfase = Mexsalcta[i].Interfase,
-                                 NominalAjustado = byte.Parse(Mexsalcta[i].NominalAjustado),
-                                 Compania = Mexsalcta[i].Compania,
-                                 CopaniaRelacionada = null,
-                                 MovimientoDebitoPeriodo = Mexsalcta[i].MovimientoDebitoPeriodo,
-                                 MovimientoCreditoPeriodo = Mexsalcta[i].MovimientoCreditoPeriodo,
-                                 MovimientoDebitoAcumulado = Mexsalcta[i].MovimientoDébitoAcumulado,
-                                 MovimientoCreditoAcumulado = Mexsalcta[i].MovimientoCréditoAcumulado,
-                                 SaldoAcumuladoPeriodo = Mexsalcta[i].SaldoAcumuladoPeriodo,
-                                 HoraActualizacion = Mexsalcta[i].HoraActualizacion.ToString("yyyyMMddHHmm"),
-                                 UsuarioActualizacion = Mexsalcta[i].UsuarioSctualizacion
-                             });
+                    if (anioMes_YaExistentes.Count == 0)
+                    { 
+                        ModelState.AddModelError("Error al cargar","Error al cargar");
+                          return RedirectToAction("Index");
                     }
-
-                    db.ArchivoCargaDetalle.AddRange(lstarchivoCargaDetalle);
-                    try
+                    if (anioMes_YaExistentes[0].IdTipo == -1)
                     {
+                        ModelState.AddModelError("No se carga el archivo si el periodo ya existe", "AnnioMesYaExiste");// --->ValidateFileToLoad_Result.IdTipo = -1
+                              return RedirectToAction("Index");
+                    }
+                     if (anioMes_YaExistentes[0].IdTipo == 0)
+                     {
+                         ModelState.AddModelError("Si se carga el archivo", "cuentas");
+                         
+                         //Insert tabla archivocarga
+                        archivoCarga.Nombre = file.FileName + r.Next(100); //todo: random para pruebas
+                        archivoCarga.Identificador = "B/R" + DateTime.Today.Month.ToString() + DateTime.Today.Year.ToString().Substring(2);
+                        archivoCarga.Fecha = DateTime.Now;
+                        archivoCarga.TipoArchivoCarga = 1; //todo: cambiar por un enumerable
+                        archivoCarga.Anio_Col3 = Mexsalcta[0].Anio; 
+                        archivoCarga.Mes_Col4 = Mexsalcta[0].Mes;
+                        archivoCarga.Usuario = 1; // todo: id del usuario
+
+                         //Guardar en bd
+                        db.ArchivoCarga.Add(archivoCarga);
                         db.SaveChanges();
-                    }
-                    catch (DbEntityValidationException e)
-                    {
-                        string error = e.Message;
-                        ModelState.AddModelError("Error:", e.Message);
-                        throw;
-                    }
 
-                    List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
+                        // Insert tabla archivo carga detalle
+                        for (int i = 0; i < Mexsalcta.Length; i++)
+                        {
+                            lstarchivoCargaDetalle.Add(
+                                 new ArchivoCargaDetalle()
+                                 {
+                                     ArchivoCarga = archivoCarga.Id,
+                                     FilaArchivo = i + 1,
+                                     Escenario = int.Parse(Mexsalcta[i].Escenario),
+                                     Versión = byte.Parse(Mexsalcta[i].Version),
+                                     Anio = Mexsalcta[i].Anio,
+                                     Mes = Mexsalcta[i].Mes,
+                                     UnidadDeNegocio = byte.Parse(Mexsalcta[i].UnidadNegocio),
+                                     Cuenta = Mexsalcta[i].Cuenta,
+                                     Moneda = Mexsalcta[i].Moneda,
+                                     GAAP = Mexsalcta[i].GAAP,
+                                     Interfase = Mexsalcta[i].Interfase,
+                                     NominalAjustado = byte.Parse(Mexsalcta[i].NominalAjustado),
+                                     Compania = Mexsalcta[i].Compania,
+                                     CopaniaRelacionada = null,
+                                     MovimientoDebitoPeriodo = Mexsalcta[i].MovimientoDebitoPeriodo,
+                                     MovimientoCreditoPeriodo = Mexsalcta[i].MovimientoCreditoPeriodo,
+                                     MovimientoDebitoAcumulado = Mexsalcta[i].MovimientoDébitoAcumulado,
+                                     MovimientoCreditoAcumulado = Mexsalcta[i].MovimientoCréditoAcumulado,
+                                     SaldoAcumuladoPeriodo = Mexsalcta[i].SaldoAcumuladoPeriodo,
+                                     HoraActualizacion = Mexsalcta[i].HoraActualizacion.ToString("yyyyMMddHHmm"),
+                                     UsuarioActualizacion = Mexsalcta[i].UsuarioSctualizacion
+                                 });
+                        }
 
-                    string mensaje = "Se cargó el archivo exitosamente";// --->ValidateFileLoaded_Result.Id = 0
-                    ModelState.AddModelError("No se han cargado las siguientes companias:", "companias");// --->ValidateFileLoaded_Result.Id = 2
-                    ModelState.AddModelError("No se han cargado las siguientes cuentas:", "cuentas"); //---> ValidateFileLoaded_Result.Id = 1
+                        db.ArchivoCargaDetalle.AddRange(lstarchivoCargaDetalle);
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            string error = e.Message;
+                            ModelState.AddModelError("Error:", e.Message);
+                            throw;
+                        }
 
-                    // llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
-                    return RedirectToAction("Index");
+                        List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
+
+                             // Companias no cargadas
+                             List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc=> cc.IdTipo ==1).ToList();
+                             StringBuilder sbcompaniasNoCargadas = new StringBuilder();
+                             if(companiasNoCargadas.Count >0)
+                             {
+                                 companiasNoCargadas.ForEach(cnc=>
+                                     sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
+                                     );
+
+                                  ModelState.AddModelError("ERROR:", sbcompaniasNoCargadas.ToString());
+                                  return RedirectToAction("Index");
+                             }
+
+                              // Cuentas no cargadas
+                             List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc=> cc.IdTipo ==1).ToList();
+                             StringBuilder sbcuentasNoCargadas = new StringBuilder();
+                             if(cuentasNoCargadas.Count >0)
+                             {
+                                 cuentasNoCargadas.ForEach(cnc=>
+                                     sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
+                                     );
+
+                                   ModelState.AddModelError("ERROR:", sbcuentasNoCargadas.ToString());
+                                  return RedirectToAction("Index");
+                             }
+
+                        //string mensaje = "Se cargó el archivo exitosamente";// --->ValidateFileLoaded_Result.Id = 0
+                        //ModelState.AddModelError("No se han cargado las siguientes companias:", "companias");// --->ValidateFileLoaded_Result.Id = 2
+                        //ModelState.AddModelError("No se han cargado las siguientes cuentas:", "cuentas"); //---> ValidateFileLoaded_Result.Id = 1
+
+                        // llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
+                        return RedirectToAction("Index");
+                     }
                 }
             }
-            return RedirectToAction("Index");
-            /*
-             * 
-             * 
-             insert tabla archivocarga
-
-             * [Nombre]  = file name
-,[Identificador] = MEXSALCTA (balance) o MEX_SALINT  (intercompañias)
-,[Fecha] = fecha del sistema
-,[TipoArchivoCarga]= id de la tabla TipoArchivoCarga lo puedo hacer con un enumerable
-,[Anio_Col3] = public int Anio es del primer registro;
-,[Mes_Col4] = public int Mes es del primer registro;
-,[Usuario] = el que este logeado en la app
-             * 
-             * for MEXSALCTA[]
-                    insert tabla archivo carga detalle
-                 *  ,[ArchivoCarga] = id del que acabe de crear en archivo carga
-                 *  if mexsalcta => [CopaniaRelacionada]= null
-             *  exit for
-             *  llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
-             */
-            //        foreach (var record in records)
-            //        {
-            //            i++;
-            //            var dato = record.Split(',');
-            //            if (dato.Length < 3)
-            //            {
-            //                errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO - DESCRIPCION- ANEXO ID");
-            //                //TODO: IMPLEMENTAR EL ERROR
-            //                // ERROR lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO - DESCRIPCION- ANEXO ID
-            //            }
-            //            if (int.TryParse(dato[2], out anexoid) == false)
-            //            {
-            //                errores.AppendLine("No. Registro" + i + "ERROR: EL ID DEL ANEXO NO ES NUMERICO");
-
-            //                //TODO: IMPLEMENTAR EL ERROR
-            //                // ERROR EL ID DEL ANEXO NO ES NUMERICO
-            //            }
-            //                    if (ModelState.IsValid)
-            //            {
-            //                db.CuentaCognos.Add();
-            //                db.SaveChanges();
-            //            }
-            //        }
-            //    }
-            //}
-            //if (errores.Length > 0)
-            //{
-
-
-            //    //TODO: IMPLEMENTAR EL ERROR
-
-            //    // ERROR EL ID DEL ANEXO NO ES NUMERICO
-            //}
-            // return RedirectToAction("Index");
+            return RedirectToAction("Index");       
         }
 
         //
@@ -173,83 +156,25 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             return View();
         }
+
         //
-        // GET: /CargaBalance/Details/5
-        public ActionResult Details(int id)
+        // GET: /EliminarBalance/
+        public ActionResult EliminarBalance()
         {
+
+            // List<string> identificadores = db.ArchivoCarga.Select(ac => ac.Identificador).ToList();
+            ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Identificador", "Identificador");
             return View();
         }
 
-        //
-        // GET: /CargaBalance/Create
-        public ActionResult Create()
+        [HttpPost, ActionName("EliminarBalance")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EliminarBalanceConfirmed(string Identificador)
         {
+            var a = ViewBag.Identificador;
+            // List<string> identificadores = db.ArchivoCarga.Select(ac => ac.Identificador).ToList();
+            ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Identificador", "Identificador");
             return View();
-        }
-
-        //
-        // POST: /CargaBalance/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /CargaBalance/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /CargaBalance/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /CargaBalance/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /CargaBalance/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

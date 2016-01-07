@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Carga Intercompañia";
+}
+
+<h2>Carga Intercompañias</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Error</div>
+    @Html.ValidationMessage("Error")
+}
+
+<div>        
+     @using (Html.BeginForm("CargarIntercompania", "CargaIntercompania", FormMethod.Post, new { enctype = "multipart/form-data" }))
+     {
+        <input type="file" name="file" /><br>
+        <input type="submit" name="Submit" id="Submit" value="Carga Balance / Resultados" />
+     }
+</div>
+
