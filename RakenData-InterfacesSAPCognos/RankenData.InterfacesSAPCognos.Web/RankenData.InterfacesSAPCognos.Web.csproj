@@ -275,6 +275,8 @@
       <DependentUpon>ModelRakenData.edmx</DependentUpon>
       <LastGenOutput>ModelRakenData.cs</LastGenOutput>
     </Content>
+    <None Include="Properties\PublishProfiles\Raken-FB-Interface-SAP-Cognos - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Raken-FB-Interface-SAP-Cognos - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -349,7 +351,6 @@
     <Content Include="Views\AnioFiscal\Index.cshtml" />
     <Content Include="Views\CargaBalance\Index.cshtml" />
     <Content Include="Views\CargaIntercompanias\Index.cshtml" />
-    <Content Include="Views\CargaBalance\EliminarBalance.cshtml" />
     <Content Include="Views\ArchivoCarga\Create.cshtml" />
     <Content Include="Views\ArchivoCarga\Delete.cshtml" />
     <Content Include="Views\ArchivoCarga\Details.cshtml" />

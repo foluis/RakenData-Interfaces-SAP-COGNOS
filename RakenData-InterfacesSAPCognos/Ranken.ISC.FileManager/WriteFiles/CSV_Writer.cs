@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RankenData.InterfacesSAPCognos.Consola.FileMethods.WriteFiles
+namespace Ranken.ISC.FileManager.WriteFiles
 {
     public class CSV_Writer
     {
