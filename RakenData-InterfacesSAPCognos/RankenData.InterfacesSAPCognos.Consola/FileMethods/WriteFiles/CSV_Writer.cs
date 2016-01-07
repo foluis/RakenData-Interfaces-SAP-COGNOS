@@ -9,29 +9,32 @@ namespace RankenData.InterfacesSAPCognos.Consola.FileMethods.WriteFiles
 {
     public class CSV_Writer
     {
-        public void StartWritingArchivoBalance(string anio_2dig, string mes, string path, string sociedad)
+        public void StartWritingArchivoBalance(string sociedad,string anio, string mes, string path, List<ArchivoResultado> archivoResultadoBody)
         {
-            List<ArchivoResultado> archivoResultado = new List<ArchivoResultado>();
-            PrepareSpetialHeader(ref archivoResultado, anio_2dig, mes, sociedad);
-            //var engine = new FileHelperAsyncEngine<ArchivoResultado>();
+            List<ArchivoResultado> archivoResultadoHeader = new List<ArchivoResultado>();
+            PrepareSpetialHeader(ref archivoResultadoHeader, anio, mes, sociedad);
+
+            archivoResultadoHeader.AddRange(archivoResultadoBody);
+
+            var engine = new FileHelperAsyncEngine<ArchivoResultado>();
 
             ////engine.HeaderText = "COLUMN1|COLUMN2|COLUMN3|...";
 
-            //path = path == "" ? @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\" : path;
-            //fileNname = fileNname == "" ? "Archivo resultado Test.csv" : fileNname;
+            path = path == "" ? @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\" : path;
+            string fileNname = "Archivo resultado Test.csv" ;
 
-            //var finalPath = path + fileNname;
+            var finalPath = path + fileNname;
 
-            //using (engine.BeginWriteFile(finalPath))
-            //{
-            //    foreach (ArchivoResultado cust in archivoResultadoList)
-            //    {
-            //        engine.WriteNext(cust);
-            //    }
-            //}
+            using (engine.BeginWriteFile(finalPath))
+            {
+                foreach (ArchivoResultado cust in archivoResultadoHeader)
+                {
+                    engine.WriteNext(cust);
+                }
+            }
         }
 
-        public  void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultado, string anio_2dig, string mes,string sociedad)
+        public  void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultadoHeader, string anio, string mes,string sociedad)
         {
             //SP consultar tablaCabecera
 
@@ -51,7 +54,7 @@ namespace RankenData.InterfacesSAPCognos.Consola.FileMethods.WriteFiles
                 TransactionAmount = "",
                 Form = "",
                 AccountName = "Period",
-                Retrieve = anio_2dig,
+                Retrieve = anio.Substring(2,2),
                 Variance = ""
             };
 
@@ -117,16 +120,16 @@ namespace RankenData.InterfacesSAPCognos.Consola.FileMethods.WriteFiles
             };
 
 
-            archivoResultado.Add(fila_Period_ArchivoResultado);
-            archivoResultado.Add(fila_Interval_ArchivoResultado);
-            archivoResultado.Add(fila_Actuality_ArchivoResultado);
-            archivoResultado.Add(fila_Currency_ArchivoResultado);
-            archivoResultado.Add(fila_Plataforma_ArchivoResultado);
-            archivoResultado.Add(fila_Metodo_ArchivoResultado);
-            archivoResultado.Add(fila_Tipo_ArchivoResultado);
-            archivoResultado.Add(fila_Sociedad_ArchivoResultado);
-            archivoResultado.Add(fila_Space_ArchivoResultado);
-            archivoResultado.Add(fila_Header_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Period_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Interval_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Actuality_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Currency_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Plataforma_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Metodo_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Tipo_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Sociedad_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Space_ArchivoResultado);
+            archivoResultadoHeader.Add(fila_Header_ArchivoResultado);
         }
     }
 }
