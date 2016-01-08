@@ -37,7 +37,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentasap.ToList());
         }
 
-        // Carga masiva de cuentas cognos 
+        // Carga masiva de cuentas SAP 
         // return: errores y si no hay devuelve el objeto vacio        
         public StringBuilder CargeMasivoCuentaSAP(HttpPostedFileBase file)
         {
@@ -57,7 +57,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length < 5)
                 {
-                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
+                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: numero,descripcion,cuentaCognos,TipoCuentaSAP,esOpen,CuentaCargo,CuentaAbono");
 
                 }
                 if (int.TryParse(dato[2], out cuentaCognos) == false)

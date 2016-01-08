@@ -6,6 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using System.Web;
+using System.Text;
+using System.IO;
+using Ranken.ISC.FileManager.ReadFiles;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -14,10 +20,85 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CompaniaRFC/
-        public ActionResult Index()
+        public ActionResult Index(HttpPostedFileBase file)
         {
             var companiarfc = db.CompaniaRFC.Include(c => c.CompaniaCognos1);
+            if (file != null && file.ContentLength > 0)
+            {
+                StringBuilder errores = CargeCompaniaRFC(file);
+                if (errores.Length > 0)
+                {
+                    ModelState.AddModelError("Error", errores.ToString());
+
+                }
+            }     
             return View(companiarfc.ToList());
+        }
+
+        // Carga masiva de cargue compania RFC
+        // return: errores y si no hay devuelve el objeto vacio        
+        public StringBuilder CargeCompaniaRFC(HttpPostedFileBase file)
+        {
+            CompaniaRFC companiaRFC = null;
+            int companiaCognos;
+            StringBuilder errores = new StringBuilder();
+
+            BinaryReader b = new BinaryReader(file.InputStream);
+            byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+            string result = System.Text.Encoding.UTF8.GetString(binData);
+            var records = result.Split('\n');
+            DAT_Reader datReader = new DAT_Reader();
+
+            for (int i = 1; i < records.Count(); i++)
+            {
+                var dato = records[i].Split(',');
+                if (dato.Length < 2)
+                {
+                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");
+
+                }
+                if (int.TryParse(dato[2], out companiaCognos) == false)
+                {
+                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA COMPANIA COGNOS NO ES NUMERICO");
+                }
+
+                if (errores.Length > 0)
+                {
+                    return errores;
+
+                }
+                companiaRFC = new CompaniaRFC()
+                {
+                    RFC=dato[0],
+                    Descripcion= dato[1],
+                    CompaniaCognos = companiaCognos
+                };
+                if (ModelState.IsValid)
+                {
+                    db.CompaniaRFC.Add(companiaRFC);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                    catch (Exception e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                }
+            }
+            return errores;
         }
 
         // GET: /CompaniaRFC/Details/5

@@ -12,6 +12,7 @@ using System.Text;
 using Ranken.ISC.FileManager.ReadFiles;
 using System.Data.Entity.Infrastructure;
 using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
+using System.Data.Entity.Validation;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -19,63 +20,85 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
+        // GET: /CuentaCognos/file cargue masivo
+        public ActionResult Index(HttpPostedFileBase file)
+        {
+            var cuentacognos = db.CuentaCognos.Include(c => c.Anexo);
+            if (file != null && file.ContentLength > 0)
+            {
+                StringBuilder errores = CargeMasivoCuentaCognos(file);
+                if (errores.Length > 0)
+                {
+                    ModelState.AddModelError("Error", errores.ToString());
+
+                }
+            }
+            return View(cuentacognos.ToList());
+        }
+
         // Carga masiva de cuentas cognos
+        // return: errores y si no hay devuelve el objeto vacio        
         [HttpPost]
-        public ActionResult Upload()
+        public StringBuilder CargeMasivoCuentaCognos(HttpPostedFileBase file)
         {
             CuentaCognos cuentaCognos = null;
             int anexoid;
-            int i = 0;
-            StringBuilder errores = new StringBuilder();
-            if (Request.Files.Count > 0)
-            {
-                HttpPostedFileBase file = Request.Files[0];
 
-                if (file != null && file.ContentLength > 0)
+            StringBuilder errores = new StringBuilder();
+
+            BinaryReader b = new BinaryReader(file.InputStream);
+            byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+            string result = System.Text.Encoding.UTF8.GetString(binData);
+            var records = result.Split('\n');
+            DAT_Reader datReader = new DAT_Reader();
+
+            for (int i = 1; i < records.Count(); i++)
+            {
+                var dato = records[i].Split(',');
+                if (dato.Length < 3)
                 {
-                    BinaryReader b = new BinaryReader(file.InputStream);
-                    byte[] binData = b.ReadBytes((int)file.InputStream.Length);
-                    string result = System.Text.Encoding.UTF8.GetString(binData);
-                    var records = result.Split('\n');
-                    DAT_Reader datReader = new DAT_Reader();   
-               
-                    foreach (var record in records)
+                    errores.AppendLine("No. Registro " + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
+
+                }
+                if (int.TryParse(dato[2], out anexoid) == false)
+                {
+                    errores.AppendLine("No. Registro " + i + " ERROR: EL ID DEL ANEXO NO ES NUMERICO");
+                }
+                cuentaCognos = new CuentaCognos()
+                {
+                    Numero = dato[0],
+                    Descripcion = dato[1],
+                    AnexoId = anexoid,
+                    IsActive = true
+                };
+                if (ModelState.IsValid)
+                {
+                    db.CuentaCognos.Add(cuentaCognos);
+                    try
                     {
-                        i++;
-                        var dato = record.Split(',');
-                        if (dato.Length < 3)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
-                            
-                        }
-                        if (int.TryParse(dato[2], out anexoid) == false)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DEL ANEXO NO ES NUMERICO");
-                        }
-                        cuentaCognos = new CuentaCognos() { Numero = dato[0], Descripcion = dato[1], AnexoId = anexoid, IsActive = true };
-                        if (ModelState.IsValid)
-                        {
-                            db.CuentaCognos.Add(cuentaCognos);
-                            db.SaveChanges();
-                        }
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                    catch (Exception e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
                     }
                 }
             }
-            if (errores.Length > 0)
-            {               
-                ModelState.AddModelError("Error: ", errores.ToString());
-                return View();    
-            }
-            return RedirectToAction("Index");
+            return errores;
         }
 
-
-        // GET: /CuentaCognos/
-        public ActionResult Index()
-        {
-            var cuentacognos = db.CuentaCognos.Include(c => c.Anexo);
-            return View(cuentacognos.ToList());
-        }
 
         // GET: /CuentaCognos/Details/5
         public ActionResult Details(int? id)
@@ -125,13 +148,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CuentaCognos cuentacognos = db.CuentaCognos.Find(id);
-                       
+
             if (cuentacognos == null)
             {
                 return HttpNotFound();
             }
 
-           
+
 
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
             return View(cuentacognos);
@@ -166,7 +189,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-                       
+
             return View(cuentacognos);
         }
 
@@ -180,7 +203,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             if (cuentaSAP)
             {
                 ModelState.AddModelError("Error: ", "Primero debe desasignar las cuentas SAP asociadas");
-                return View();               
+                return View();
             }
 
             db.CuentaCognos.Remove(cuentacognos);

@@ -18,10 +18,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
+        </th>      
         <th>
             @Html.DisplayNameFor(model => model.Anexo.Clave)
         </th>
@@ -35,10 +32,7 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
+        </td>       
         <td>
             @Html.DisplayFor(modelItem => item.Anexo.Clave)
         </td>
@@ -51,7 +45,7 @@
 }
 
 </table>
-@using (Html.BeginForm("Upload", "CuentaCognos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Index", "CuentaCognos", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
    <input type="file" name="file" /><br>
     <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />

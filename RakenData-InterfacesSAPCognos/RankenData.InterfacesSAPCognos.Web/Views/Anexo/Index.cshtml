@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "Indice";
 }
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Error</div>
+    @Html.ValidationMessage("Error")
+}
 <h2>Anexos</h2>
 
 <p>Administración de Anexos</p>
@@ -45,3 +49,8 @@
 }
 
 </table>
+@using (Html.BeginForm("Index", "Anexo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" id="file" /><br>
+    <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />
+}

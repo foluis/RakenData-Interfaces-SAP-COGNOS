@@ -7,6 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using System.Text;
+using System.IO;
+using Ranken.ISC.FileManager.ReadFiles;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -15,9 +20,77 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /Anexo/
-        public ActionResult Index()
+        public ActionResult Index(HttpPostedFileBase file)
         {
             return View(db.Anexo.ToList());
+            if (file != null && file.ContentLength > 0)
+            {
+                StringBuilder errores = CargeAnexo(file);
+                if (errores.Length > 0)
+                {
+                    ModelState.AddModelError("Error", errores.ToString());
+
+                }
+            }     
+        }
+
+        // Carga masiva de cargue compania RFC
+        // return: errores y si no hay devuelve el objeto vacio        
+        public StringBuilder CargeAnexo(HttpPostedFileBase file)
+        {
+            Anexo anexo = null;
+            StringBuilder errores = new StringBuilder();
+
+            BinaryReader b = new BinaryReader(file.InputStream);
+            byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+            string result = System.Text.Encoding.UTF8.GetString(binData);
+            var records = result.Split('\n');
+            DAT_Reader datReader = new DAT_Reader();
+
+            for (int i = 1; i < records.Count(); i++)
+            {
+                var dato = records[i].Split(',');
+                if (dato.Length < 1)
+                {
+                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
+                }
+                if (errores.Length > 0)
+                {
+                    return errores;
+
+                }
+                anexo = new Anexo()
+                {
+                    Clave = dato[0],
+                    Descripcion = dato[1],
+                   
+                };
+                if (ModelState.IsValid)
+                {
+                    db.Anexo.Add(anexo);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                    catch (Exception e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                }
+            }
+            return errores;
         }
 
         // GET: /Anexo/Details/5

@@ -31,7 +31,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<Anexo> Anexo { get; set; }
         public virtual DbSet<AnioFiscal> AnioFiscal { get; set; }
         public virtual DbSet<ArchivoCarga> ArchivoCarga { get; set; }
-        public virtual DbSet<CargaAutomatica> CargaAutomatica { get; set; }
         public virtual DbSet<CompaniaCognos> CompaniaCognos { get; set; }
         public virtual DbSet<CompaniaRFC> CompaniaRFC { get; set; }
         public virtual DbSet<CuentaCognos> CuentaCognos { get; set; }
@@ -46,6 +45,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
         public virtual DbSet<TipoArchivoCreacion> TipoArchivoCreacion { get; set; }
         public virtual DbSet<TipoModificacion> TipoModificacion { get; set; }
+        public virtual DbSet<CargaAutomatica> CargaAutomatica { get; set; }
     
         public virtual ObjectResult<ValidateFileLoaded_Result> ValidateFileLoaded(Nullable<int> fileLoadedId)
         {

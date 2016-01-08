@@ -7,6 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using System.Text;
+using System.IO;
+using Ranken.ISC.FileManager.ReadFiles;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -15,9 +20,83 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CompaniaCognos/
-        public ActionResult Index()
+        public ActionResult Index(HttpPostedFileBase file)
         {
+            if (file != null && file.ContentLength > 0)
+            {
+                StringBuilder errores = CargeCompaniaCognos(file);
+                if (errores.Length > 0)
+                {
+                    ModelState.AddModelError("Error", errores.ToString());
+
+                }
+            }          
             return View(db.CompaniaCognos.ToList());
+        }
+
+        // Carga masiva de cargue compania cognos
+        // return: errores y si no hay devuelve el objeto vacio        
+        public StringBuilder CargeCompaniaCognos(HttpPostedFileBase file)
+        {
+            CompaniaCognos companiaCognos = null;
+            int clave;
+            StringBuilder errores = new StringBuilder();
+
+            BinaryReader b = new BinaryReader(file.InputStream);
+            byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+            string result = System.Text.Encoding.UTF8.GetString(binData);
+            var records = result.Split('\n');
+            DAT_Reader datReader = new DAT_Reader();
+
+            for (int i = 1; i < records.Count(); i++)
+            {
+                var dato = records[i].Split(',');
+                if (dato.Length < 2)
+                {
+                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
+
+                }
+                if (int.TryParse(dato[0], out clave) == false)
+                {
+                    errores.AppendLine("No. Registro: " + i + " ERROR: LA CLAVE NO ES NUMERICO");
+                }
+              
+                if (errores.Length > 0)
+                {
+                    return errores;
+
+                }
+                companiaCognos = new CompaniaCognos()
+                {
+                    Clave = clave,
+                    Descripcion = dato[1]
+                };
+                if (ModelState.IsValid)
+                {
+                    db.CompaniaCognos.Add(companiaCognos);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                    catch (Exception e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                }
+            }
+            return errores;
         }
 
         // GET: /CompaniaCognos/Details/5

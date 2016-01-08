@@ -16,8 +16,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     {
         public ArchivoCarga()
         {
-            this.CargaAutomatica = new HashSet<CargaAutomatica>();
             this.ArchivoCargaDetalle = new HashSet<ArchivoCargaDetalle>();
+            this.CargaAutomatica = new HashSet<CargaAutomatica>();
         }
     
         public int Id { get; set; }
@@ -31,7 +31,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
         public virtual TipoArchivoCarga TipoArchivoCarga1 { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<CargaAutomatica> CargaAutomatica { get; set; }
         public virtual ICollection<ArchivoCargaDetalle> ArchivoCargaDetalle { get; set; }
+        public virtual ICollection<CargaAutomatica> CargaAutomatica { get; set; }
     }
 }

@@ -116,7 +116,7 @@
             <PropertyRef Name="Id" />
             <PropertyRef Name="FechaProgramada" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FechaProgramada" Type="datetime" Nullable="false" />
           <Property Name="Usuario" Type="int" Nullable="false" />
           <Property Name="TipoArchivo" Type="int" Nullable="false" />
@@ -549,7 +549,6 @@
           <EntitySet Name="Anexo" EntityType="ModelRankenData.Anexo" />
           <EntitySet Name="AnioFiscal" EntityType="ModelRankenData.AnioFiscal" />
           <EntitySet Name="ArchivoCarga" EntityType="ModelRankenData.ArchivoCarga" />
-          <EntitySet Name="CargaAutomatica" EntityType="ModelRankenData.CargaAutomatica" />
           <EntitySet Name="CompaniaCognos" EntityType="ModelRankenData.CompaniaCognos" />
           <EntitySet Name="CompaniaRFC" EntityType="ModelRankenData.CompaniaRFC" />
           <EntitySet Name="CuentaCognos" EntityType="ModelRankenData.CuentaCognos" />
@@ -569,14 +568,6 @@
           <AssociationSet Name="FK_ArchivoCarga_User" Association="ModelRankenData.FK_ArchivoCarga_User">
             <End Role="User" EntitySet="User" />
             <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CargaAutomatica_ArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_ArchivoCarga">
-            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
-            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CargaAutomatica_TipoArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga">
-            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
-            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
           </AssociationSet>
           <AssociationSet Name="FK_CompaniaRFC_CompaniaCognos" Association="ModelRankenData.FK_CompaniaRFC_CompaniaCognos">
             <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
@@ -643,6 +634,15 @@
             <End Role="User" EntitySet="User" />
             <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
           </AssociationSet>
+          <EntitySet Name="CargaAutomatica" EntityType="ModelRankenData.CargaAutomatica" />
+          <AssociationSet Name="FK_CargaAutomatica_ArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_ArchivoCarga">
+            <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CargaAutomatica_TipoArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga">
+            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AdministracionAplicacion">
           <Key>
@@ -690,22 +690,8 @@
           <Property Name="Usuario" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TipoArchivoCarga1" Relationship="ModelRankenData.FK_ArchivoCarga_TipoArchivoCarga" FromRole="ArchivoCarga" ToRole="TipoArchivoCarga" />
           <NavigationProperty Name="User" Relationship="ModelRankenData.FK_ArchivoCarga_User" FromRole="ArchivoCarga" ToRole="User" />
-          <NavigationProperty Name="CargaAutomatica" Relationship="ModelRankenData.FK_CargaAutomatica_ArchivoCarga" FromRole="ArchivoCarga" ToRole="CargaAutomatica" />
           <NavigationProperty Name="ArchivoCargaDetalle" Relationship="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga" FromRole="ArchivoCarga" ToRole="ArchivoCargaDetalle" />
-        </EntityType>
-        <EntityType Name="CargaAutomatica">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="FechaProgramada" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="FechaProgramada" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Usuario" Type="Int32" Nullable="false" />
-          <Property Name="TipoArchivo" Type="Int32" Nullable="false" />
-          <Property Name="ArchivoCarga" Type="Int32" />
-          <Property Name="FechaFinalizacion" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ArchivoCarga1" Relationship="ModelRankenData.FK_CargaAutomatica_ArchivoCarga" FromRole="CargaAutomatica" ToRole="ArchivoCarga" />
-          <NavigationProperty Name="TipoArchivoCarga" Relationship="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga" FromRole="CargaAutomatica" ToRole="TipoArchivoCarga" />
+          <NavigationProperty Name="CargaAutomatica" Relationship="ModelRankenData.FK_CargaAutomatica_ArchivoCarga" FromRole="ArchivoCarga" ToRole="CargaAutomatica" />
         </EntityType>
         <EntityType Name="CompaniaCognos">
           <Key>
@@ -830,30 +816,6 @@
             </Principal>
             <Dependent Role="ArchivoCarga">
               <PropertyRef Name="Usuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CargaAutomatica_ArchivoCarga">
-          <End Type="ModelRankenData.ArchivoCarga" Role="ArchivoCarga" Multiplicity="0..1" />
-          <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArchivoCarga">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CargaAutomatica">
-              <PropertyRef Name="ArchivoCarga" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CargaAutomatica_TipoArchivoCarga">
-          <End Type="ModelRankenData.TipoArchivoCarga" Role="TipoArchivoCarga" Multiplicity="1" />
-          <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TipoArchivoCarga">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CargaAutomatica">
-              <PropertyRef Name="TipoArchivo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1125,6 +1087,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CargaAutomatica">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FechaProgramada" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaProgramada" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Usuario" Type="Int32" Nullable="false" />
+          <Property Name="TipoArchivo" Type="Int32" Nullable="false" />
+          <Property Name="ArchivoCarga" Type="Int32" />
+          <Property Name="FechaFinalizacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ArchivoCarga1" Relationship="ModelRankenData.FK_CargaAutomatica_ArchivoCarga" FromRole="CargaAutomatica" ToRole="ArchivoCarga" />
+          <NavigationProperty Name="TipoArchivoCarga" Relationship="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga" FromRole="CargaAutomatica" ToRole="TipoArchivoCarga" />
+        </EntityType>
+        <Association Name="FK_CargaAutomatica_ArchivoCarga">
+          <End Type="ModelRankenData.ArchivoCarga" Role="ArchivoCarga" Multiplicity="0..1" />
+          <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="ArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CargaAutomatica_TipoArchivoCarga">
+          <End Type="ModelRankenData.TipoArchivoCarga" Role="TipoArchivoCarga" Multiplicity="1" />
+          <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="TipoArchivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1175,18 +1175,6 @@
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
                 <ScalarProperty Name="Identificador" ColumnName="Identificador" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CargaAutomatica">
-            <EntityTypeMapping TypeName="ModelRankenData.CargaAutomatica">
-              <MappingFragment StoreEntitySet="CargaAutomatica">
-                <ScalarProperty Name="FechaFinalizacion" ColumnName="FechaFinalizacion" />
-                <ScalarProperty Name="ArchivoCarga" ColumnName="ArchivoCarga" />
-                <ScalarProperty Name="TipoArchivo" ColumnName="TipoArchivo" />
-                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
-                <ScalarProperty Name="FechaProgramada" ColumnName="FechaProgramada" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1382,6 +1370,18 @@
               <MappingFragment StoreEntitySet="TipoModificacion">
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CargaAutomatica">
+            <EntityTypeMapping TypeName="ModelRankenData.CargaAutomatica">
+              <MappingFragment StoreEntitySet="CargaAutomatica">
+                <ScalarProperty Name="FechaFinalizacion" ColumnName="FechaFinalizacion" />
+                <ScalarProperty Name="ArchivoCarga" ColumnName="ArchivoCarga" />
+                <ScalarProperty Name="TipoArchivo" ColumnName="TipoArchivo" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="FechaProgramada" ColumnName="FechaProgramada" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
