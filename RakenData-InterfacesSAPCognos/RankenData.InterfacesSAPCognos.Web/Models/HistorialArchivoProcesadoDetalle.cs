@@ -12,19 +12,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CompaniaCognos
+    public partial class HistorialArchivoProcesadoDetalle
     {
-        public CompaniaCognos()
-        {
-            this.CompaniaRFC = new HashSet<CompaniaRFC>();
-            this.ArchivoProcesado = new HashSet<ArchivoProcesado>();
-        }
-    
         public int Id { get; set; }
-        public int Clave { get; set; }
-        public string Descripcion { get; set; }
+        public int ArchivoProcesadoDetalleId { get; set; }
+        public decimal Amount { get; set; }
+        public decimal TransactionAmount { get; set; }
+        public int UsuarioId { get; set; }
+        public System.DateTime FechaModificacion { get; set; }
+        public int TipoModificacionId { get; set; }
     
-        public virtual ICollection<CompaniaRFC> CompaniaRFC { get; set; }
-        public virtual ICollection<ArchivoProcesado> ArchivoProcesado { get; set; }
+        public virtual ArchivoProcesadoDetalle ArchivoProcesadoDetalle { get; set; }
+        public virtual TipoModificacion TipoModificacion { get; set; }
+        public virtual User User { get; set; }
     }
 }

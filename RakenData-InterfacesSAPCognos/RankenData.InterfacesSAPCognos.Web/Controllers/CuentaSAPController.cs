@@ -20,107 +20,108 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // Carga masiva de cuentas cognos
-        [HttpPost]
-        public ActionResult CargeMasivoCuentaSAP()
+        // GET: /CuentaSAP/
+        public ActionResult Index(HttpPostedFileBase file)
+        {
+            var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1);
+            if (file != null && file.ContentLength > 0)
+            {
+                StringBuilder errores = CargeMasivoCuentaSAP(file);
+                if (errores.Length > 0)
+                {
+                    ModelState.AddModelError("Error", errores.ToString());
+ 
+                }
+            }          
+                       
+            return View(cuentasap.ToList());
+        }
+
+        // Carga masiva de cuentas cognos 
+        // return: errores y si no hay devuelve el objeto vacio        
+        public StringBuilder CargeMasivoCuentaSAP(HttpPostedFileBase file)
         {
             CuentaSAP cuentaSAP = null;
             int cuentaCognos, tipoCuentaSAP, cuentaCargo, cuentaAbono;
             bool esOpen;
-           
             StringBuilder errores = new StringBuilder();
-            if (Request.Files.Count > 0)
+            
+            BinaryReader b = new BinaryReader(file.InputStream);
+            byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+            string result = System.Text.Encoding.UTF8.GetString(binData);
+            var records = result.Split('\n');
+            DAT_Reader datReader = new DAT_Reader();
+
+            for (int i = 1; i < records.Count(); i++)
             {
-                HttpPostedFileBase file = Request.Files[0];
-
-                if (file != null && file.ContentLength > 0)
+                var dato = records[i].Split(',');
+                if (dato.Length < 5)
                 {
-                    BinaryReader b = new BinaryReader(file.InputStream);
-                    byte[] binData = b.ReadBytes((int)file.InputStream.Length);
-                    string result = System.Text.Encoding.UTF8.GetString(binData);
-                    var records = result.Split('\n');
-                    DAT_Reader datReader = new DAT_Reader();
+                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
 
-                    for(int i=1; i< records.Count();i++) 
-                    {
-                       
-                        var dato = records[i].Split(',');
-                        if (dato.Length < 3)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
-
-                        }
-                        if (int.TryParse(dato[2], out cuentaCognos) == false)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA COGNOS NO ES NUMERICO");
-                        }
-                        if (int.TryParse(dato[3], out tipoCuentaSAP) == false)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
-                        }
-                        if (bool.TryParse(dato[4], out esOpen) == false)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: ES OPEN NO ES BOOL");
-                        }
-                        if (int.TryParse(dato[5], out cuentaCargo) == false)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
-                        }
-                        if (int.TryParse(dato[6], out cuentaAbono) == false)
-                        {
-                            errores.AppendLine("No. Registro" + i + "ERROR: EL ID DE LA CUENTA ABONO NO ES NUMERICO");
-                        }
-                        if (errores.Length > 0)
-                        {
-                           // ModelState.AddModelError("Error: ", errores.ToString());
-                            ViewBag.Error = "errores";
-                            TempData["Error"] = "Error";
-                            Session["Error"] = "Error";
-                            return RedirectToAction("Index");
-                        }
-                        cuentaSAP = new CuentaSAP()
-                        {
-                            Numero = dato[0],
-                            Descripcion = dato[1],
-                            CuentaCognos = cuentaCognos,
-                            IsActive = true,
-                            TipoCuentaSAP = tipoCuentaSAP,
-                            EsOpen = esOpen,
-                            CuentaCargo = cuentaCargo,
-                            CuentaAbono = cuentaAbono,
-                        };
-                        if (ModelState.IsValid)
-                        {
-                            db.CuentaSAP.Add(cuentaSAP);
-                            try
-                            {
-                                db.SaveChanges();
-                            }
-                            catch (DbEntityValidationException e)
-                            {
-                                string error = e.Message;
-                                ModelState.AddModelError("Error:", e.Message);                               
-                            }
-                            catch (DbUpdateException e)
-                            {
-                                string error = e.Message;
-                                ModelState.AddModelError("Error:", e.Message);                               
-                            }                           
-                        }
-                    }
                 }
+                if (int.TryParse(dato[2], out cuentaCognos) == false)
+                {
+                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA COGNOS NO ES NUMERICO");
+                }
+                if (int.TryParse(dato[3], out tipoCuentaSAP) == false)
+                {
+                    errores.AppendLine("No. Registro: " + i + " ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
+                }
+                if (bool.TryParse(dato[4], out esOpen) == false)
+                {
+                    errores.AppendLine("No. Registro: " + i + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
+                }
+                if (int.TryParse(dato[5], out cuentaCargo) == false)
+                {
+                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
+                }
+                if (int.TryParse(dato[6], out cuentaAbono) == false)
+                {
+                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA ABONO NO ES NUMERICO");
+                }
+                if (errores.Length > 0)
+                {
+                    return errores;
+
+                }
+                cuentaSAP = new CuentaSAP()
+                {
+                    Numero = dato[0],
+                    Descripcion = dato[1],
+                    CuentaCognos = cuentaCognos,
+                    IsActive = true,
+                    TipoCuentaSAP = tipoCuentaSAP,
+                    EsOpen = esOpen,
+                    CuentaCargo = cuentaCargo,
+                    CuentaAbono = cuentaAbono,
+                };
+                if (ModelState.IsValid)
+                {
+                    db.CuentaSAP.Add(cuentaSAP);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores;
+                    }
+                    catch (Exception e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        return errores; 
+                    }
+                }                
             }
-          
-            return RedirectToAction("Index");
-        }
-
-
-        // GET: /CuentaSAP/
-        public ActionResult Index()
-        {
-            var a = Request.Files.Count;
-            var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1);
-            return View(cuentasap.ToList());
+            return errores;
         }
 
         // GET: /CuentaSAP/Details/5
@@ -153,7 +154,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
+        public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
         {
             if (ModelState.IsValid)
             {
@@ -192,7 +193,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
+        public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
         {
             if (ModelState.IsValid)
             {

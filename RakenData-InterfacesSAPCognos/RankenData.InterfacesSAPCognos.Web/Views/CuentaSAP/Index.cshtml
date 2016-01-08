@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "Cuentas de Mayor";
 }
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Error</div>
+    @Html.ValidationMessage("Error")
+}
 <h2>Cuentas de mayor</h2>
 
 <p>Administración de cuentas de SAP</p>
@@ -79,7 +83,7 @@
 @*@using (Html.BeginForm("CargeMasivoCuentaSAP", "CuentaSAP", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {*@
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index", "CuentaSAP", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="file" name="file" id="file" /><br>
     <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />

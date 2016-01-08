@@ -30,6 +30,18 @@
         <AssociationConnector Association="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP" />
         <EntityTypeShape EntityType="ModelRankenData.ArchivoCargaDetalle" Width="1.5" PointX="10.25" PointY="10.875" />
         <AssociationConnector Association="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga" />
+        <EntityTypeShape EntityType="ModelRankenData.ArchivoProcesado" Width="1.5" PointX="13" PointY="4.125" />
+        <EntityTypeShape EntityType="ModelRankenData.ArchivoProcesadoDetalle" Width="1.5" PointX="15.25" PointY="3.125" />
+        <EntityTypeShape EntityType="ModelRankenData.HistorialArchivoProcesadoDetalle" Width="1.5" PointX="17.5" PointY="4.875" />
+        <EntityTypeShape EntityType="ModelRankenData.TipoArchivoCreacion" Width="1.5" PointX="13" PointY="0.75" />
+        <EntityTypeShape EntityType="ModelRankenData.TipoModificacion" Width="1.5" PointX="15.25" PointY="9.375" />
+        <AssociationConnector Association="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" />
+        <AssociationConnector Association="ModelRankenData.FK_ArchivoProcesado_User" />
+        <AssociationConnector Association="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" />
+        <AssociationConnector Association="ModelRankenData.FK_ArchivoProcesadoDetalle_TipoArchivoCreacion" />
+        <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" />
+        <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_TipoModificacion" />
+        <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

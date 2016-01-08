@@ -12,19 +12,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Anexo
+    public partial class TipoArchivoCreacion
     {
-        public Anexo()
+        public TipoArchivoCreacion()
         {
-            this.CuentaCognos = new HashSet<CuentaCognos>();
+            this.ArchivoProcesadoDetalle = new HashSet<ArchivoProcesadoDetalle>();
         }
     
-        public int id { get; set; }
-        public string Clave { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        public bool IsActive { get; set; }
-        public bool Modificable { get; set; }
     
-        public virtual ICollection<CuentaCognos> CuentaCognos { get; set; }
+        public virtual ICollection<ArchivoProcesadoDetalle> ArchivoProcesadoDetalle { get; set; }
     }
 }

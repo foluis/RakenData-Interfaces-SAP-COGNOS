@@ -194,6 +194,12 @@
     <Compile Include="Models\ArchivoCargaDetalle.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ArchivoProcesado.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ArchivoProcesadoDetalle.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CargaAutomatica.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
@@ -210,6 +216,9 @@
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DatosCabecera.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HistorialArchivoProcesadoDetalle.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
@@ -231,7 +240,13 @@
     <Compile Include="Models\TipoArchivoCarga.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TipoArchivoCreacion.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TipoCuentaSAP.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoModificacion.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">

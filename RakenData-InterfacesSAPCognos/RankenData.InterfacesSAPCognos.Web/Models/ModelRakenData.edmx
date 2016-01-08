@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ModelRankenData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelRankenData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AdministracionAplicacion">
           <Key>
             <PropertyRef Name="Id" />
@@ -23,6 +23,7 @@
           <Property Name="Clave" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Modificable" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="AnioFiscal">
           <Key>
@@ -74,6 +75,41 @@
           <Property Name="SaldoAcumuladoPeriodo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="HoraActualizacion" Type="varchar" MaxLength="12" Nullable="false" />
           <Property Name="UsuarioActualizacion" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchivoProcesado">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompaniaCognosId" Type="int" Nullable="false" />
+          <Property Name="Periodo" Type="tinyint" Nullable="false" />
+          <Property Name="Anio" Type="smallint" Nullable="false" />
+          <Property Name="ArchivoGenerado" Type="bit" Nullable="false" />
+          <Property Name="FechaProcesoArchivo" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchivoProcesadoDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArchivoProcesadoId" Type="int" Nullable="false" />
+          <Property Name="TipoArchivoCreacionId" Type="int" Nullable="false" />
+          <Property Name="Company" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Period" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Actuality" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="CounterCompany" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Dim1" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Dim2" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Dim3" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="ITOpex" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TransactionCurrency" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="TransactionAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Form" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="AccountName" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Retrieve" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Variance" Type="varchar" MaxLength="35" Nullable="false" />
         </EntityType>
         <EntityType Name="CargaAutomatica">
           <Key>
@@ -136,7 +172,27 @@
           <Property Name="Nombre" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Valor" Type="varchar" MaxLength="4" Nullable="false" />
         </EntityType>
+        <EntityType Name="HistorialArchivoProcesadoDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArchivoProcesadoDetalleId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TransactionAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+          <Property Name="TipoModificacionId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="TipoArchivoCarga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoArchivoCreacion">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -151,6 +207,14 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoModificacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -193,6 +257,54 @@
             </Principal>
             <Dependent Role="ArchivoCargaDetalle">
               <PropertyRef Name="ArchivoCarga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoProcesado_CompaniaCognos">
+          <End Role="CompaniaCognos" Type="Self.CompaniaCognos" Multiplicity="1" />
+          <End Role="ArchivoProcesado" Type="Self.ArchivoProcesado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesado">
+              <PropertyRef Name="CompaniaCognosId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoProcesado_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ArchivoProcesado" Type="Self.ArchivoProcesado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesado">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoProcesadoDetalle_ArchivoProcesado">
+          <End Role="ArchivoProcesado" Type="Self.ArchivoProcesado" Multiplicity="1" />
+          <End Role="ArchivoProcesadoDetalle" Type="Self.ArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoProcesado">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesadoDetalle">
+              <PropertyRef Name="ArchivoProcesadoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoProcesadoDetalle_TipoArchivoCreacion">
+          <End Role="TipoArchivoCreacion" Type="Self.TipoArchivoCreacion" Multiplicity="1" />
+          <End Role="ArchivoProcesadoDetalle" Type="Self.ArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCreacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesadoDetalle">
+              <PropertyRef Name="TipoArchivoCreacionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -292,6 +404,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle">
+          <End Role="ArchivoProcesadoDetalle" Type="Self.ArchivoProcesadoDetalle" Multiplicity="1" />
+          <End Role="HistorialArchivoProcesadoDetalle" Type="Self.HistorialArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoProcesadoDetalle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistorialArchivoProcesadoDetalle">
+              <PropertyRef Name="ArchivoProcesadoDetalleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialArchivoProcesadoDetalle_TipoModificacion">
+          <End Role="TipoModificacion" Type="Self.TipoModificacion" Multiplicity="1" />
+          <End Role="HistorialArchivoProcesadoDetalle" Type="Self.HistorialArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoModificacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistorialArchivoProcesadoDetalle">
+              <PropertyRef Name="TipoModificacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialArchivoProcesadoDetalle_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="HistorialArchivoProcesadoDetalle" Type="Self.HistorialArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistorialArchivoProcesadoDetalle">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="ValidateFileLoaded" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fileLoadedId" Type="int" Mode="In" />
         </Function>
@@ -305,14 +453,19 @@
           <EntitySet Name="AnioFiscal" EntityType="Self.AnioFiscal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ArchivoCarga" EntityType="Self.ArchivoCarga" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ArchivoCargaDetalle" EntityType="Self.ArchivoCargaDetalle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArchivoProcesado" EntityType="Self.ArchivoProcesado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArchivoProcesadoDetalle" EntityType="Self.ArchivoProcesadoDetalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CargaAutomatica" EntityType="Self.CargaAutomatica" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompaniaCognos" EntityType="Self.CompaniaCognos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompaniaRFC" EntityType="Self.CompaniaRFC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CuentaCognos" EntityType="Self.CuentaCognos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CuentaSAP" EntityType="Self.CuentaSAP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DatosCabecera" EntityType="Self.DatosCabecera" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistorialArchivoProcesadoDetalle" EntityType="Self.HistorialArchivoProcesadoDetalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoArchivoCarga" EntityType="Self.TipoArchivoCarga" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoArchivoCreacion" EntityType="Self.TipoArchivoCreacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoCuentaSAP" EntityType="Self.TipoCuentaSAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoModificacion" EntityType="Self.TipoModificacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ArchivoCarga_TipoArchivoCarga" Association="Self.FK_ArchivoCarga_TipoArchivoCarga">
             <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
@@ -325,6 +478,22 @@
           <AssociationSet Name="FK_ArchivoCargaDetalle_ArchivoCarga" Association="Self.FK_ArchivoCargaDetalle_ArchivoCarga">
             <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
             <End Role="ArchivoCargaDetalle" EntitySet="ArchivoCargaDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoProcesado_CompaniaCognos" Association="Self.FK_ArchivoProcesado_CompaniaCognos">
+            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
+            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoProcesado_User" Association="Self.FK_ArchivoProcesado_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoProcesadoDetalle_ArchivoProcesado" Association="Self.FK_ArchivoProcesadoDetalle_ArchivoProcesado">
+            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
+            <End Role="ArchivoProcesadoDetalle" EntitySet="ArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoProcesadoDetalle_TipoArchivoCreacion" Association="Self.FK_ArchivoProcesadoDetalle_TipoArchivoCreacion">
+            <End Role="TipoArchivoCreacion" EntitySet="TipoArchivoCreacion" />
+            <End Role="ArchivoProcesadoDetalle" EntitySet="ArchivoProcesadoDetalle" />
           </AssociationSet>
           <AssociationSet Name="FK_CargaAutomatica_ArchivoCarga" Association="Self.FK_CargaAutomatica_ArchivoCarga">
             <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
@@ -357,6 +526,18 @@
           <AssociationSet Name="FK_CuentaSAP_TipoCuentaSAP" Association="Self.FK_CuentaSAP_TipoCuentaSAP">
             <End Role="TipoCuentaSAP" EntitySet="TipoCuentaSAP" />
             <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" Association="Self.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle">
+            <End Role="ArchivoProcesadoDetalle" EntitySet="ArchivoProcesadoDetalle" />
+            <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_TipoModificacion" Association="Self.FK_HistorialArchivoProcesadoDetalle_TipoModificacion">
+            <End Role="TipoModificacion" EntitySet="TipoModificacion" />
+            <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_User" Association="Self.FK_HistorialArchivoProcesadoDetalle_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -429,6 +610,39 @@
             <Parameter Name="Anio" Mode="In" Type="Int32" />
             <Parameter Name="Mes" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="ArchivoProcesado" EntityType="ModelRankenData.ArchivoProcesado" />
+          <EntitySet Name="ArchivoProcesadoDetalle" EntityType="ModelRankenData.ArchivoProcesadoDetalle" />
+          <EntitySet Name="HistorialArchivoProcesadoDetalle" EntityType="ModelRankenData.HistorialArchivoProcesadoDetalle" />
+          <EntitySet Name="TipoArchivoCreacion" EntityType="ModelRankenData.TipoArchivoCreacion" />
+          <EntitySet Name="TipoModificacion" EntityType="ModelRankenData.TipoModificacion" />
+          <AssociationSet Name="FK_ArchivoProcesado_CompaniaCognos" Association="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos">
+            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
+            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoProcesado_User" Association="ModelRankenData.FK_ArchivoProcesado_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoProcesadoDetalle_ArchivoProcesado" Association="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado">
+            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
+            <End Role="ArchivoProcesadoDetalle" EntitySet="ArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArchivoProcesadoDetalle_TipoArchivoCreacion" Association="ModelRankenData.FK_ArchivoProcesadoDetalle_TipoArchivoCreacion">
+            <End Role="TipoArchivoCreacion" EntitySet="TipoArchivoCreacion" />
+            <End Role="ArchivoProcesadoDetalle" EntitySet="ArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle">
+            <End Role="ArchivoProcesadoDetalle" EntitySet="ArchivoProcesadoDetalle" />
+            <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_TipoModificacion" Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_TipoModificacion">
+            <End Role="TipoModificacion" EntitySet="TipoModificacion" />
+            <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_User" Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AdministracionAplicacion">
           <Key>
@@ -449,6 +663,7 @@
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CuentaCognos" Relationship="ModelRankenData.FK_CuentaCognos_Anexo" FromRole="Anexo" ToRole="CuentaCognos" />
+          <Property Name="Modificable" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="AnioFiscal">
           <Key>
@@ -500,6 +715,7 @@
           <Property Name="Clave" Type="Int32" Nullable="false" />
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CompaniaRFC" Relationship="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaCognos" ToRole="CompaniaRFC" />
+          <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" FromRole="CompaniaCognos" ToRole="ArchivoProcesado" />
         </EntityType>
         <EntityType Name="CompaniaRFC">
           <Key>
@@ -578,6 +794,8 @@
           <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ArchivoCarga" Relationship="ModelRankenData.FK_ArchivoCarga_User" FromRole="User" ToRole="ArchivoCarga" />
+          <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesado_User" FromRole="User" ToRole="ArchivoProcesado" />
+          <NavigationProperty Name="HistorialArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_User" FromRole="User" ToRole="HistorialArchivoProcesadoDetalle" />
         </EntityType>
         <Association Name="FK_CuentaCognos_Anexo">
           <End Type="ModelRankenData.Anexo" Role="Anexo" Multiplicity="1" />
@@ -749,6 +967,164 @@
           <Property Type="Int32" Name="IdTipo" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="false" MaxLength="40" />
         </ComplexType>
+        <EntityType Name="ArchivoProcesado">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompaniaCognosId" Type="Int32" Nullable="false" />
+          <Property Name="Periodo" Type="Byte" Nullable="false" />
+          <Property Name="Anio" Type="Int16" Nullable="false" />
+          <Property Name="ArchivoGenerado" Type="Boolean" Nullable="false" />
+          <Property Name="FechaProcesoArchivo" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompaniaCognos" Relationship="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" FromRole="ArchivoProcesado" ToRole="CompaniaCognos" />
+          <NavigationProperty Name="User" Relationship="ModelRankenData.FK_ArchivoProcesado_User" FromRole="ArchivoProcesado" ToRole="User" />
+          <NavigationProperty Name="ArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" FromRole="ArchivoProcesado" ToRole="ArchivoProcesadoDetalle" />
+        </EntityType>
+        <EntityType Name="ArchivoProcesadoDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArchivoProcesadoId" Type="Int32" Nullable="false" />
+          <Property Name="TipoArchivoCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="Company" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Period" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Actuality" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CounterCompany" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Dim1" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Dim2" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Dim3" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="ITOpex" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TransactionCurrency" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="TransactionAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Form" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="AccountName" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Retrieve" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Variance" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" FromRole="ArchivoProcesadoDetalle" ToRole="ArchivoProcesado" />
+          <NavigationProperty Name="TipoArchivoCreacion" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_TipoArchivoCreacion" FromRole="ArchivoProcesadoDetalle" ToRole="TipoArchivoCreacion" />
+          <NavigationProperty Name="HistorialArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" FromRole="ArchivoProcesadoDetalle" ToRole="HistorialArchivoProcesadoDetalle" />
+        </EntityType>
+        <EntityType Name="HistorialArchivoProcesadoDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArchivoProcesadoDetalleId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TransactionAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TipoModificacionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" FromRole="HistorialArchivoProcesadoDetalle" ToRole="ArchivoProcesadoDetalle" />
+          <NavigationProperty Name="TipoModificacion" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_TipoModificacion" FromRole="HistorialArchivoProcesadoDetalle" ToRole="TipoModificacion" />
+          <NavigationProperty Name="User" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_User" FromRole="HistorialArchivoProcesadoDetalle" ToRole="User" />
+        </EntityType>
+        <EntityType Name="TipoArchivoCreacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_TipoArchivoCreacion" FromRole="TipoArchivoCreacion" ToRole="ArchivoProcesadoDetalle" />
+        </EntityType>
+        <EntityType Name="TipoModificacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="HistorialArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_TipoModificacion" FromRole="TipoModificacion" ToRole="HistorialArchivoProcesadoDetalle" />
+        </EntityType>
+        <Association Name="FK_ArchivoProcesado_CompaniaCognos">
+          <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
+          <End Type="ModelRankenData.ArchivoProcesado" Role="ArchivoProcesado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesado">
+              <PropertyRef Name="CompaniaCognosId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoProcesado_User">
+          <End Type="ModelRankenData.User" Role="User" Multiplicity="1" />
+          <End Type="ModelRankenData.ArchivoProcesado" Role="ArchivoProcesado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesado">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoProcesadoDetalle_ArchivoProcesado">
+          <End Type="ModelRankenData.ArchivoProcesado" Role="ArchivoProcesado" Multiplicity="1" />
+          <End Type="ModelRankenData.ArchivoProcesadoDetalle" Role="ArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoProcesado">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesadoDetalle">
+              <PropertyRef Name="ArchivoProcesadoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArchivoProcesadoDetalle_TipoArchivoCreacion">
+          <End Type="ModelRankenData.TipoArchivoCreacion" Role="TipoArchivoCreacion" Multiplicity="1" />
+          <End Type="ModelRankenData.ArchivoProcesadoDetalle" Role="ArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCreacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesadoDetalle">
+              <PropertyRef Name="TipoArchivoCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle">
+          <End Type="ModelRankenData.ArchivoProcesadoDetalle" Role="ArchivoProcesadoDetalle" Multiplicity="1" />
+          <End Type="ModelRankenData.HistorialArchivoProcesadoDetalle" Role="HistorialArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArchivoProcesadoDetalle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistorialArchivoProcesadoDetalle">
+              <PropertyRef Name="ArchivoProcesadoDetalleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialArchivoProcesadoDetalle_TipoModificacion">
+          <End Type="ModelRankenData.TipoModificacion" Role="TipoModificacion" Multiplicity="1" />
+          <End Type="ModelRankenData.HistorialArchivoProcesadoDetalle" Role="HistorialArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoModificacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistorialArchivoProcesadoDetalle">
+              <PropertyRef Name="TipoModificacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialArchivoProcesadoDetalle_User">
+          <End Type="ModelRankenData.User" Role="User" Multiplicity="1" />
+          <End Type="ModelRankenData.HistorialArchivoProcesadoDetalle" Role="HistorialArchivoProcesadoDetalle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistorialArchivoProcesadoDetalle">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -769,6 +1145,7 @@
           <EntitySetMapping Name="Anexo">
             <EntityTypeMapping TypeName="ModelRankenData.Anexo">
               <MappingFragment StoreEntitySet="Anexo">
+                <ScalarProperty Name="Modificable" ColumnName="Modificable" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Clave" ColumnName="Clave" />
@@ -941,6 +1318,74 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="ArchivoProcesado">
+            <EntityTypeMapping TypeName="ModelRankenData.ArchivoProcesado">
+              <MappingFragment StoreEntitySet="ArchivoProcesado">
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="FechaProcesoArchivo" ColumnName="FechaProcesoArchivo" />
+                <ScalarProperty Name="ArchivoGenerado" ColumnName="ArchivoGenerado" />
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="CompaniaCognosId" ColumnName="CompaniaCognosId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArchivoProcesadoDetalle">
+            <EntityTypeMapping TypeName="ModelRankenData.ArchivoProcesadoDetalle">
+              <MappingFragment StoreEntitySet="ArchivoProcesadoDetalle">
+                <ScalarProperty Name="Variance" ColumnName="Variance" />
+                <ScalarProperty Name="Retrieve" ColumnName="Retrieve" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="Form" ColumnName="Form" />
+                <ScalarProperty Name="TransactionAmount" ColumnName="TransactionAmount" />
+                <ScalarProperty Name="TransactionCurrency" ColumnName="TransactionCurrency" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ITOpex" ColumnName="ITOpex" />
+                <ScalarProperty Name="Dim3" ColumnName="Dim3" />
+                <ScalarProperty Name="Dim2" ColumnName="Dim2" />
+                <ScalarProperty Name="Dim1" ColumnName="Dim1" />
+                <ScalarProperty Name="CounterCompany" ColumnName="CounterCompany" />
+                <ScalarProperty Name="Actuality" ColumnName="Actuality" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="TipoArchivoCreacionId" ColumnName="TipoArchivoCreacionId" />
+                <ScalarProperty Name="ArchivoProcesadoId" ColumnName="ArchivoProcesadoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistorialArchivoProcesadoDetalle">
+            <EntityTypeMapping TypeName="ModelRankenData.HistorialArchivoProcesadoDetalle">
+              <MappingFragment StoreEntitySet="HistorialArchivoProcesadoDetalle">
+                <ScalarProperty Name="TipoModificacionId" ColumnName="TipoModificacionId" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="TransactionAmount" ColumnName="TransactionAmount" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ArchivoProcesadoDetalleId" ColumnName="ArchivoProcesadoDetalleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoArchivoCreacion">
+            <EntityTypeMapping TypeName="ModelRankenData.TipoArchivoCreacion">
+              <MappingFragment StoreEntitySet="TipoArchivoCreacion">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoModificacion">
+            <EntityTypeMapping TypeName="ModelRankenData.TipoModificacion">
+              <MappingFragment StoreEntitySet="TipoModificacion">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
