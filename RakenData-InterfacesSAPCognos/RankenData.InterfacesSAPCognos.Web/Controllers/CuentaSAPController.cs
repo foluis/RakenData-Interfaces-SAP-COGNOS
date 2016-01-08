@@ -23,14 +23,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /CuentaSAP/
         public ActionResult Index(HttpPostedFileBase file)
         {
-            var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1);
+            var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1).Where(cc => cc.IsActive == true);
+            
             if (file != null && file.ContentLength > 0)
             {
                 StringBuilder errores = CargeMasivoCuentaSAP(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores.ToString());
- 
+                    ModelState.AddModelError("Error", errores.ToString()); 
                 }
             }          
                        
@@ -227,7 +227,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CuentaSAP cuentasap = db.CuentaSAP.Find(id);
-            db.CuentaSAP.Remove(cuentasap);
+            cuentasap.IsActive = false;
+            db.Entry(cuentasap).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

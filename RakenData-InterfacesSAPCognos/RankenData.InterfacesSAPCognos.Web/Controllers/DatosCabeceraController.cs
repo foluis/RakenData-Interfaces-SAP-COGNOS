@@ -16,7 +16,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // GET: /DatosCabecera/
         public ActionResult Index()
-        {
+        {            
             return View(db.DatosCabecera.ToList());
         }
 

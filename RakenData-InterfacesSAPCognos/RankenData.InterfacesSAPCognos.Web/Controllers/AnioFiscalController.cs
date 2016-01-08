@@ -16,7 +16,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // GET: /AnioFiscal/
         public ActionResult Index()
-        {
+        {          
             return View(db.AnioFiscal.ToList());
         }
 

@@ -23,7 +23,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /CuentaCognos/file cargue masivo
         public ActionResult Index(HttpPostedFileBase file)
         {
-            var cuentacognos = db.CuentaCognos.Include(c => c.Anexo);
+            var cuentacognos = db.CuentaCognos.Include(c => c.Anexo).Where(cc=> cc.IsActive == true);
             if (file != null && file.ContentLength > 0)
             {
                 StringBuilder errores = CargeMasivoCuentaCognos(file);
@@ -206,7 +206,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return View();
             }
 
-            db.CuentaCognos.Remove(cuentacognos);
+            cuentacognos.IsActive = false;
+            db.Entry(cuentacognos).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

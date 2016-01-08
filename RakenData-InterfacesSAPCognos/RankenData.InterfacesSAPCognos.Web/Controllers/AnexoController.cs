@@ -21,17 +21,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // GET: /Anexo/
         public ActionResult Index(HttpPostedFileBase file)
-        {
-            return View(db.Anexo.ToList());
+        {           
             if (file != null && file.ContentLength > 0)
             {
                 StringBuilder errores = CargeAnexo(file);
                 if (errores.Length > 0)
                 {
                     ModelState.AddModelError("Error", errores.ToString());
-
                 }
-            }     
+            }
+            return View(db.Anexo.ToList().Where(a=> a.IsActive == true));
         }
 
         // Carga masiva de cargue compania RFC
@@ -183,7 +182,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Anexo anexo = db.Anexo.Find(id);
-            db.Anexo.Remove(anexo);
+            db.Entry(anexo).State = EntityState.Modified;
+            anexo.IsActive = false;           
             db.SaveChanges();
             return RedirectToAction("Index");
         }
