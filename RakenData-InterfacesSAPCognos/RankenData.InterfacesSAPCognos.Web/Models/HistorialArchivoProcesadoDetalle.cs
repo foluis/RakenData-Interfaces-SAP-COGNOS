@@ -16,6 +16,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     {
         public int Id { get; set; }
         public int ArchivoProcesadoDetalleId { get; set; }
+        public string Account { get; set; }
         public decimal Amount { get; set; }
         public decimal TransactionAmount { get; set; }
         public int UsuarioId { get; set; }

@@ -72,10 +72,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         db.SaveChanges();
                     }
                     catch (DbEntityValidationException e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                    {                        
+                        errores.AppendLine(ManejoErrores.ErrorValidacion(e));
                         return errores;
-
                     }
                     catch (DbUpdateException e)
                     {
@@ -120,11 +119,33 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="id,Clave,Descripcion,IsActive")] Anexo anexo)
         {
+            StringBuilder errores = new StringBuilder();
             if (ModelState.IsValid)
             {
                 anexo.IsActive = true;
                 db.Anexo.Add(anexo);
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {                 
+                    ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
+                    return View();
+                }
+                catch (DbUpdateException e)
+                {
+                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                    ModelState.AddModelError("Error", errores.ToString());
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                    ModelState.AddModelError("Error", errores.ToString());
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
 

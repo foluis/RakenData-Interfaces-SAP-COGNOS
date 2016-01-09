@@ -25,10 +25,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             var companiarfc = db.CompaniaRFC.Include(c => c.CompaniaCognos1);
             if (file != null && file.ContentLength > 0)
             {
-                StringBuilder errores = CargeCompaniaRFC(file);
+                string errores = CargeCompaniaRFC(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", errores);
 
                 }
             }     
@@ -37,7 +37,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // Carga masiva de cargue compania RFC
         // return: errores y si no hay devuelve el objeto vacio        
-        public StringBuilder CargeCompaniaRFC(HttpPostedFileBase file)
+        public string CargeCompaniaRFC(HttpPostedFileBase file)
         {
             CompaniaRFC companiaRFC = null;
             int companiaCognos;
@@ -64,7 +64,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                 if (errores.Length > 0)
                 {
-                    return errores;
+                    return errores.ToString();
 
                 }
                 companiaRFC = new CompaniaRFC()
@@ -81,24 +81,22 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         db.SaveChanges();
                     }
                     catch (DbEntityValidationException e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
-
+                    {                      
+                        return ManejoErrores.ErrorValidacion(e);
                     }
                     catch (DbUpdateException e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                     catch (Exception e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                 }
             }
-            return errores;
+            return errores.ToString();
         }
 
         // GET: /CompaniaRFC/Details/5

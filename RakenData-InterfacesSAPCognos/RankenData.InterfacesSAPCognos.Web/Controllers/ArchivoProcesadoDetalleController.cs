@@ -20,31 +20,47 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /ArchivoProcesadoDetalle/
-        public ActionResult Index(string id, int tipoArchivo)
+        public ActionResult Index(string id, int tipoArchivo, string error = null)
         {
             int idArchivo;
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle;
-            if (int.TryParse(id, out idArchivo))
+            if (!int.TryParse(id, out idArchivo))
             {
-                archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).Where(ap => ap.ArchivoProcesadoId == idArchivo).ToList();
+                ModelState.AddModelError("Error", "El id de la tabla no es numerico");
+                return View();              
+            }
+          
+            ////Habilita el boton editar si el archivo no se ha generado nunca
+            archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).Where(ap => ap.ArchivoProcesadoId == idArchivo).ToList();
+            if (db.ArchivoProcesado.Find(idArchivo).ArchivoGenerado)
+            {
+                foreach (ArchivoProcesadoDetalle archivoProcesoD in archivoprocesadodetalle)
+                {
+                    archivoProcesoD.EsModificable = false;
+                }
             }
             else
             {
-                archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).ToList();
+                //Habilita el boton editar dependiento si el anexo permite modificar
+                foreach (ArchivoProcesadoDetalle archivoProcesoD in archivoprocesadodetalle)
+                {
+                    CuentaCognos cuentaCognos = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == archivoProcesoD.Account);
+                    if (cuentaCognos != null && cuentaCognos.Anexo.Modificable == false)
+                    {
+                        archivoProcesoD.EsModificable = false;
+                    }
+                    else
+                    {
+                        archivoProcesoD.EsModificable = true;
+                    }
+                }
             }
 
-            foreach(ArchivoProcesadoDetalle archivoProcesoD in archivoprocesadodetalle)
+            if (error != null)
             {
-                 CuentaCognos cuentaCognos = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == archivoProcesoD.Account);
-                 if (cuentaCognos != null && cuentaCognos.Anexo.Modificable == false)
-                 {
-                     archivoProcesoD.EsModificable = false;    
-                 }
-                 else
-                 {
-                     archivoProcesoD.EsModificable = true;
-                 }
+                ModelState.AddModelError("Error", error); 
             }
+            TempData["id"] = id;
             TempData["tipoArchivo"] = tipoArchivo;
             TempData["archivoprocesadodetalle"] = archivoprocesadodetalle;
             return View(archivoprocesadodetalle);
@@ -54,8 +70,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public ActionResult GenerarArchivo()
         {
+            string id = TempData["id"].ToString();  
+            int tipoArchivo = (int)TempData["tipoArchivo"];  
+
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
-            int tipoArchivo = (int)TempData["tipoArchivo"];           
+            if (archivoprocesadodetalle.Count == 0)
+            {
+                //ModelState.AddModelError("Error", "No hay información para generar el archivo");
+                return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "No hay información para generar el archivo" });    
+            }            
+                    
             string ruta = db.AdministracionAplicacion.Where(aa => aa.Id == 3).FirstOrDefault().Valor;
             CSV_Writer csvWriter = new CSV_Writer();
 
@@ -80,8 +104,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
-            csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
-            return View();
+            int archivoCreado =csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
+            if (archivoCreado == 1)//Archivo Creado
+            {
+                archivoProcesado.ArchivoGenerado = true;
+                archivoProcesado.FechaArchivoGenerado = DateTime.Now;
+                db.Entry(archivoProcesado).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            else // Archivo con errore
+            {
+                ModelState.AddModelError("Error", "El archivo no se pudo crear");
+                return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo no se pudo crear" });   
+            }
+            return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo se creo satisfactoriamente !!" });      
         }
 
         // GET: /ArchivoProcesadoDetalle/Details/5
@@ -194,8 +230,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 catch (DbEntityValidationException e)
                 {
-                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
                     return View();
                 }
                 catch (DbUpdateException e)

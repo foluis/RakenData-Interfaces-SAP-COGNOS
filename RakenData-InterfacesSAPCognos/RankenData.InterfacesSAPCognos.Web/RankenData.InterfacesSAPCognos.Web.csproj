@@ -177,6 +177,7 @@
     <Compile Include="Controllers\DatosCabeceraController.cs" />
     <Compile Include="Controllers\GenerarArchivoCognosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManejoErrores.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

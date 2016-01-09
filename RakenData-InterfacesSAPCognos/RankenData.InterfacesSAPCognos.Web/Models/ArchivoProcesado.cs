@@ -25,6 +25,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public short Anio { get; set; }
         public int TipoArchivoCreacionId { get; set; }
         public bool ArchivoGenerado { get; set; }
+        public Nullable<System.DateTime> FechaArchivoGenerado { get; set; }
         public System.DateTime FechaProcesoArchivo { get; set; }
         public int UsuarioId { get; set; }
     

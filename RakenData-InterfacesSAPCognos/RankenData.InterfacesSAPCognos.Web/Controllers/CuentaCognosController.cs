@@ -26,10 +26,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             var cuentacognos = db.CuentaCognos.Include(c => c.Anexo).Where(cc=> cc.IsActive == true);
             if (file != null && file.ContentLength > 0)
             {
-                StringBuilder errores = CargeMasivoCuentaCognos(file);
+                string errores = CargeMasivoCuentaCognos(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", errores);
 
                 }
             }
@@ -39,7 +39,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // Carga masiva de cuentas cognos
         // return: errores y si no hay devuelve el objeto vacio        
         [HttpPost]
-        public StringBuilder CargeMasivoCuentaCognos(HttpPostedFileBase file)
+        public string CargeMasivoCuentaCognos(HttpPostedFileBase file)
         {
             CuentaCognos cuentaCognos = null;
             int anexoid;
@@ -79,24 +79,22 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         db.SaveChanges();
                     }
                     catch (DbEntityValidationException e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
-
+                    {                        
+                        return ManejoErrores.ErrorValidacion(e);
                     }
                     catch (DbUpdateException e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                     catch (Exception e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                 }
             }
-            return errores;
+            return errores.ToString();
         }
 
 

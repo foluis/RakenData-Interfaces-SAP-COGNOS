@@ -24,10 +24,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (file != null && file.ContentLength > 0)
             {
-                StringBuilder errores = CargeCompaniaCognos(file);
+                string errores = CargeCompaniaCognos(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", errores);
 
                 }
             }
@@ -36,7 +36,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // Carga masiva de cargue compania cognos
         // return: errores y si no hay devuelve el objeto vacio        
-        public StringBuilder CargeCompaniaCognos(HttpPostedFileBase file)
+        public string CargeCompaniaCognos(HttpPostedFileBase file)
         {
             CompaniaCognos companiaCognos = null;
             int clave;
@@ -63,7 +63,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                 if (errores.Length > 0)
                 {
-                    return errores;
+                    return errores.ToString();
 
                 }
                 companiaCognos = new CompaniaCognos()
@@ -80,23 +80,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     }
                     catch (DbEntityValidationException e)
                     {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
-
+                        return ManejoErrores.ErrorValidacion(e);
                     }
                     catch (DbUpdateException e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                     catch (Exception e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                 }
             }
-            return errores;
+            return errores.ToString();
         }
 
         // GET: /CompaniaCognos/Details/5
@@ -196,9 +194,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 db.SaveChanges();
             }
             catch (DbEntityValidationException e)
-            {
-                errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                ModelState.AddModelError("Error", errores.ToString());
+            {                
+                ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
                 return View();
             }
             catch (DbUpdateException e)

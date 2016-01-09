@@ -39,7 +39,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string Retrieve { get; set; }
         public string Variance { get; set; }
     
-        public virtual ArchivoProcesado ArchivoProcesado { get; set; }
         public virtual ICollection<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
+        public virtual ArchivoProcesado ArchivoProcesado { get; set; }
     }
 }
