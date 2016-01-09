@@ -30,7 +30,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             ViewBag.LstIdCompaniasCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
             List<int?> id = db.CreateArchivoBalance(archivoCargaCongnos.LstIdCompaniasCognos.First().ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, archivoCargaCongnos.TipoArchivo.ToString(), 1).ToList();
-
+          
             return RedirectToAction("Index", "ArchivoProcesadoDetalle", new { id = id.FirstOrDefault(), tipoArchivo = archivoCargaCongnos.TipoArchivo });
         }
 

@@ -29,6 +29,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 ModelState.AddModelError("Error", "El id de la tabla no es numerico");
                 return View();              
             }
+            if (idArchivo == -1)
+            {
+                ModelState.AddModelError("Error", "No existen datos actualmente.");
+                return View();  
+            }
           
             ////Habilita el boton editar si el archivo no se ha generado nunca
             archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).Where(ap => ap.ArchivoProcesadoId == idArchivo).ToList();
