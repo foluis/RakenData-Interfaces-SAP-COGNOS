@@ -21,6 +21,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models.Entidades
         /// </summary>
         public int Anio { get; set; }
 
-        public string TipoArchivo { get; set; }
+        public int TipoArchivo { get; set; }
     }
 }

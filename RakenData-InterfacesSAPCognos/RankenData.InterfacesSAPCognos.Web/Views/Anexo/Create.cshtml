@@ -33,6 +33,14 @@
                 @Html.ValidationMessageFor(model => model.Descripcion)
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Modificable, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Modificable)
+                @Html.ValidationMessageFor(model => model.Modificable)
+            </div>
+        </div>
                
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

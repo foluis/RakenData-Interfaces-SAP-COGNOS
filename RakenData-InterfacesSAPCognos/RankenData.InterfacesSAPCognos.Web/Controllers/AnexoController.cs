@@ -150,7 +150,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="id,Clave,Descripcion,IsActive")] Anexo anexo)
+        public ActionResult Edit([Bind(Include = "id,Clave,Descripcion,IsActive,Modificable")] Anexo anexo)
         {
             if (ModelState.IsValid)
             {

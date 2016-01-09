@@ -221,6 +221,7 @@
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entidades\enArchivoCargaCongnos.cs" />
+    <Compile Include="Models\Entidades\enArchivoProcesadoDetalle.cs" />
     <Compile Include="Models\HistorialArchivoProcesadoDetalle.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>

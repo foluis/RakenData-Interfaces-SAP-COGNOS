@@ -68,9 +68,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.Id)
         </td>
+        @if(item.EsModificable)
+        { 
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id })          
         </td>
+        }
     </tr>
 }
 
