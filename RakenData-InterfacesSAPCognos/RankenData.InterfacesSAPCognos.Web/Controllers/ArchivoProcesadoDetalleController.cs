@@ -54,8 +54,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult GenerarArchivo()
         {
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
-            int tipoArchivo = (int)TempData["tipoArchivo"];
-            string ruta = db.AdministracionAplicacion.Where(aa => aa.Id == 3).FirstOrDefault().Nombre;
+            int tipoArchivo = (int)TempData["tipoArchivo"];           
+            string ruta = db.AdministracionAplicacion.Where(aa => aa.Id == 3).FirstOrDefault().Valor;
             CSV_Writer csvWriter = new CSV_Writer();
 
             ArchivoProcesado archivoProcesado= db.ArchivoProcesado.Find(archivoprocesadodetalle.First().ArchivoProcesadoId);
@@ -99,13 +99,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         }
 
         // GET: /ArchivoProcesadoDetalle/Create
-        public ActionResult Create(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ArchivoProcesadoDetalle archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Find(id);
+        public ActionResult Create()
+        {          
+             List<ArchivoProcesadoDetalle> lstArchivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
+         
+            ArchivoProcesadoDetalle archivoprocesadodetalle = lstArchivoprocesadodetalle.First();
+            archivoprocesadodetalle.Id = 0;
+            archivoprocesadodetalle.Account = string.Empty;
+            archivoprocesadodetalle.Amount = 0;
+            archivoprocesadodetalle.TransactionAmount = 0;
             if (archivoprocesadodetalle == null)
             {
                 return HttpNotFound();
