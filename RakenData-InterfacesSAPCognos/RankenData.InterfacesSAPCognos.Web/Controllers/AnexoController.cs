@@ -122,6 +122,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                anexo.IsActive = true;
                 db.Anexo.Add(anexo);
                 db.SaveChanges();
                 return RedirectToAction("Index");
