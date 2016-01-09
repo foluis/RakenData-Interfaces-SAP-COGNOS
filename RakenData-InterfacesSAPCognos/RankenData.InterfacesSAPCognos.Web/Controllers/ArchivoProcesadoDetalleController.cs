@@ -230,8 +230,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 catch (DbEntityValidationException e)
                 {
-                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
                     return View();
                 }
                 catch (DbUpdateException e)

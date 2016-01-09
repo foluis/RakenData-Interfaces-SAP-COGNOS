@@ -94,9 +94,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     }
                     catch (DbEntityValidationException e)
                     {
-                        string error = e.Message;
-                        ModelState.AddModelError("Error:", e.Message);
-                        throw;
+                        ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
+                        return View();
                     }
 
                     List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();

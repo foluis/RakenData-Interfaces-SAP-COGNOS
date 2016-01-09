@@ -27,10 +27,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             if (file != null && file.ContentLength > 0)
             {
-                StringBuilder errores = CargeMasivoCuentaSAP(file);
+                string errores = CargeMasivoCuentaSAP(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", errores);
                 }
             }
 
@@ -39,7 +39,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // Carga masiva de cuentas SAP 
         // return: errores y si no hay devuelve el objeto vacio        
-        public StringBuilder CargeMasivoCuentaSAP(HttpPostedFileBase file)
+        public string CargeMasivoCuentaSAP(HttpPostedFileBase file)
         {
             CuentaSAP cuentaSAP = null;
             int cuentaCognos, tipoCuentaSAP, cuentaCargo, cuentaAbono;
@@ -82,7 +82,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 if (errores.Length > 0)
                 {
-                    return errores;
+                    return errores.ToString();
 
                 }
                 cuentaSAP = new CuentaSAP()
@@ -104,24 +104,22 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         db.SaveChanges();
                     }
                     catch (DbEntityValidationException e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
-
+                    {                        
+                        return ManejoErrores.ErrorValidacion(e);
                     }
                     catch (DbUpdateException e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                     catch (Exception e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        return errores.ToString();
                     }
                 }
             }
-            return errores;
+            return errores.ToString();
         }
 
         // GET: /CuentaSAP/Details/5
@@ -209,8 +207,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 catch (DbEntityValidationException e)
                 {
-                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
                     return View();
                 }
                 catch (DbUpdateException e)
