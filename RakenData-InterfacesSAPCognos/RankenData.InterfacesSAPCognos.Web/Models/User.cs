@@ -17,8 +17,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public User()
         {
             this.ArchivoCarga = new HashSet<ArchivoCarga>();
-            this.ArchivoProcesado = new HashSet<ArchivoProcesado>();
             this.HistorialArchivoProcesadoDetalle = new HashSet<HistorialArchivoProcesadoDetalle>();
+            this.ArchivoProcesado = new HashSet<ArchivoProcesado>();
         }
     
         public int Id { get; set; }
@@ -26,7 +26,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public bool IsActive { get; set; }
     
         public virtual ICollection<ArchivoCarga> ArchivoCarga { get; set; }
-        public virtual ICollection<ArchivoProcesado> ArchivoProcesado { get; set; }
         public virtual ICollection<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
+        public virtual ICollection<ArchivoProcesado> ArchivoProcesado { get; set; }
     }
 }

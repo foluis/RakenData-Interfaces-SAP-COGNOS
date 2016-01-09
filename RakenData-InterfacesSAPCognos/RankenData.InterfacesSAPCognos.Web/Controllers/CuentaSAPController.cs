@@ -201,10 +201,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
 
             if (ModelState.IsValid)
-            {
+            {               
                 db.Entry(cuentasap).State = EntityState.Modified;
                 try
-                {
+                {                    
                     db.SaveChanges();
                 }
                 catch (DbEntityValidationException e)
