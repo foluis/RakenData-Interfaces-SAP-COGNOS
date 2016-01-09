@@ -11,6 +11,7 @@ using System.Data.Entity.Validation;
 using System.Text;
 using System.Data.Entity.Infrastructure;
 using Ranken.ISC.FileManager.WriteFiles;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -101,19 +102,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /ArchivoProcesadoDetalle/Create
         public ActionResult Create()
         {          
-             List<ArchivoProcesadoDetalle> lstArchivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
-         
-            ArchivoProcesadoDetalle archivoprocesadodetalle = lstArchivoprocesadodetalle.First();
-            archivoprocesadodetalle.Id = 0;
-            archivoprocesadodetalle.Account = string.Empty;
-            archivoprocesadodetalle.Amount = 0;
-            archivoprocesadodetalle.TransactionAmount = 0;
-            if (archivoprocesadodetalle == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ArchivoProcesadoId = new SelectList(db.ArchivoProcesado, "Id", "Id");
-            return View(archivoprocesadodetalle);
+              return View();
         }
 
         // POST: /ArchivoProcesadoDetalle/Create
@@ -121,13 +110,33 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ArchivoProcesadoId,TipoArchivoCreacionId,Company,Period,Actuality,Account,CounterCompany,Dim1,Dim2,Dim3,ITOpex,Amount,TransactionCurrency,TransactionAmount,Form,AccountName,Retrieve,Variance")] ArchivoProcesadoDetalle archivoprocesadodetalle)
+        public ActionResult Create([Bind(Include = "Account,Amount,TransactionAmount")] ArchivoProcesadoDetalle archivoprocesadodetalle)
         {
+            int tipoArchivo = (int)TempData["tipoArchivo"];  
+            List<ArchivoProcesadoDetalle> lstArchivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
+
+            ArchivoProcesadoDetalle archivoprocesadodetalleTemplate = lstArchivoprocesadodetalle.First();
+            //Mapeo
+            archivoprocesadodetalle.ArchivoProcesadoId = archivoprocesadodetalleTemplate.ArchivoProcesadoId;
+            archivoprocesadodetalle.TipoArchivoCreacionId = archivoprocesadodetalleTemplate.TipoArchivoCreacionId;
+            archivoprocesadodetalle.Company = archivoprocesadodetalleTemplate.Company;
+            archivoprocesadodetalle.Period = archivoprocesadodetalleTemplate.Period;
+            archivoprocesadodetalle.Actuality = archivoprocesadodetalleTemplate.Actuality;          
+            archivoprocesadodetalle.CounterCompany = archivoprocesadodetalleTemplate.CounterCompany;
+            archivoprocesadodetalle.Dim1 = archivoprocesadodetalleTemplate.Dim1;
+            archivoprocesadodetalle.Dim2 = archivoprocesadodetalleTemplate.Dim2;
+            archivoprocesadodetalle.Dim3 = archivoprocesadodetalleTemplate.Dim3;
+            archivoprocesadodetalle.ITOpex = archivoprocesadodetalleTemplate.ITOpex;           
+            archivoprocesadodetalle.TransactionCurrency = archivoprocesadodetalleTemplate.TransactionCurrency;           
+            archivoprocesadodetalle.Form = archivoprocesadodetalleTemplate.Form;
+            archivoprocesadodetalle.AccountName = archivoprocesadodetalleTemplate.AccountName;
+            archivoprocesadodetalle.Retrieve = archivoprocesadodetalleTemplate.Retrieve;
+            archivoprocesadodetalle.Variance = archivoprocesadodetalleTemplate.Variance;
             if (ModelState.IsValid)
             {
                 db.ArchivoProcesadoDetalle.Add(archivoprocesadodetalle);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = archivoprocesadodetalle.ArchivoProcesadoId, tipoArchivo = tipoArchivo });
             }
 
             ViewBag.ArchivoProcesadoId = new SelectList(db.ArchivoProcesado, "Id", "Id", archivoprocesadodetalle.ArchivoProcesadoId);
@@ -166,11 +175,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Edit([Bind(Include = "Id,ArchivoProcesadoId,TipoArchivoCreacionId,Company,Period,Actuality,Account,CounterCompany,Dim1,Dim2,Dim3,ITOpex,Amount,TransactionCurrency,TransactionAmount,Form,AccountName,Retrieve,Variance")] ArchivoProcesadoDetalle archivoprocesadodetalle)
         {
             StringBuilder errores = new StringBuilder();
+            int tipoArchivo = (int)TempData["tipoArchivo"];  
+            HistorialArchivoProcesadoDetalle historial = new HistorialArchivoProcesadoDetalle();
             if (ModelState.IsValid)
             {
                 db.Entry(archivoprocesadodetalle).State = EntityState.Modified;
                 try
                 {
+                    historial.ArchivoProcesadoDetalleId = archivoprocesadodetalle.Id;
+                    historial.Amount = archivoprocesadodetalle.Amount;
+                    historial.TransactionAmount = archivoprocesadodetalle.TransactionAmount;
+                    //TODO: implementar cuando se tengal el usuario
+                    historial.UsuarioId = 1;
+                    historial.FechaModificacion = DateTime.Now;
+                    historial.TipoModificacionId = (int)EnumTipoModificacion.Actualización;
+                    db.HistorialArchivoProcesadoDetalle.Add(historial);
                     db.SaveChanges();
                 }
                 catch (DbEntityValidationException e)
@@ -191,7 +210,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ModelState.AddModelError("Error", errores.ToString());
                     return View();
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index",new { id = archivoprocesadodetalle.ArchivoProcesadoId, tipoArchivo = tipoArchivo });
             }
             ViewBag.ArchivoProcesadoId = new SelectList(db.ArchivoProcesado, "Id", "Id", archivoprocesadodetalle.ArchivoProcesadoId);
             return View(archivoprocesadodetalle);

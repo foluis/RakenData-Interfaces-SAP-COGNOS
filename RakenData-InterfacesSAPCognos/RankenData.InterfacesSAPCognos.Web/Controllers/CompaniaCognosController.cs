@@ -30,7 +30,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ModelState.AddModelError("Error", errores.ToString());
 
                 }
-            }          
+            }
             return View(db.CompaniaCognos.ToList());
         }
 
@@ -60,7 +60,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 {
                     errores.AppendLine("No. Registro: " + i + " ERROR: LA CLAVE NO ES NUMERICO");
                 }
-              
+
                 if (errores.Length > 0)
                 {
                     return errores;
@@ -125,7 +125,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Clave,Descripcion")] CompaniaCognos companiacognos)
+        public ActionResult Create([Bind(Include = "Id,Clave,Descripcion")] CompaniaCognos companiacognos)
         {
             if (ModelState.IsValid)
             {
@@ -157,7 +157,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Clave,Descripcion")] CompaniaCognos companiacognos)
+        public ActionResult Edit([Bind(Include = "Id,Clave,Descripcion")] CompaniaCognos companiacognos)
         {
             if (ModelState.IsValid)
             {
@@ -188,9 +188,31 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            StringBuilder errores = new StringBuilder();
             CompaniaCognos companiacognos = db.CompaniaCognos.Find(id);
             db.CompaniaCognos.Remove(companiacognos);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                ModelState.AddModelError("Error", errores.ToString());
+                return View();
+            }
+            catch (DbUpdateException e)
+            {
+                errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                ModelState.AddModelError("Error", errores.ToString());
+                return View();
+            }
+            catch (Exception e)
+            {
+                errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                ModelState.AddModelError("Error", errores.ToString());
+                return View();
+            }
             return RedirectToAction("Index");
         }
 

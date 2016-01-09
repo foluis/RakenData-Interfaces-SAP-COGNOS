@@ -131,6 +131,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                cuentacognos.IsActive = true;
                 db.CuentaCognos.Add(cuentacognos);
                 db.SaveChanges();
                 return RedirectToAction("Index");

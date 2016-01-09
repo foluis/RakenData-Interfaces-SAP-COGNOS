@@ -24,16 +24,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Index(HttpPostedFileBase file)
         {
             var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1).Where(cc => cc.IsActive == true);
-            
+
             if (file != null && file.ContentLength > 0)
             {
                 StringBuilder errores = CargeMasivoCuentaSAP(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores.ToString()); 
+                    ModelState.AddModelError("Error", errores.ToString());
                 }
-            }          
-                       
+            }
+
             return View(cuentasap.ToList());
         }
 
@@ -45,7 +45,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             int cuentaCognos, tipoCuentaSAP, cuentaCargo, cuentaAbono;
             bool esOpen;
             StringBuilder errores = new StringBuilder();
-            
+
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
             string result = System.Text.Encoding.UTF8.GetString(binData);
@@ -117,9 +117,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     catch (Exception e)
                     {
                         errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores; 
+                        return errores;
                     }
-                }                
+                }
             }
             return errores;
         }
@@ -158,6 +158,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                cuentasap.IsActive = true;
                 db.CuentaSAP.Add(cuentasap);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -195,14 +196,37 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
         {
+            StringBuilder errores = new StringBuilder();
+            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
+            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
+
             if (ModelState.IsValid)
             {
                 db.Entry(cuentasap).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                    ModelState.AddModelError("Error", errores.ToString());
+                    return View();
+                }
+                catch (DbUpdateException e)
+                {
+                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                    ModelState.AddModelError("Error", errores.ToString());
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                    ModelState.AddModelError("Error", errores.ToString());
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
-            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
-            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
             return View(cuentasap);
         }
 
