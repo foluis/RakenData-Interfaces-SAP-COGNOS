@@ -19,12 +19,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             enArchivoCargaCongnos archivo = new enArchivoCargaCongnos();
             ViewBag.LstIdCompaniasCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
-            var tiposArchivos = new[] {
-                new { Id = "1", Descripcion = "Generación Archivo Balance" },
-                new { Id = "2", Descripcion = "Generación Archivo Resultados" } 
-            };
-
-            ViewBag.TipoArchivo = new SelectList(tiposArchivos, "Id", "Descripcion");
+            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCreacion, "Id", "Nombre");
+   
             return View(archivo);
         }
 
@@ -35,7 +31,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.LstIdCompaniasCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
             List<int?> id = db.CreateArchivoBalance(archivoCargaCongnos.LstIdCompaniasCognos.First().ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, archivoCargaCongnos.TipoArchivo, 1).ToList();
 
-            return RedirectToAction("Index", "ArchivoProcesadoDetalle", new { id = id.FirstOrDefault() });
+            return RedirectToAction("Index", "ArchivoProcesadoDetalle", new { id = id.FirstOrDefault(), tipoArchivo = archivoCargaCongnos.TipoArchivo });
         }
 
         //

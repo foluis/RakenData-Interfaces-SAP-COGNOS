@@ -186,51 +186,6 @@
           <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
           <Property Name="TipoModificacionId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'RakenData-InterfacesSAPCognos.dbo.MEXSALCTA$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="MEXSALCTA$">
-          <Property Name="Escenario" Type="nvarchar" MaxLength="255" />
-          <Property Name="Versión" Type="nvarchar" MaxLength="255" />
-          <Property Name="Año" Type="nvarchar" MaxLength="255" />
-          <Property Name="Mes" Type="nvarchar" MaxLength="255" />
-          <Property Name="Unidad de Negocio" Type="nvarchar" MaxLength="255" />
-          <Property Name="Cuenta" Type="nvarchar" MaxLength="255" />
-          <Property Name="Moneda" Type="nvarchar" MaxLength="255" />
-          <Property Name="GAAP" Type="nvarchar" MaxLength="255" />
-          <Property Name="Interfase" Type="nvarchar" MaxLength="255" />
-          <Property Name="Nominal o ajustado" Type="nvarchar" MaxLength="255" />
-          <Property Name="Compañía" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Débito Periodo" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Crédito Periodo" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Débito Acumulado" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Crédito Acumulado" Type="nvarchar" MaxLength="255" />
-          <Property Name="Saldo Acumulado Periodo" Type="nvarchar" MaxLength="255" />
-          <Property Name="Hora de actualización" Type="nvarchar" MaxLength="255" />
-          <Property Name="Usuario Actualización" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'RakenData-InterfacesSAPCognos.dbo.MEXSALINT$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="MEXSALINT$">
-          <Property Name="Escenario" Type="nvarchar" MaxLength="255" />
-          <Property Name="Versión" Type="nvarchar" MaxLength="255" />
-          <Property Name="Año" Type="nvarchar" MaxLength="255" />
-          <Property Name="Mes" Type="nvarchar" MaxLength="255" />
-          <Property Name="Unidad de Negocio" Type="nvarchar" MaxLength="255" />
-          <Property Name="Cuenta" Type="nvarchar" MaxLength="255" />
-          <Property Name="Moneda" Type="nvarchar" MaxLength="255" />
-          <Property Name="GAAP" Type="nvarchar" MaxLength="255" />
-          <Property Name="Interfase" Type="nvarchar" MaxLength="255" />
-          <Property Name="Nominal o ajustado" Type="nvarchar" MaxLength="255" />
-          <Property Name="Compañía" Type="nvarchar" MaxLength="255" />
-          <Property Name="Compañía relacionada" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Débito Periodo" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Crédito Periodo" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Débito Acumulado" Type="nvarchar" MaxLength="255" />
-          <Property Name="Movimiento Crédito Acumulado" Type="nvarchar" MaxLength="255" />
-          <Property Name="Saldo Acumulado Periodo" Type="float" />
-          <Property Name="Hora de actualización" Type="nvarchar" MaxLength="255" />
-          <Property Name="Usuario Actualización" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
         <EntityType Name="TipoArchivoCarga">
           <Key>
             <PropertyRef Name="Id" />
@@ -616,17 +571,17 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
             <Parameter Name="Usuario" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="AnioFiscal" EntityType="ModelRankenData.AnioFiscal" />
+          <EntitySet Name="ArchivoProcesadoDetalle" EntityType="ModelRankenData.ArchivoProcesadoDetalle" />
+          <EntitySet Name="CuentaCognos" EntityType="ModelRankenData.CuentaCognos" />
           <EntitySet Name="AdministracionAplicacion" EntityType="ModelRankenData.AdministracionAplicacion" />
           <EntitySet Name="Anexo" EntityType="ModelRankenData.Anexo" />
-          <EntitySet Name="AnioFiscal" EntityType="ModelRankenData.AnioFiscal" />
           <EntitySet Name="ArchivoCarga" EntityType="ModelRankenData.ArchivoCarga" />
           <EntitySet Name="ArchivoCargaDetalle" EntityType="ModelRankenData.ArchivoCargaDetalle" />
           <EntitySet Name="ArchivoProcesado" EntityType="ModelRankenData.ArchivoProcesado" />
-          <EntitySet Name="ArchivoProcesadoDetalle" EntityType="ModelRankenData.ArchivoProcesadoDetalle" />
           <EntitySet Name="CargaAutomatica" EntityType="ModelRankenData.CargaAutomatica" />
           <EntitySet Name="CompaniaCognos" EntityType="ModelRankenData.CompaniaCognos" />
           <EntitySet Name="CompaniaRFC" EntityType="ModelRankenData.CompaniaRFC" />
-          <EntitySet Name="CuentaCognos" EntityType="ModelRankenData.CuentaCognos" />
           <EntitySet Name="CuentaSAP" EntityType="ModelRankenData.CuentaSAP" />
           <EntitySet Name="DatosCabecera" EntityType="ModelRankenData.DatosCabecera" />
           <EntitySet Name="HistorialArchivoProcesadoDetalle" EntityType="ModelRankenData.HistorialArchivoProcesadoDetalle" />
@@ -718,6 +673,57 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Type="Int32" Name="IdTipo" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="false" MaxLength="40" />
         </ComplexType>
+        <EntityType Name="AnioFiscal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Anio" Type="Int16" Nullable="false" />
+          <Property Name="AnioInicio" Type="Int16" Nullable="false" />
+          <Property Name="MesInicio" Type="Byte" Nullable="false" />
+          <Property Name="AnioFin" Type="Int16" Nullable="false" />
+          <Property Name="MesFin" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchivoProcesadoDetalle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArchivoProcesadoId" Type="Int32" Nullable="false" />
+          <Property Name="TipoArchivoCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="Company" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Period" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Actuality" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Account" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CounterCompany" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Dim1" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Dim2" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Dim3" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="ITOpex" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TransactionCurrency" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="TransactionAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Form" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="AccountName" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Retrieve" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Variance" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" FromRole="ArchivoProcesadoDetalle" ToRole="ArchivoProcesado" />
+          <NavigationProperty Name="HistorialArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" FromRole="ArchivoProcesadoDetalle" ToRole="HistorialArchivoProcesadoDetalle" />
+        </EntityType>
+        <EntityType Name="CuentaCognos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Numero" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="AnexoId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Anexo" Relationship="ModelRankenData.FK_CuentaCognos_Anexo" FromRole="CuentaCognos" ToRole="Anexo" />
+          <NavigationProperty Name="CuentaSAP" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos" FromRole="CuentaCognos" ToRole="CuentaSAP" />
+          <NavigationProperty Name="CuentaSAP1" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos1" FromRole="CuentaCognos" ToRole="CuentaSAP" />
+          <NavigationProperty Name="CuentaSAP2" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos2" FromRole="CuentaCognos" ToRole="CuentaSAP" />
+        </EntityType>
         <EntityType Name="AdministracionAplicacion">
           <Key>
             <PropertyRef Name="Id" />
@@ -738,17 +744,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="Modificable" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CuentaCognos" Relationship="ModelRankenData.FK_CuentaCognos_Anexo" FromRole="Anexo" ToRole="CuentaCognos" />
-        </EntityType>
-        <EntityType Name="AnioFiscal">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Anio" Type="Int16" Nullable="false" />
-          <Property Name="AnioInicio" Type="Int16" Nullable="false" />
-          <Property Name="MesInicio" Type="Byte" Nullable="false" />
-          <Property Name="AnioFin" Type="Int16" Nullable="false" />
-          <Property Name="MesFin" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="ArchivoCarga">
           <Key>
@@ -812,32 +807,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <NavigationProperty Name="User" Relationship="ModelRankenData.FK_ArchivoProcesado_User" FromRole="ArchivoProcesado" ToRole="User" />
           <NavigationProperty Name="ArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" FromRole="ArchivoProcesado" ToRole="ArchivoProcesadoDetalle" />
         </EntityType>
-        <EntityType Name="ArchivoProcesadoDetalle">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ArchivoProcesadoId" Type="Int32" Nullable="false" />
-          <Property Name="TipoArchivoCreacionId" Type="Int32" Nullable="false" />
-          <Property Name="Company" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="Period" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="Actuality" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="Account" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CounterCompany" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="Dim1" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="Dim2" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="Dim3" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="ITOpex" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TransactionCurrency" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="TransactionAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="Form" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="AccountName" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="Retrieve" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="Variance" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" FromRole="ArchivoProcesadoDetalle" ToRole="ArchivoProcesado" />
-          <NavigationProperty Name="HistorialArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" FromRole="ArchivoProcesadoDetalle" ToRole="HistorialArchivoProcesadoDetalle" />
-        </EntityType>
         <EntityType Name="CargaAutomatica">
           <Key>
             <PropertyRef Name="Id" />
@@ -871,20 +840,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
           <Property Name="CompaniaCognos" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CompaniaCognos1" Relationship="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaRFC" ToRole="CompaniaCognos" />
-        </EntityType>
-        <EntityType Name="CuentaCognos">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Numero" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="AnexoId" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Anexo" Relationship="ModelRankenData.FK_CuentaCognos_Anexo" FromRole="CuentaCognos" ToRole="Anexo" />
-          <NavigationProperty Name="CuentaSAP" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos" FromRole="CuentaCognos" ToRole="CuentaSAP" />
-          <NavigationProperty Name="CuentaSAP1" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos1" FromRole="CuentaCognos" ToRole="CuentaSAP" />
-          <NavigationProperty Name="CuentaSAP2" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos2" FromRole="CuentaCognos" ToRole="CuentaSAP" />
         </EntityType>
         <EntityType Name="CuentaSAP">
           <Key>
@@ -1216,6 +1171,54 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="CreateArchivoBalance" FunctionName="ModelRankenData.Store.CreateArchivoBalance" />
+          <EntitySetMapping Name="AnioFiscal">
+            <EntityTypeMapping TypeName="ModelRankenData.AnioFiscal">
+              <MappingFragment StoreEntitySet="AnioFiscal">
+                <ScalarProperty Name="MesFin" ColumnName="MesFin" />
+                <ScalarProperty Name="AnioFin" ColumnName="AnioFin" />
+                <ScalarProperty Name="MesInicio" ColumnName="MesInicio" />
+                <ScalarProperty Name="AnioInicio" ColumnName="AnioInicio" />
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArchivoProcesadoDetalle">
+            <EntityTypeMapping TypeName="ModelRankenData.ArchivoProcesadoDetalle">
+              <MappingFragment StoreEntitySet="ArchivoProcesadoDetalle">
+                <ScalarProperty Name="Variance" ColumnName="Variance" />
+                <ScalarProperty Name="Retrieve" ColumnName="Retrieve" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="Form" ColumnName="Form" />
+                <ScalarProperty Name="TransactionAmount" ColumnName="TransactionAmount" />
+                <ScalarProperty Name="TransactionCurrency" ColumnName="TransactionCurrency" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ITOpex" ColumnName="ITOpex" />
+                <ScalarProperty Name="Dim3" ColumnName="Dim3" />
+                <ScalarProperty Name="Dim2" ColumnName="Dim2" />
+                <ScalarProperty Name="Dim1" ColumnName="Dim1" />
+                <ScalarProperty Name="CounterCompany" ColumnName="CounterCompany" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Actuality" ColumnName="Actuality" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="TipoArchivoCreacionId" ColumnName="TipoArchivoCreacionId" />
+                <ScalarProperty Name="ArchivoProcesadoId" ColumnName="ArchivoProcesadoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CuentaCognos">
+            <EntityTypeMapping TypeName="ModelRankenData.CuentaCognos">
+              <MappingFragment StoreEntitySet="CuentaCognos">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AnexoId" ColumnName="AnexoId" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AdministracionAplicacion">
             <EntityTypeMapping TypeName="ModelRankenData.AdministracionAplicacion">
               <MappingFragment StoreEntitySet="AdministracionAplicacion">
@@ -1235,18 +1238,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Clave" ColumnName="Clave" />
                 <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AnioFiscal">
-            <EntityTypeMapping TypeName="ModelRankenData.AnioFiscal">
-              <MappingFragment StoreEntitySet="AnioFiscal">
-                <ScalarProperty Name="MesFin" ColumnName="MesFin" />
-                <ScalarProperty Name="AnioFin" ColumnName="AnioFin" />
-                <ScalarProperty Name="MesInicio" ColumnName="MesInicio" />
-                <ScalarProperty Name="AnioInicio" ColumnName="AnioInicio" />
-                <ScalarProperty Name="Anio" ColumnName="Anio" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1306,31 +1297,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ArchivoProcesadoDetalle">
-            <EntityTypeMapping TypeName="ModelRankenData.ArchivoProcesadoDetalle">
-              <MappingFragment StoreEntitySet="ArchivoProcesadoDetalle">
-                <ScalarProperty Name="Variance" ColumnName="Variance" />
-                <ScalarProperty Name="Retrieve" ColumnName="Retrieve" />
-                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
-                <ScalarProperty Name="Form" ColumnName="Form" />
-                <ScalarProperty Name="TransactionAmount" ColumnName="TransactionAmount" />
-                <ScalarProperty Name="TransactionCurrency" ColumnName="TransactionCurrency" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="ITOpex" ColumnName="ITOpex" />
-                <ScalarProperty Name="Dim3" ColumnName="Dim3" />
-                <ScalarProperty Name="Dim2" ColumnName="Dim2" />
-                <ScalarProperty Name="Dim1" ColumnName="Dim1" />
-                <ScalarProperty Name="CounterCompany" ColumnName="CounterCompany" />
-                <ScalarProperty Name="Account" ColumnName="Account" />
-                <ScalarProperty Name="Actuality" ColumnName="Actuality" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Company" ColumnName="Company" />
-                <ScalarProperty Name="TipoArchivoCreacionId" ColumnName="TipoArchivoCreacionId" />
-                <ScalarProperty Name="ArchivoProcesadoId" ColumnName="ArchivoProcesadoId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CargaAutomatica">
             <EntityTypeMapping TypeName="ModelRankenData.CargaAutomatica">
               <MappingFragment StoreEntitySet="CargaAutomatica">
@@ -1358,17 +1324,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
                 <ScalarProperty Name="CompaniaCognos" ColumnName="CompaniaCognos" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="RFC" ColumnName="RFC" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CuentaCognos">
-            <EntityTypeMapping TypeName="ModelRankenData.CuentaCognos">
-              <MappingFragment StoreEntitySet="CuentaCognos">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AnexoId" ColumnName="AnexoId" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -19,7 +19,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /ArchivoProcesadoDetalle/
-        public ActionResult Index(string id)
+        public ActionResult Index(string id, string tipoArchivo)
         {
             int idArchivo;
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle;
@@ -32,6 +32,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).ToList();
             }
 
+            foreach(ArchivoProcesadoDetalle archivoProcesoD in archivoprocesadodetalle)
+            {
+                 CuentaCognos cuentaCognos = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == archivoProcesoD.Account);
+                 if (cuentaCognos != null && cuentaCognos.Anexo.Modificable == false)
+                 {
+                     //todo: continuar con esto
+                     //archivoProcesoD.
+                 }
+                 else
+                 {
+
+                 }
+            }
+            TempData["tipoArchivo"] = tipoArchivo;
             TempData["archivoprocesadodetalle"] = archivoprocesadodetalle;
             return View(archivoprocesadodetalle);
         }
@@ -41,6 +55,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult GenerarArchivo()
         {
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
+            string tipoArchivo = TempData["tipoArchivo"].ToString();
             string ruta = db.AdministracionAplicacion.Where(aa => aa.Id == 3).FirstOrDefault().Nombre;
             CSV_Writer csvWriter = new CSV_Writer();
 
@@ -65,7 +80,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
-            csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), ruta, lstArchivoResultado);
+            csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), 1, ruta, lstArchivoResultado);
             return View();
         }
 
