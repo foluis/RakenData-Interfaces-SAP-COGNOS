@@ -16,13 +16,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     {
         public TipoArchivoCreacion()
         {
-            this.ArchivoProcesadoDetalle = new HashSet<ArchivoProcesadoDetalle>();
+            this.ArchivoProcesado = new HashSet<ArchivoProcesado>();
         }
     
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
     
-        public virtual ICollection<ArchivoProcesadoDetalle> ArchivoProcesadoDetalle { get; set; }
+        public virtual ICollection<ArchivoProcesado> ArchivoProcesado { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string Company { get; set; }
         public string Period { get; set; }
         public string Actuality { get; set; }
+        public string Account { get; set; }
         public string CounterCompany { get; set; }
         public string Dim1 { get; set; }
         public string Dim2 { get; set; }
@@ -39,7 +40,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string Variance { get; set; }
     
         public virtual ArchivoProcesado ArchivoProcesado { get; set; }
-        public virtual TipoArchivoCreacion TipoArchivoCreacion { get; set; }
         public virtual ICollection<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
     }
 }

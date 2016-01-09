@@ -65,9 +65,13 @@
                             <li>@Html.ActionLink("Monitos de Carga", "Index", "ArchivoCarga")</li>                     
                         </ul>
                     </li>
-                    <li><a href="">Generación de archivos</a></li>
-                </ul>
-                @*<ul class="nav navbar-nav">
+                    <li>
+                        <a href="">Generación de archivos</a>
+                        <ul>                            
+                            <li>@Html.ActionLink("Generar archivos Cognos", "GenerarArchivo", "GenerarArchivoCognos")</li>                            
+                        </ul>
+                   </li>
+                        @*<ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Anexo", "Index", "Anexo")</li>
                 <li>@Html.ActionLink("Cuenta Cognos", "Index", "CuentaCognos")</li>
                 <li>@Html.ActionLink("Cuenta SAP", "Index", "CuentaSAP")</li>
@@ -75,8 +79,8 @@
                 <li>@Html.ActionLink("About", "About", "Home")</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
             </ul>*@
-                @Html.Partial("_LoginPartial")
-            </div>
+                        @Html.Partial("_LoginPartial")
+</div>
         </div>
     </div>
     <div class="container body-content">

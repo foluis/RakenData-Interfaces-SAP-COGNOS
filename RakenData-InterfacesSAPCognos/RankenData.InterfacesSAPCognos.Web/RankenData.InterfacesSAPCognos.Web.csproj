@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AnexoController.cs" />
     <Compile Include="Controllers\AnioFiscalController.cs" />
     <Compile Include="Controllers\ArchivoCargaController.cs" />
+    <Compile Include="Controllers\ArchivoProcesadoDetalleController.cs" />
     <Compile Include="Controllers\CargaAutomaticaController.cs" />
     <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CargaIntercompaniasController.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Controllers\CuentaCognosController.cs" />
     <Compile Include="Controllers\CuentaSAPController.cs" />
     <Compile Include="Controllers\DatosCabeceraController.cs" />
+    <Compile Include="Controllers\GenerarArchivoCognosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -218,6 +220,7 @@
     <Compile Include="Models\DatosCabecera.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entidades\enArchivoCargaCongnos.cs" />
     <Compile Include="Models\HistorialArchivoProcesadoDetalle.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
@@ -376,6 +379,12 @@
     <Content Include="Views\CargaAutomatica\Details.cshtml" />
     <Content Include="Views\CargaAutomatica\Edit.cshtml" />
     <Content Include="Views\CargaAutomatica\Index.cshtml" />
+    <Content Include="Views\GenerarArchivoCognos\GenerarArchivo.cshtml" />
+    <Content Include="Views\ArchivoProcesadoDetalle\Create.cshtml" />
+    <Content Include="Views\ArchivoProcesadoDetalle\Delete.cshtml" />
+    <Content Include="Views\ArchivoProcesadoDetalle\Details.cshtml" />
+    <Content Include="Views\ArchivoProcesadoDetalle\Edit.cshtml" />
+    <Content Include="Views\ArchivoProcesadoDetalle\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

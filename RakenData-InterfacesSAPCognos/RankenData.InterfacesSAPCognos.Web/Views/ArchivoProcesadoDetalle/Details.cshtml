@@ -1,0 +1,162 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.ArchivoProcesadoDetalle
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Archivo Procesado Detalle</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoArchivoCreacionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoArchivoCreacionId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Period)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Period)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Actuality)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Actuality)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Account)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CounterCompany)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CounterCompany)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dim1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dim1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dim2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dim2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dim3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dim3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ITOpex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ITOpex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionCurrency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionCurrency)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Form)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Form)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Retrieve)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Retrieve)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Variance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Variance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArchivoProcesado.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArchivoProcesado.Id)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
