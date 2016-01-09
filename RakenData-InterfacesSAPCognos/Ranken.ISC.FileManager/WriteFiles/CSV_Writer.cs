@@ -9,9 +9,9 @@ namespace Ranken.ISC.FileManager.WriteFiles
 {
     public class CSV_Writer
     {
-        public int StartWritingArchivoBalance(string sociedad, string anio, string mes, int tipo, string path, List<ArchivoResultado> archivoResultadoBody)
+        public OperationResult StartWritingArchivoBalance(string sociedad, string anio, string mes, int tipo, string path, List<ArchivoResultado> archivoResultadoBody)
         {
-            int resultado = 0;
+            OperationResult operationResult = new OperationResult() { IdError = 0};
 
             try
             {
@@ -38,10 +38,11 @@ namespace Ranken.ISC.FileManager.WriteFiles
             }
             catch (Exception ex)
             {
-                resultado = 1;
+                operationResult.IdError = 1;
+                operationResult.Exception = ex;
             }
 
-            return resultado;
+            return operationResult;
         }
 
         private void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultadoHeader, string anio, string mes, string sociedad)
