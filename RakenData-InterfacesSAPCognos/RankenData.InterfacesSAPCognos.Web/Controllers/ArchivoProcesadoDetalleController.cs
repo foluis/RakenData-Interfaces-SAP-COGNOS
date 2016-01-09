@@ -11,6 +11,7 @@ using System.Data.Entity.Validation;
 using System.Text;
 using System.Data.Entity.Infrastructure;
 using Ranken.ISC.FileManager.WriteFiles;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -174,11 +175,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Edit([Bind(Include = "Id,ArchivoProcesadoId,TipoArchivoCreacionId,Company,Period,Actuality,Account,CounterCompany,Dim1,Dim2,Dim3,ITOpex,Amount,TransactionCurrency,TransactionAmount,Form,AccountName,Retrieve,Variance")] ArchivoProcesadoDetalle archivoprocesadodetalle)
         {
             StringBuilder errores = new StringBuilder();
+            int tipoArchivo = (int)TempData["tipoArchivo"];  
+            HistorialArchivoProcesadoDetalle historial = new HistorialArchivoProcesadoDetalle();
             if (ModelState.IsValid)
             {
                 db.Entry(archivoprocesadodetalle).State = EntityState.Modified;
                 try
                 {
+                    historial.ArchivoProcesadoDetalleId = archivoprocesadodetalle.Id;
+                    historial.Amount = archivoprocesadodetalle.Amount;
+                    historial.TransactionAmount = archivoprocesadodetalle.TransactionAmount;
+                    //TODO: implementar cuando se tengal el usuario
+                    historial.UsuarioId = 1;
+                    historial.FechaModificacion = DateTime.Now;
+                    historial.TipoModificacionId = (int)EnumTipoModificacion.Actualización;
+                    db.HistorialArchivoProcesadoDetalle.Add(historial);
                     db.SaveChanges();
                 }
                 catch (DbEntityValidationException e)
@@ -199,7 +210,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ModelState.AddModelError("Error", errores.ToString());
                     return View();
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index",new { id = archivoprocesadodetalle.ArchivoProcesadoId, tipoArchivo = tipoArchivo });
             }
             ViewBag.ArchivoProcesadoId = new SelectList(db.ArchivoProcesado, "Id", "Id", archivoprocesadodetalle.ArchivoProcesadoId);
             return View(archivoprocesadodetalle);
