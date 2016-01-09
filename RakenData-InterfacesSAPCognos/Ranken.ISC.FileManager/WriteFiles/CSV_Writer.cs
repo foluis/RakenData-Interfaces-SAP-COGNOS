@@ -9,31 +9,42 @@ namespace Ranken.ISC.FileManager.WriteFiles
 {
     public class CSV_Writer
     {
-        public void StartWritingArchivoBalance(string sociedad,string anio, string mes,int tipo, string path, List<ArchivoResultado> archivoResultadoBody)
+        public int StartWritingArchivoBalance(string sociedad, string anio, string mes, int tipo, string path, List<ArchivoResultado> archivoResultadoBody)
         {
-            List<ArchivoResultado> archivoResultadoHeader = new List<ArchivoResultado>();
-            PrepareSpetialHeader(ref archivoResultadoHeader, anio, mes, sociedad);
+            int resultado = 0;
 
-            archivoResultadoHeader.AddRange(archivoResultadoBody);
-
-            var engine = new FileHelperAsyncEngine<ArchivoResultado>();
-
-            string fecha = DateTime.Now.ToString("_yyyyMMdd_HHmm");
-
-            string fileNname = string.Format(@"\Balance{0}.csv",fecha) ;
-
-            var finalPath = path + fileNname;
-
-            using (engine.BeginWriteFile(finalPath))
+            try
             {
-                foreach (ArchivoResultado cust in archivoResultadoHeader)
+                List<ArchivoResultado> archivoResultadoHeader = new List<ArchivoResultado>();
+                PrepareSpetialHeader(ref archivoResultadoHeader, anio, mes, sociedad);
+
+                archivoResultadoHeader.AddRange(archivoResultadoBody);
+
+                var engine = new FileHelperAsyncEngine<ArchivoResultado>();
+
+                string fecha = DateTime.Now.ToString("_yyyyMMdd_HHmm");
+
+                string fileNname = string.Format(@"\Balance{0}.csv", fecha);
+
+                var finalPath = path + fileNname;
+
+                using (engine.BeginWriteFile(finalPath))
                 {
-                    engine.WriteNext(cust);
+                    foreach (ArchivoResultado cust in archivoResultadoHeader)
+                    {
+                        engine.WriteNext(cust);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                resultado = 1;
+            }
+
+            return resultado;
         }
 
-        private  void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultadoHeader, string anio, string mes,string sociedad)
+        private void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultadoHeader, string anio, string mes, string sociedad)
         {
             //SP consultar tablaCabecera
 
@@ -53,35 +64,35 @@ namespace Ranken.ISC.FileManager.WriteFiles
                 TransactionAmount = "",
                 Form = "",
                 AccountName = "Period",
-                Retrieve = anio.Substring(2,2),
+                Retrieve = anio.Substring(2, 2) + mes,
                 Variance = ""
             };
 
             ArchivoResultado fila_Interval_ArchivoResultado = new ArchivoResultado()
-            {                
+            {
                 AccountName = "Interval",
-                Retrieve = "YTD"                
+                Retrieve = "YTD"
             };
 
             ArchivoResultado fila_Actuality_ArchivoResultado = new ArchivoResultado()
-            {              
+            {
                 AccountName = "Actuality",
                 Retrieve = "AC"
             };
 
             ArchivoResultado fila_Currency_ArchivoResultado = new ArchivoResultado()
-            {               
+            {
                 AccountName = "Currency",
                 Retrieve = "MXN"
             };
 
             ArchivoResultado fila_Plataforma_ArchivoResultado = new ArchivoResultado()
-            {               
+            {
                 Retrieve = "MA"
             };
 
             ArchivoResultado fila_Metodo_ArchivoResultado = new ArchivoResultado()
-            {               
+            {
                 Retrieve = "REPO"
             };
 
