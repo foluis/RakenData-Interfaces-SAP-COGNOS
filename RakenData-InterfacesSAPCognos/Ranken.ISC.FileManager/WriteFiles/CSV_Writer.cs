@@ -9,7 +9,7 @@ namespace Ranken.ISC.FileManager.WriteFiles
 {
     public class CSV_Writer
     {
-        public void StartWritingArchivoBalance(string sociedad,string anio, string mes, string path, List<ArchivoResultado> archivoResultadoBody)
+        public void StartWritingArchivoBalance(string sociedad,string anio, string mes,int tipo, string path, List<ArchivoResultado> archivoResultadoBody)
         {
             List<ArchivoResultado> archivoResultadoHeader = new List<ArchivoResultado>();
             PrepareSpetialHeader(ref archivoResultadoHeader, anio, mes, sociedad);
@@ -34,7 +34,7 @@ namespace Ranken.ISC.FileManager.WriteFiles
             }
         }
 
-        public  void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultadoHeader, string anio, string mes,string sociedad)
+        private  void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultadoHeader, string anio, string mes,string sociedad)
         {
             //SP consultar tablaCabecera
 
