@@ -1,0 +1,54 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.Entidades.enArchivoCargaCongnos
+@{
+    ViewBag.Title = "Generar Archivos Cognos";
+}
+
+<h2>Generar Archivos</h2>
+
+<p>Generar Archivos Cognos/p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Anexo</h4>
+        <hr />    
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.Label("Sociedad", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @*@Html.DropDownList("LstIdCompaniasCognos")*@
+                @Html.DropDownList("LstIdCompaniasCognos", (MultiSelectList)ViewBag.LstIdCompaniasCognos, new { multiple = "multiple", size = 8 })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Periodo", new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Periodo)
+                @Html.ValidationMessageFor(model => model.Periodo)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Año", new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Anio)
+                @Html.ValidationMessageFor(model => model.Anio)
+            </div>
+        </div>    
+
+        <div class="form-group">
+            @Html.Label("TipoArchivo", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TipoArchivo")               
+                @Html.ValidationMessageFor(model => model.TipoArchivo)
+            </div>
+        </div>    
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Generar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
