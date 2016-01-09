@@ -4,21 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3c513cd101a848988fc75d9f952a11e7" Name="Diagram1" ZoomLevel="48">
+      <Diagram DiagramId="3c513cd101a848988fc75d9f952a11e7" Name="Diagram1" ZoomLevel="75">
         <EntityTypeShape EntityType="ModelRankenData.AdministracionAplicacion" Width="1.5" PointX="5.75" PointY="5.75" />
         <EntityTypeShape EntityType="ModelRankenData.Anexo" Width="1.5" PointX="0.75" PointY="1.625" />
         <EntityTypeShape EntityType="ModelRankenData.AnioFiscal" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="ModelRankenData.ArchivoCarga" Width="1.5" PointX="8" PointY="12.125" />
         <EntityTypeShape EntityType="ModelRankenData.ArchivoCargaDetalle" Width="1.5" PointX="10.25" PointY="16.375" />
         <EntityTypeShape EntityType="ModelRankenData.ArchivoProcesado" Width="1.5" PointX="11" PointY="12.125" />
-        <EntityTypeShape EntityType="ModelRankenData.ArchivoProcesadoDetalle" Width="1.5" PointX="13.25" PointY="11.25" />
+        <EntityTypeShape EntityType="ModelRankenData.ArchivoProcesadoDetalle" Width="2.5" PointX="13.25" PointY="11.25" />
         <EntityTypeShape EntityType="ModelRankenData.CargaAutomatica" Width="1.5" PointX="10.25" PointY="8.5" />
-        <EntityTypeShape EntityType="ModelRankenData.CompaniaCognos" Width="1.5" PointX="8.75" PointY="23.125" />
+        <EntityTypeShape EntityType="ModelRankenData.CompaniaCognos" Width="1.5" PointX="13.25" PointY="19.125" />
         <EntityTypeShape EntityType="ModelRankenData.CompaniaRFC" Width="1.5" PointX="11" PointY="23.125" />
         <EntityTypeShape EntityType="ModelRankenData.CuentaCognos" Width="1.5" PointX="3" PointY="1.375" />
         <EntityTypeShape EntityType="ModelRankenData.CuentaSAP" Width="1.5" PointX="5.25" PointY="1" />
         <EntityTypeShape EntityType="ModelRankenData.DatosCabecera" Width="1.5" PointX="0.75" PointY="8.75" />
-        <EntityTypeShape EntityType="ModelRankenData.HistorialArchivoProcesadoDetalle" Width="1.5" PointX="15.5" PointY="12.375" />
+        <EntityTypeShape EntityType="ModelRankenData.HistorialArchivoProcesadoDetalle" Width="1.5" PointX="16.625" PointY="12.375" />
         <EntityTypeShape EntityType="ModelRankenData.TipoArchivoCarga" Width="1.5" PointX="5.75" PointY="9.875" />
         <EntityTypeShape EntityType="ModelRankenData.TipoArchivoCreacion" Width="1.5" PointX="8.75" PointY="5.625" />
         <EntityTypeShape EntityType="ModelRankenData.TipoCuentaSAP" Width="1.5" PointX="3" PointY="5.875" />

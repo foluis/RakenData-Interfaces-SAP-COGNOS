@@ -11,7 +11,7 @@
 @using (Html.BeginForm("GenerarArchivo", "ArchivoProcesadoDetalle"))
 {
 <p>
-    @Html.ActionLink("Crear Nuevo", "Create", new { id = Model.First().Id })
+    @Html.ActionLink("Crear Nuevo", "Create")
 </p>
 <table class="table">
     <tr>       
@@ -69,9 +69,7 @@
             @Html.DisplayFor(modelItem => item.Id)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id })          
         </td>
     </tr>
 }

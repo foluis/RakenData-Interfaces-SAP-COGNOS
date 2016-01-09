@@ -25,7 +25,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle;
             if (int.TryParse(id, out idArchivo))
             {
-                archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).Where(ap => ap.Id == idArchivo).ToList();
+                archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).Where(ap => ap.ArchivoProcesadoId == idArchivo).ToList();
             }
             else
             {
@@ -44,7 +44,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             string ruta = db.AdministracionAplicacion.Where(aa => aa.Id == 3).FirstOrDefault().Nombre;
             CSV_Writer csvWriter = new CSV_Writer();
 
-            db.ArchivoProcesado.Find(archivoprocesadodetalle.First().Id);
+            ArchivoProcesado archivoProcesado= db.ArchivoProcesado.Find(archivoprocesadodetalle.First().ArchivoProcesadoId);
             List<ArchivoResultado> lstArchivoResultado = archivoprocesadodetalle.ConvertAll(
                 ap => new ArchivoResultado()
                 {
@@ -65,7 +65,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
-            csvWriter.StartWritingArchivoBalance("Descripcion 1", "2015", "11", ruta, lstArchivoResultado);
+            csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), ruta, lstArchivoResultado);
             return View();
         }
 
@@ -126,6 +126,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ArchivoProcesadoDetalle archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Find(id);
+
+            CuentaCognos cuentaCognos = db.CuentaCognos.FirstOrDefault(cc=> cc.Numero == archivoprocesadodetalle.Account);
+
+            if (cuentaCognos != null && cuentaCognos.Anexo.Modificable == false)
+            {
+                ModelState.AddModelError("Error", "No se puede Editar, debido el Anexo de la cuenta Cognos no permite modificación");
+                return View(archivoprocesadodetalle);
+            }
             if (archivoprocesadodetalle == null)
             {
                 return HttpNotFound();
