@@ -18,10 +18,9 @@ namespace Ranken.ISC.FileManager.WriteFiles
 
             var engine = new FileHelperAsyncEngine<ArchivoResultado>();
 
-            ////engine.HeaderText = "COLUMN1|COLUMN2|COLUMN3|...";
+            string fecha = DateTime.Now.ToString("_yyyyMMdd_HHmm");
 
-            path = path == "" ? @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\" : path;
-            string fileNname = "Archivo resultado Test.csv" ;
+            string fileNname = string.Format(@"\Balance{0}.csv",fecha) ;
 
             var finalPath = path + fileNname;
 
