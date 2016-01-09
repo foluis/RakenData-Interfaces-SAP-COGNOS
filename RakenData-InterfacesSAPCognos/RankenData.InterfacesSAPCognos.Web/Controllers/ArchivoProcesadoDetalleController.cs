@@ -99,15 +99,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         }
 
         // GET: /ArchivoProcesadoDetalle/Create
-        public ActionResult Create(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        public ActionResult Create()
+        {          
              List<ArchivoProcesadoDetalle> lstArchivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
          
             ArchivoProcesadoDetalle archivoprocesadodetalle = lstArchivoprocesadodetalle.First();
+            archivoprocesadodetalle.Id = 0;
+            archivoprocesadodetalle.Account = string.Empty;
+            archivoprocesadodetalle.Amount = 0;
+            archivoprocesadodetalle.TransactionAmount = 0;
             if (archivoprocesadodetalle == null)
             {
                 return HttpNotFound();
