@@ -11,9 +11,9 @@
 </p>
 @using (Html.BeginForm())
 {
-    <p>     
-        Fecha Inicio @Html.TextBox("startDate")
-        Fecha Inicio @Html.TextBox("endDate")
+    <p>            
+        Fecha Inicio @Html.TextBox("startDate","", new { type = "date" })
+        Fecha Inicio @Html.TextBox("endDate", "", new { type = "date" })
         <input type="submit" value="Buscar" />
     </p>
 }
