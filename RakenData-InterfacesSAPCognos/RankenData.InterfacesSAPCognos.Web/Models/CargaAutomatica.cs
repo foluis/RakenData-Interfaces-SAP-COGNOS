@@ -19,10 +19,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string RutaArchivo { get; set; }
         public int Usuario { get; set; }
         public int TipoArchivo { get; set; }
-        public Nullable<int> ArchivoCarga { get; set; }
-        public Nullable<System.DateTime> FechaFinalizacion { get; set; }
     
-        public virtual ArchivoCarga ArchivoCarga1 { get; set; }
         public virtual TipoArchivoCarga TipoArchivoCarga { get; set; }
     }
 }

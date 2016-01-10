@@ -1,37 +1,37 @@
 ﻿@model RankenData.InterfacesSAPCognos.Web.Models.CargaAutomatica
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles";
 }
 
-<h2>Details</h2>
+<h2>Detalles</h2>
 
 <div>
-    <h4>CargaAutomatica</h4>
+    <h4>Programar Carga</h4>
 	<hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaProgramada)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaProgramada)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RutaArchivo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RutaArchivo)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Usuario)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Usuario)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaFinalizacion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FechaFinalizacion)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ArchivoCarga1.Nombre)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ArchivoCarga1.Nombre)
         </dd>
 
         <dt>
@@ -45,6 +45,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Regresar a la lista", "Index")
 </p>

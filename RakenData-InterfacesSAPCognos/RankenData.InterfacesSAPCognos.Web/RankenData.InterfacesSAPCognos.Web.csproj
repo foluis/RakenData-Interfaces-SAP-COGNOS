@@ -391,11 +391,6 @@
     <Content Include="Views\ArchivoCarga\Details.cshtml" />
     <Content Include="Views\ArchivoCarga\Edit.cshtml" />
     <Content Include="Views\ArchivoCarga\Index.cshtml" />
-    <Content Include="Views\CargaAutomatica\Create.cshtml" />
-    <Content Include="Views\CargaAutomatica\Delete.cshtml" />
-    <Content Include="Views\CargaAutomatica\Details.cshtml" />
-    <Content Include="Views\CargaAutomatica\Edit.cshtml" />
-    <Content Include="Views\CargaAutomatica\Index.cshtml" />
     <Content Include="Views\GenerarArchivoCognos\GenerarArchivo.cshtml" />
     <Content Include="Views\ArchivoProcesadoDetalle\Create.cshtml" />
     <Content Include="Views\ArchivoProcesadoDetalle\Delete.cshtml" />
@@ -409,6 +404,11 @@
     <Content Include="Views\ArchivoProcesado\Details.cshtml" />
     <Content Include="Views\ArchivoProcesado\Edit.cshtml" />
     <Content Include="Views\ArchivoProcesado\Index.cshtml" />
+    <Content Include="Views\CargaAutomatica\Create.cshtml" />
+    <Content Include="Views\CargaAutomatica\Delete.cshtml" />
+    <Content Include="Views\CargaAutomatica\Details.cshtml" />
+    <Content Include="Views\CargaAutomatica\Edit.cshtml" />
+    <Content Include="Views\CargaAutomatica\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

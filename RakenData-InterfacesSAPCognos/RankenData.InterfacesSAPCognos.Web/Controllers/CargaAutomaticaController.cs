@@ -17,7 +17,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /CargaAutomatica/
         public ActionResult Index()
         {
-            var cargaautomatica = db.CargaAutomatica.Include(c => c.ArchivoCarga1).Include(c => c.TipoArchivoCarga);
+            var cargaautomatica = db.CargaAutomatica.Include(c => c.TipoArchivoCarga);
             return View(cargaautomatica.ToList());
         }
 
@@ -39,7 +39,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /CargaAutomatica/Create
         public ActionResult Create()
         {
-            ViewBag.ArchivoCarga = new SelectList(db.ArchivoCarga, "Id", "Nombre");
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre");
             return View();
         }
@@ -49,7 +48,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,FechaProgramada,Usuario,TipoArchivo,ArchivoCarga,FechaFinalizacion")] CargaAutomatica cargaautomatica)
+        public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +57,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ArchivoCarga = new SelectList(db.ArchivoCarga, "Id", "Nombre", cargaautomatica.ArchivoCarga);
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
             return View(cargaautomatica);
         }
@@ -75,7 +73,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ArchivoCarga = new SelectList(db.ArchivoCarga, "Id", "Nombre", cargaautomatica.ArchivoCarga);
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
             return View(cargaautomatica);
         }
@@ -85,7 +82,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,FechaProgramada,Usuario,TipoArchivo,ArchivoCarga,FechaFinalizacion")] CargaAutomatica cargaautomatica)
+        public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +90,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ArchivoCarga = new SelectList(db.ArchivoCarga, "Id", "Nombre", cargaautomatica.ArchivoCarga);
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
             return View(cargaautomatica);
         }
