@@ -1,9 +1,11 @@
 ﻿using Ranken.ISC.FileManager.ReadFiles;
 using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
@@ -17,14 +19,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-
         // Cargue balance / resultados
         [HttpPost]
-        public ActionResult CargarBalance()
+        public string CargarBalance()
         {
             ArchivoCarga archivoCarga = new ArchivoCarga();
             List<ArchivoCargaDetalle> lstarchivoCargaDetalle = new List<ArchivoCargaDetalle>();
             StringBuilder errores = new StringBuilder();
+            StringBuilder sbcompaniasNoCargadas = new StringBuilder();
+            StringBuilder sbcuentasNoCargadas = new StringBuilder();
             Random r = new Random();
             if (Request.Files.Count > 0)
             {
@@ -41,16 +44,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     MEXSALCTA[] Mexsalcta = datReader.StartReading_MEXSALCTA(result);
 
                     List<ValidateFileToLoad_Result> anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
-                   
+                    
                     if (anioMes_YaExistentes.Count == 0)
-                    { 
-                        ModelState.AddModelError("Error al cargar","Error al cargar");
-                          return RedirectToAction("Index");
+                    {                       
+                        return "No se cargo el archivo";
                     }
                     if (anioMes_YaExistentes[0].IdTipo == -1)
                     {
-                        ModelState.AddModelError("No se carga el archivo si el periodo ya existe", "AnnioMesYaExiste");// --->ValidateFileToLoad_Result.IdTipo = -1
-                              return RedirectToAction("Index");
+                       return "No se carga el archivo si el periodo ya existe";
                     }
                      if (anioMes_YaExistentes[0].IdTipo == 0)
                      {
@@ -60,14 +61,30 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         archivoCarga.Nombre = file.FileName + r.Next(100); //todo: random para pruebas
                         archivoCarga.Identificador = "B/R" + DateTime.Today.Month.ToString() + DateTime.Today.Year.ToString().Substring(2);
                         archivoCarga.Fecha = DateTime.Now;
-                        archivoCarga.TipoArchivoCarga = 1; //todo: cambiar por un enumerable
+                        archivoCarga.TipoArchivoCarga = (int)EnumTipoArchivoCarga.Balance;
                         archivoCarga.Anio_Col3 = Mexsalcta[0].Anio; 
                         archivoCarga.Mes_Col4 = Mexsalcta[0].Mes;
                         archivoCarga.Usuario = 1; // todo: id del usuario
 
                          //Guardar en bd
                         db.ArchivoCarga.Add(archivoCarga);
-                        db.SaveChanges();
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            return ManejoErrores.ErrorValidacion(e);
+                        }
+                        catch (DbUpdateException e)
+                        {
+                            return ManejoErrores.ErrorValidacionDb(e);
+                        }
+                        catch (Exception e)
+                        {
+                            return ManejoErrores.ErrorExepcion(e);
+                        }
+
 
                         // Insert tabla archivo carga detalle
                         for (int i = 0; i < Mexsalcta.Length; i++)
@@ -106,51 +123,52 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         }
                         catch (DbEntityValidationException e)
                         {
-                            ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
-                            return View();
+                            return ManejoErrores.ErrorValidacion(e);
                         }
+                        catch (DbUpdateException e)
+                        {
+                            return ManejoErrores.ErrorValidacionDb(e);
+                        }
+                        catch (Exception e)
+                        {
+                            return ManejoErrores.ErrorExepcion(e);
+                        }
+
 
                         List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
 
                         // Companias no cargadas
-                        List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 1).ToList();
-                        StringBuilder sbcompaniasNoCargadas = new StringBuilder();
+                        List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 2).ToList();
+                        
                         if (companiasNoCargadas.Count > 0)
                         {
+                            sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Compañias: </br>");
                             companiasNoCargadas.ForEach(cnc =>
-                                sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
+                                sbcompaniasNoCargadas.AppendLine(cnc.Description + " " + cnc.Value + "</br>")
                                 );
-
-                            ModelState.AddModelError("ERROR:", sbcompaniasNoCargadas.ToString());                          
                         }
 
                         // Cuentas no cargadas
-                        List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 2).ToList();
-                        StringBuilder sbcuentasNoCargadas = new StringBuilder();
+                        List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 1).ToList();
+                        
                         if (cuentasNoCargadas.Count > 0)
                         {
+                            sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Cuentas: </br>");
                             cuentasNoCargadas.ForEach(cnc =>
-                                sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Descripción: " + cnc.Description + "Valor: " + cnc.Value)
-                                );
-                                                        
-                            ModelState.AddModelError("ERROR:", sbcuentasNoCargadas.ToString());                          
+                                sbcuentasNoCargadas.AppendLine(cnc.Description + " " + cnc.Value + "</br>")
+                                );                                                                  
                         }
 
                         if (sbcompaniasNoCargadas.ToString() != string.Empty || sbcuentasNoCargadas.ToString() != string.Empty)
                          {
-                               return RedirectToAction("Index");
+                             return sbcompaniasNoCargadas.ToString() + "</br>" + sbcuentasNoCargadas.ToString();
                          }
 
-                        //string mensaje = "Se cargó el archivo exitosamente";// --->ValidateFileLoaded_Result.Id = 0
-                        //ModelState.AddModelError("No se han cargado las siguientes companias:", "companias");// --->ValidateFileLoaded_Result.Id = 2
-                        //ModelState.AddModelError("No se han cargado las siguientes cuentas:", "cuentas"); //---> ValidateFileLoaded_Result.Id = 1
-
-                        // llamar a un store procedure validar que la info esta bien esta devuelve un obj tabla
-                        return RedirectToAction("Index");
+                        return string.Empty;
                      }
                 }
             }
-            return RedirectToAction("Index");       
+            return string.Empty;     
         }
 
         //

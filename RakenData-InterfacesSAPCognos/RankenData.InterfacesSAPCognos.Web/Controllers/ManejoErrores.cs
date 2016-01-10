@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
     public static class ManejoErrores
     {
+        /// <summary>
+        /// Error en validacion de las entidades del modelo
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public static string ErrorValidacion(DbEntityValidationException e) 
         {
             StringBuilder errores = new StringBuilder();
@@ -24,5 +30,19 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             errores.AppendLine(exceptionMessage);
             return errores.ToString();
         }
+
+        public static string ErrorValidacionDb(DbUpdateException e)
+        {
+            string inner=e.InnerException != null ? e.InnerException.Message : "";
+            return "ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message + " Exepción: " + inner; 
+        }
+
+        public static string ErrorExepcion(Exception e)
+        {
+            string inner = e.InnerException != null ? e.InnerException.Message : "";
+            return "ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message + " Exepción: " + inner; 
+        }
+
+
     }
 }
