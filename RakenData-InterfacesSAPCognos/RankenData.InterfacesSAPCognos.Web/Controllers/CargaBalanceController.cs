@@ -44,29 +44,29 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     MEXSALCTA[] Mexsalcta = datReader.StartReading_MEXSALCTA(result);
 
                     List<ValidateFileToLoad_Result> anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
-                    
+
                     if (anioMes_YaExistentes.Count == 0)
-                    {                       
+                    {
                         return "No se cargo el archivo";
                     }
                     if (anioMes_YaExistentes[0].IdTipo == -1)
                     {
-                       return "No se carga el archivo si el periodo ya existe";
+                        return "No se carga el archivo si el periodo ya existe";
                     }
-                     if (anioMes_YaExistentes[0].IdTipo == 0)
-                     {
-                         ModelState.AddModelError("Si se carga el archivo", "cuentas");
-                         
-                         //Insert tabla archivocarga
+                    if (anioMes_YaExistentes[0].IdTipo == 0)
+                    {
+                        ModelState.AddModelError("Si se carga el archivo", "cuentas");
+
+                        //Insert tabla archivocarga
                         archivoCarga.Nombre = file.FileName + r.Next(100); //todo: random para pruebas
                         archivoCarga.Identificador = "B/R" + DateTime.Today.Month.ToString() + DateTime.Today.Year.ToString().Substring(2);
                         archivoCarga.Fecha = DateTime.Now;
                         archivoCarga.TipoArchivoCarga = (int)EnumTipoArchivoCarga.Balance;
-                        archivoCarga.Anio_Col3 = Mexsalcta[0].Anio; 
+                        archivoCarga.Anio_Col3 = Mexsalcta[0].Anio;
                         archivoCarga.Mes_Col4 = Mexsalcta[0].Mes;
                         archivoCarga.Usuario = 1; // todo: id del usuario
 
-                         //Guardar en bd
+                        //Guardar en bd
                         db.ArchivoCarga.Add(archivoCarga);
                         try
                         {
@@ -139,7 +139,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         // Companias no cargadas
                         List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 2).ToList();
-                        
+
                         if (companiasNoCargadas.Count > 0)
                         {
                             sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Compañias: </br>");
@@ -150,25 +150,25 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         // Cuentas no cargadas
                         List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 1).ToList();
-                        
+
                         if (cuentasNoCargadas.Count > 0)
                         {
                             sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Cuentas: </br>");
                             cuentasNoCargadas.ForEach(cnc =>
                                 sbcuentasNoCargadas.AppendLine(cnc.Description + " " + cnc.Value + "</br>")
-                                );                                                                  
+                                );
                         }
 
                         if (sbcompaniasNoCargadas.ToString() != string.Empty || sbcuentasNoCargadas.ToString() != string.Empty)
-                         {
-                             return sbcompaniasNoCargadas.ToString() + "</br>" + sbcuentasNoCargadas.ToString();
-                         }
+                        {
+                            return sbcompaniasNoCargadas.ToString() + "</br>" + sbcuentasNoCargadas.ToString();
+                        }
 
                         return string.Empty;
-                     }
+                    }
                 }
             }
-            return string.Empty;     
+            return string.Empty;
         }
 
         //
@@ -182,10 +182,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /EliminarBalance/Default1
         public ActionResult EliminarBalance()
         {
-            var a = new SelectList(db.ArchivoCarga, "Id", "Id");
-            //TODO: revisar si solo debe traer informacion filtrada solo por las base
-
-            ViewBag.Identificador1 = new SelectList(db.Anexo, "id", "Clave");
+            ViewBag.Identificador = new SelectList(db.ArchivoCarga.Where(aa => aa.TipoArchivoCarga == (int)EnumTipoArchivoCarga.Balance), "Id", "Identificador");
             return View();
         }
 
@@ -193,19 +190,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EliminarBalanceConfirmed(string Identificador)
         {
-            ArchivoCarga archivoCarga = db.ArchivoCarga.FirstOrDefault(ac => ac.Identificador == Identificador);
-            if (archivoCarga != null)
+            int idArchivo;
+            if (int.TryParse(Identificador, out idArchivo))
             {
-                int id = archivoCarga.Id;
-                 db.EliminarArchivoCarga(id);
-               
+                db.EliminarArchivoCarga(idArchivo);
+                ModelState.AddModelError("Error", "La Eliminación fue Exitosa");
             }
             else 
             {
-                ModelState.AddModelError("Error", "No se encontro informacion para ese identificador");
+                ModelState.AddModelError("Error","El id del archivo es invalido");
             }
-            
-            ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Identificador", "Identificador");
+           
+            ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Id", "Identificador");
             return View();
         }
     }

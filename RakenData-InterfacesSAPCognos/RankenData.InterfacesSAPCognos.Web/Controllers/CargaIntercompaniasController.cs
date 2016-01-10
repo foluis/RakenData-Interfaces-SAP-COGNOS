@@ -173,85 +173,33 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return string.Empty;  
         }
 
-       
+
 
         //
-        // GET: /CargaIntercompanias/Details/5
-        public ActionResult Details(int id)
+        // GET: /EliminarBalance/Default1
+        public ActionResult EliminarIntercompanias()
         {
+            ViewBag.Identificador = new SelectList(db.ArchivoCarga.Where(aa => aa.TipoArchivoCarga == (int)EnumTipoArchivoCarga.Intercompanias), "Id", "Identificador");
             return View();
         }
 
-        //
-        // GET: /CargaIntercompanias/Create
-        public ActionResult Create()
+        [HttpPost, ActionName("EliminarIntercompanias")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EliminarIntercompaniasConfirmed(string Identificador)
         {
+            int idArchivo;
+            if (int.TryParse(Identificador, out idArchivo))
+            {
+                db.EliminarArchivoCarga(idArchivo);
+                ModelState.AddModelError("Error", "La Eliminación fue Exitosa");
+            }
+            else
+            {
+                ModelState.AddModelError("Error", "El id del archivo es invalido");
+            }
+
+            ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Id", "Identificador");
             return View();
-        }
-
-        //
-        // POST: /CargaIntercompanias/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /CargaIntercompanias/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /CargaIntercompanias/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /CargaIntercompanias/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /CargaIntercompanias/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

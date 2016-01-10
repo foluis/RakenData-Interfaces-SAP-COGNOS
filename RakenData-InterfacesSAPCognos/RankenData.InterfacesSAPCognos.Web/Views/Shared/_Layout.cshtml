@@ -59,6 +59,7 @@
                                 <a href="">Carga Intercompañia</a>
                                 <ul>
                                     <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaIntercompanias")</li>
+                                    <li>@Html.ActionLink("Eliminar Intercompañias", "EliminarIntercompanias", "CargaIntercompanias")</li>
                                 </ul>
                             </li>  
                             <li>@Html.ActionLink("Programar Carga", "Index", "CargaAutomatica")</li> 
@@ -71,14 +72,7 @@
                             <li>@Html.ActionLink("Generar archivos Cognos", "GenerarArchivo", "GenerarArchivoCognos")</li>                            
                         </ul>
                    </li>
-                        @*<ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Anexo", "Index", "Anexo")</li>
-                <li>@Html.ActionLink("Cuenta Cognos", "Index", "CuentaCognos")</li>
-                <li>@Html.ActionLink("Cuenta SAP", "Index", "CuentaSAP")</li>
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-            </ul>*@
+          
                         @Html.Partial("_LoginPartial")
 </div>
         </div>

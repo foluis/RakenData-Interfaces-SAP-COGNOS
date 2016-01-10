@@ -402,6 +402,7 @@
     <Content Include="Views\ArchivoProcesadoDetalle\Edit.cshtml" />
     <Content Include="Views\ArchivoProcesadoDetalle\Index.cshtml" />
     <Content Include="Views\CargaBalance\EliminarBalance.cshtml" />
+    <Content Include="Views\CargaIntercompanias\EliminarIntercompanias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
