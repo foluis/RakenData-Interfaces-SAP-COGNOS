@@ -24,7 +24,24 @@ namespace Ranken.ISC.FileManager.WriteFiles
 
                 string fecha = DateTime.Now.ToString("_yyyyMMdd_HHmm");
 
-                string fileNname = string.Format(@"\Balance{0}.csv", fecha);
+                string fileName = "Archivo";
+
+                switch (tipo)
+                {
+                    case 1:
+                        fileName = fileName + "Balance";
+                        break;
+                    case 2:
+                        fileName = fileName + "Resultados";
+                        break;
+                    case 3:
+                        fileName = fileName + "Intercompanias";
+                        break;
+                    default:
+                        break;
+                }
+
+                string fileNname = string.Format("{0}{0}.csv", fileName, fecha);              
 
                 var finalPath = path + fileNname;
 
@@ -44,6 +61,42 @@ namespace Ranken.ISC.FileManager.WriteFiles
 
             return operationResult;
         }
+
+        //public OperationResult StartWritingArchivoResultados(string sociedad, string anio, string mes, int tipo, string path, List<ArchivoResultado> archivoResultadoBody)
+        //{
+        //    OperationResult operationResult = new OperationResult() { IdError = 0 };
+
+        //    try
+        //    {
+        //        List<ArchivoResultado> archivoResultadoHeader = new List<ArchivoResultado>();
+        //        PrepareSpetialHeader(ref archivoResultadoHeader, anio, mes, sociedad);
+
+        //        archivoResultadoHeader.AddRange(archivoResultadoBody);
+
+        //        var engine = new FileHelperAsyncEngine<ArchivoResultado>();
+
+        //        string fecha = DateTime.Now.ToString("_yyyyMMdd_HHmm");
+
+        //        string fileNname = string.Format(@"\Balance{0}.csv", fecha);
+
+        //        var finalPath = path + fileNname;
+
+        //        using (engine.BeginWriteFile(finalPath))
+        //        {
+        //            foreach (ArchivoResultado cust in archivoResultadoHeader)
+        //            {
+        //                engine.WriteNext(cust);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        operationResult.IdError = 1;
+        //        operationResult.Exception = ex;
+        //    }
+
+        //    return operationResult;
+        //}
 
         private void PrepareSpetialHeader(ref List<ArchivoResultado> archivoResultadoHeader, string anio, string mes, string sociedad)
         {
