@@ -10,19 +10,11 @@
 namespace RankenData.InterfacesSAPCognos.Web.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class CargaAutomatica
+    public partial class CreateArchivoIntercompanias_Result
     {
         public int Id { get; set; }
-        public System.DateTime FechaProgramada { get; set; }
-        public string RutaArchivo { get; set; }
-        public int Usuario { get; set; }
-        public int TipoArchivo { get; set; }
-        public Nullable<int> ArchivoCarga { get; set; }
-        public Nullable<System.DateTime> FechaFinalizacion { get; set; }
-    
-        public virtual ArchivoCarga ArchivoCarga1 { get; set; }
-        public virtual TipoArchivoCarga TipoArchivoCarga { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
     }
 }

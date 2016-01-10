@@ -212,6 +212,9 @@
     <Compile Include="Models\CompaniaRFC.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CreateArchivoIntercompanias_Result.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CuentaCognos.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
@@ -225,6 +228,12 @@
     <Compile Include="Models\Entidades\enArchivoProcesadoDetalle.cs" />
     <Compile Include="Models\Entidades\EnumTipoArchivoCarga.cs" />
     <Compile Include="Models\Entidades\EnumTipoModificacion.cs" />
+    <Compile Include="Models\Grupo.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GrupoUsuario.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\HistorialArchivoProcesadoDetalle.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
