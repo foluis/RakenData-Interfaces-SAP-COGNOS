@@ -36,7 +36,7 @@ namespace Ranken.ISC.FileManager.ReadFiles
             var engine = new FileHelperEngine<MEX_SALINT>();
 
             //path = path == string.Empty ? @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\MEX_SALINT_20151211.DAT" : path;
-            var result = engine.ReadFile(path);
+            var result = engine.ReadString(path);
 
             //foreach (MEX_SALINT file in result)
             //{
