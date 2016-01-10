@@ -23,8 +23,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public System.DateTime FechaModificacion { get; set; }
         public int TipoModificacionId { get; set; }
     
-        public virtual ArchivoProcesadoDetalle ArchivoProcesadoDetalle { get; set; }
         public virtual TipoModificacion TipoModificacion { get; set; }
         public virtual User User { get; set; }
+        public virtual ArchivoProcesadoDetalle ArchivoProcesadoDetalle { get; set; }
     }
 }

@@ -21,7 +21,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
         public int Id { get; set; }
         public int ArchivoProcesadoId { get; set; }
-        public int TipoArchivoCreacionId { get; set; }
         public string Company { get; set; }
         public string Period { get; set; }
         public string Actuality { get; set; }
@@ -39,7 +38,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string Retrieve { get; set; }
         public string Variance { get; set; }
     
-        public virtual ICollection<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
         public virtual ArchivoProcesado ArchivoProcesado { get; set; }
+        public virtual ICollection<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
     }
 }

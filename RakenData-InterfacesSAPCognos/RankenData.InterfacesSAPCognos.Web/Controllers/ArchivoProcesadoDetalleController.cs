@@ -12,6 +12,7 @@ using System.Text;
 using System.Data.Entity.Infrastructure;
 using Ranken.ISC.FileManager.WriteFiles;
 using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
+using Ranken.ISC.FileManager;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -109,8 +110,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
-            int archivoCreado =csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
-            if (archivoCreado == 1)//Archivo Creado
+            OperationResult archivoCreado = csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
+            if (archivoCreado.IdError == 0)//Archivo Creado
             {
                 archivoProcesado.ArchivoGenerado = true;
                 archivoProcesado.FechaArchivoGenerado = DateTime.Now;
@@ -158,8 +159,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             ArchivoProcesadoDetalle archivoprocesadodetalleTemplate = lstArchivoprocesadodetalle.First();
             //Mapeo
-            archivoprocesadodetalle.ArchivoProcesadoId = archivoprocesadodetalleTemplate.ArchivoProcesadoId;
-            archivoprocesadodetalle.TipoArchivoCreacionId = archivoprocesadodetalleTemplate.TipoArchivoCreacionId;
+            archivoprocesadodetalle.ArchivoProcesadoId = archivoprocesadodetalleTemplate.ArchivoProcesadoId;           
             archivoprocesadodetalle.Company = archivoprocesadodetalleTemplate.Company;
             archivoprocesadodetalle.Period = archivoprocesadodetalleTemplate.Period;
             archivoprocesadodetalle.Actuality = archivoprocesadodetalleTemplate.Actuality;          
