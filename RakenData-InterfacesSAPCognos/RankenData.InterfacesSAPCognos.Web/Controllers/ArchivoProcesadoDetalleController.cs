@@ -82,8 +82,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
             if (archivoprocesadodetalle.Count == 0)
             {
-                //ModelState.AddModelError("Error", "No hay información para generar el archivo");
-                return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "No hay información para generar el archivo" });    
+                  return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "No hay información para generar el archivo" });    
             }            
                     
             string ruta = db.AdministracionAplicacion.Where(aa => aa.Id == 3).FirstOrDefault().Valor;

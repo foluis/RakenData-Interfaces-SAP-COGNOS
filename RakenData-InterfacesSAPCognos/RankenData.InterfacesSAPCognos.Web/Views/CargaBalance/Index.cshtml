@@ -10,15 +10,44 @@
     @Html.ValidationMessage("Error")
 }
 
-@ViewBag.Error
-@TempData["Error"]
-@Session["Error"]
-
-<div>        
+<div id="progress" align="center">
+    <img src="../img/esperar.gif" alt="" height="200" width="200" />
+    <h2>Cargando.................</h2>
+</div>
+<div id="EnvioCarga">        
     @using (Html.BeginForm("CargarBalance", "CargaBalance", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <input type="file" name="file" /><br>
             <input type="submit" name="Submit" id="Submit" value="Carga Balance / Resultados" />
         }
+
+    <input type="button" name="CargarAsyn" id="CargarAsyn"  value="CargarAsyn" />
 </div>
+
+<script>
+    $("#document").ready(function ()
+    {
+        $('#progress').hide();
+        $('#EnvioCarga').show();
+
+        $("#CargarAsyn").click(function ()
+        {
+            $('#progress').show();
+            $('#EnvioCarga').hide();
+            $.ajax({
+                url: "/CargaBalance/CargarBalance",
+                type: 'POST',
+                complete: function() {
+                    $('#progress').hide();
+                },
+                success: function(result) {
+                    $('#result').html(result);
+                },
+                error: function() {
+                    //alert('Error');
+                }
+            });
+        })
+    })
+</script>
 
