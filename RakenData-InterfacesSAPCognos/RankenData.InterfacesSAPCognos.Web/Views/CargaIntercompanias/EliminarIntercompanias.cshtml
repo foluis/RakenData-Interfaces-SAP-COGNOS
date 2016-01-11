@@ -1,12 +1,12 @@
 ﻿@{
-    ViewBag.Title = "Eliminar Carga Balance";
+    ViewBag.Title = "Eliminar Intercmpañias";
 }
 
-<h2>Eliminar Carga Balance</h2>
+<h2>Eliminar Intercmpañias</h2>
 
 @if (!ViewData.ModelState.IsValid)
 {
-    <div>Mensaje:</div> 
+    <div>Mensaje:</div>
     @Html.ValidationMessage("Error")
 }
 @using (Html.BeginForm())
@@ -15,7 +15,7 @@
     <div>
         <div class="form-group">
             <p class="control-label col-md-2">Identificador: </p>
-            <div class="col-md-10">               
+            <div class="col-md-10">                
                 @Html.DropDownList("Identificador", string.Empty)
 
             </div>
@@ -28,3 +28,4 @@
         </div>
     </div>
 }
+

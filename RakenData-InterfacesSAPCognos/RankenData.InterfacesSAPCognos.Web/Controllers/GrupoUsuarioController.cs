@@ -10,112 +10,116 @@ using RankenData.InterfacesSAPCognos.Web.Models;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
-    public class CargaAutomaticaController : Controller
+    public class GrupoUsuarioController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // GET: /CargaAutomatica/
+        // GET: /GrupoUsuario/
         public ActionResult Index()
         {
-            var cargaautomatica = db.CargaAutomatica.Include(c => c.TipoArchivoCarga);
-            return View(cargaautomatica.ToList());
+            var grupousuario = db.GrupoUsuario.Include(g => g.Grupo).Include(g => g.User);
+            return View(grupousuario.ToList());
         }
 
-        // GET: /CargaAutomatica/Details/5
+        // GET: /GrupoUsuario/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            if (cargaautomatica == null)
+            GrupoUsuario grupousuario = db.GrupoUsuario.Find(id);
+            if (grupousuario == null)
             {
                 return HttpNotFound();
             }
-            return View(cargaautomatica);
+            return View(grupousuario);
         }
 
-        // GET: /CargaAutomatica/Create
+        // GET: /GrupoUsuario/Create
         public ActionResult Create()
         {
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre");
+            ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre");
+            ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username");
             return View();
         }
 
-        // POST: /CargaAutomatica/Create
+        // POST: /GrupoUsuario/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
+        public ActionResult Create([Bind(Include="Id,IdUsuario,IdGrupo")] GrupoUsuario grupousuario)
         {
             if (ModelState.IsValid)
             {
-                db.CargaAutomatica.Add(cargaautomatica);
+                db.GrupoUsuario.Add(grupousuario);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
-            return View(cargaautomatica);
+            ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre", grupousuario.IdGrupo);
+            ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
+            return View(grupousuario);
         }
 
-        // GET: /CargaAutomatica/Edit/5
+        // GET: /GrupoUsuario/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            if (cargaautomatica == null)
+            GrupoUsuario grupousuario = db.GrupoUsuario.Find(id);
+            if (grupousuario == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
-            return View(cargaautomatica);
+            ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre", grupousuario.IdGrupo);
+            ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
+            return View(grupousuario);
         }
 
-        // POST: /CargaAutomatica/Edit/5
+        // POST: /GrupoUsuario/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
+        public ActionResult Edit([Bind(Include="Id,IdUsuario,IdGrupo")] GrupoUsuario grupousuario)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cargaautomatica).State = EntityState.Modified;
+                db.Entry(grupousuario).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
-            return View(cargaautomatica);
+            ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre", grupousuario.IdGrupo);
+            ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
+            return View(grupousuario);
         }
 
-        // GET: /CargaAutomatica/Delete/5
+        // GET: /GrupoUsuario/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            if (cargaautomatica == null)
+            GrupoUsuario grupousuario = db.GrupoUsuario.Find(id);
+            if (grupousuario == null)
             {
                 return HttpNotFound();
             }
-            return View(cargaautomatica);
+            return View(grupousuario);
         }
 
-        // POST: /CargaAutomatica/Delete/5
+        // POST: /GrupoUsuario/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            db.CargaAutomatica.Remove(cargaautomatica);
+            GrupoUsuario grupousuario = db.GrupoUsuario.Find(id);
+            db.GrupoUsuario.Remove(grupousuario);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

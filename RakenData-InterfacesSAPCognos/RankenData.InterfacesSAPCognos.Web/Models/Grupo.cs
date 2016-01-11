@@ -12,23 +12,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Grupo
     {
-        public User()
+        public Grupo()
         {
-            this.ArchivoCarga = new HashSet<ArchivoCarga>();
-            this.ArchivoProcesado = new HashSet<ArchivoProcesado>();
             this.GrupoUsuario = new HashSet<GrupoUsuario>();
-            this.HistorialArchivoProcesadoDetalle = new HashSet<HistorialArchivoProcesadoDetalle>();
         }
     
         public int Id { get; set; }
-        public string Username { get; set; }
-        public bool IsActive { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
     
-        public virtual ICollection<ArchivoCarga> ArchivoCarga { get; set; }
-        public virtual ICollection<ArchivoProcesado> ArchivoProcesado { get; set; }
         public virtual ICollection<GrupoUsuario> GrupoUsuario { get; set; }
-        public virtual ICollection<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
     }
 }

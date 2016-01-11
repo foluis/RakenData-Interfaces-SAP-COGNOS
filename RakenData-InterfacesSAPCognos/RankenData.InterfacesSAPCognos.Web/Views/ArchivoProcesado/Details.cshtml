@@ -1,0 +1,82 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.ArchivoProcesado
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ArchivoProcesado</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Periodo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Periodo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Anio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Anio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArchivoGenerado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArchivoGenerado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaArchivoGenerado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaArchivoGenerado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaProcesoArchivo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaProcesoArchivo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompaniaCognos.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaCognos.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoArchivoCreacion.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoArchivoCreacion.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Username)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

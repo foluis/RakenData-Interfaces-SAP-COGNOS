@@ -4,47 +4,71 @@
 
 <h2>Carga Balance / Resultados </h2>
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div>Mensaje:</div> 
-    @Html.ValidationMessage("Error")
-}
-
 <div id="progress" align="center">
     <img src="../img/esperar.gif" alt="" height="200" width="200" />
     <h2>Cargando.................</h2>
 </div>
-<div id="EnvioCarga">        
-    @using (Html.BeginForm("CargarBalance", "CargaBalance", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <input type="file" name="file" /><br>
-            <input type="submit" name="Submit" id="Submit" value="Carga Balance / Resultados" />
-        }
 
-    <input type="button" name="CargarAsyn" id="CargarAsyn"  value="CargarAsyn" />
+<div id="exito" align="center" class="field-validation-error">
+    <h2>Se cargo Exitosamente !!</h2>
+</div>
+<div id="error" align="center" class="field-validation-error">
+    <h2>Error:</h2>
+    <h3><div id="desError"></div></h3>
+</div>
+<div id="EnvioCarga">  
+    <input type="file" name="file" id="file" /><br>      
+    <input type="button" name="CargarAsyn" id="CargarAsyn" value="Carga Balance / Resultados" />
 </div>
 
 <script>
     $("#document").ready(function ()
     {
         $('#progress').hide();
+        $('#exito').hide();
+        $('#error').hide();
         $('#EnvioCarga').show();
 
         $("#CargarAsyn").click(function ()
         {
             $('#progress').show();
             $('#EnvioCarga').hide();
+            $('#exito').hide();
+            $('#error').hide();
+
+            var formdata = new FormData(); //FormData object
+            var fileInput = document.getElementById('file');
+            //Iterating through each files selected in fileInput
+            for (i = 0; i < fileInput.files.length; i++) {
+                //Appending each file to FormData object
+                formdata.append(fileInput.files[i].name, fileInput.files[i]);
+            }
             $.ajax({
                 url: "/CargaBalance/CargarBalance",
                 type: 'POST',
-                complete: function() {
-                    $('#progress').hide();
-                },
-                success: function(result) {
-                    $('#result').html(result);
+                contentType: false,
+                processData: false,
+                data:formdata,
+                success: function (result) {
+                    if (result == "") {
+                        $('#exito').show();
+                        $('#progress').hide();
+                        $('#EnvioCarga').hide();
+                        $('#error').hide();
+                    }
+                    else {
+                        $("#desError").append("<p>" + result + "</p>");
+                        $('#error').show();
+                        $('#progress').hide();
+                        $('#EnvioCarga').hide();
+                        $('#exito').hide();
+                    }
                 },
                 error: function() {
-                    //alert('Error');
+                    ('#error').show();
+                    $('#exito').hide();
+                    $('#progress').hide();
+                    $('#EnvioCarga').hide();                 
                 }
             });
         })

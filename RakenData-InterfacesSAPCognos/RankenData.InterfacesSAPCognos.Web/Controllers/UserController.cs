@@ -10,112 +10,107 @@ using RankenData.InterfacesSAPCognos.Web.Models;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
-    public class CargaAutomaticaController : Controller
+    public class UserController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // GET: /CargaAutomatica/
+        // GET: /User/
         public ActionResult Index()
         {
-            var cargaautomatica = db.CargaAutomatica.Include(c => c.TipoArchivoCarga);
-            return View(cargaautomatica.ToList());
+            return View(db.User.ToList());
         }
 
-        // GET: /CargaAutomatica/Details/5
+        // GET: /User/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            if (cargaautomatica == null)
+            User user = db.User.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(cargaautomatica);
+            return View(user);
         }
 
-        // GET: /CargaAutomatica/Create
+        // GET: /User/Create
         public ActionResult Create()
         {
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre");
             return View();
         }
 
-        // POST: /CargaAutomatica/Create
+        // POST: /User/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
+        public ActionResult Create([Bind(Include="Id,Username,IsActive")] User user)
         {
             if (ModelState.IsValid)
             {
-                db.CargaAutomatica.Add(cargaautomatica);
+                db.User.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
-            return View(cargaautomatica);
+            return View(user);
         }
 
-        // GET: /CargaAutomatica/Edit/5
+        // GET: /User/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            if (cargaautomatica == null)
+            User user = db.User.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
-            return View(cargaautomatica);
+            return View(user);
         }
 
-        // POST: /CargaAutomatica/Edit/5
+        // POST: /User/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
+        public ActionResult Edit([Bind(Include="Id,Username,IsActive")] User user)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cargaautomatica).State = EntityState.Modified;
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
-            return View(cargaautomatica);
+            return View(user);
         }
 
-        // GET: /CargaAutomatica/Delete/5
+        // GET: /User/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            if (cargaautomatica == null)
+            User user = db.User.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(cargaautomatica);
+            return View(user);
         }
 
-        // POST: /CargaAutomatica/Delete/5
+        // POST: /User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            db.CargaAutomatica.Remove(cargaautomatica);
+            User user = db.User.Find(id);
+            db.User.Remove(user);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

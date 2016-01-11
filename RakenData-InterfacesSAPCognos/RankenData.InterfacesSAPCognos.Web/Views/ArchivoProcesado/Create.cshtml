@@ -1,0 +1,92 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.ArchivoProcesado
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ArchivoProcesado</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompaniaCognosId, "CompaniaCognosId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CompaniaCognosId", String.Empty)
+                @Html.ValidationMessageFor(model => model.CompaniaCognosId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Periodo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Periodo)
+                @Html.ValidationMessageFor(model => model.Periodo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Anio, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Anio)
+                @Html.ValidationMessageFor(model => model.Anio)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoArchivoCreacionId, "TipoArchivoCreacionId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TipoArchivoCreacionId", String.Empty)
+                @Html.ValidationMessageFor(model => model.TipoArchivoCreacionId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ArchivoGenerado, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ArchivoGenerado)
+                @Html.ValidationMessageFor(model => model.ArchivoGenerado)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaArchivoGenerado, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaArchivoGenerado)
+                @Html.ValidationMessageFor(model => model.FechaArchivoGenerado)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaProcesoArchivo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaProcesoArchivo)
+                @Html.ValidationMessageFor(model => model.FechaProcesoArchivo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UsuarioId, "UsuarioId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("UsuarioId", String.Empty)
+                @Html.ValidationMessageFor(model => model.UsuarioId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

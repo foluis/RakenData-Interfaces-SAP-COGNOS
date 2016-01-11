@@ -1,0 +1,71 @@
+﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.ArchivoProcesado>
+
+@{
+    ViewBag.Title = "Monitor Archivos Procesados";
+}
+
+<h2>Monitor Archivos Procesados</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Periodo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ArchivoGenerado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaArchivoGenerado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaProcesoArchivo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompaniaCognos.Descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoArchivoCreacion.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Username)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Periodo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Anio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ArchivoGenerado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaArchivoGenerado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaProcesoArchivo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompaniaCognos.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoArchivoCreacion.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Username)
+        </td>
+        <td>
+            @Html.ActionLink("Consultar Datos", "ConsultarDetalle", new { id = item.Id })   
+        </td>
+    </tr>
+}
+
+</table>

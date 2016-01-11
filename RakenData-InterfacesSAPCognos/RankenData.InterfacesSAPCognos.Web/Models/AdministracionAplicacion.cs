@@ -18,6 +18,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string Nombre { get; set; }
         public string Valor { get; set; }
         public string Descripcion { get; set; }
-        public string Grupo { get; set; }
+        public int Grupo { get; set; }
     }
 }
