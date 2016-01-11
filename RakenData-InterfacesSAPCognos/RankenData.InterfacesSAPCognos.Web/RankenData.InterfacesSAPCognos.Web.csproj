@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Models\Entidades\enArchivoCargaCongnos.cs" />
     <Compile Include="Models\Entidades\enArchivoProcesadoDetalle.cs" />
+    <Compile Include="Models\Entidades\EnumTipoArchivoCarga.cs" />
     <Compile Include="Models\Entidades\EnumTipoModificacion.cs" />
     <Compile Include="Models\Grupo.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
