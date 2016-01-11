@@ -23,7 +23,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         /// <returns></returns>
         public static bool ValidarUsuario(string usuario, string clave)
         {
-         
+            System.Timers.Timer timer = new System.Timers.Timer();
             //TODO: quitar el return cuando se desarrolle la parte de LDAP
             return true;
             string servidorLDAP = ConfigurationManager.AppSettings["servidorLDAP"];
