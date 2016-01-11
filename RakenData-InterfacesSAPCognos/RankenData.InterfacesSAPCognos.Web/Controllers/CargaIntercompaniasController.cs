@@ -20,12 +20,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         //
         // GET: /CargaIntercompanias/
+          [Authorize(Roles = "2")]
         public ActionResult Index()
         {
             return View();
         }
 
          // Cargar Intercompania
+
+          [Authorize(Roles = "2")]
         [HttpPost]
         public string CargarIntercompania()
         {

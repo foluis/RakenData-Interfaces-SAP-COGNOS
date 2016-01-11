@@ -15,6 +15,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
         //
         // GET: /GenerarArchivoCognos/
+         [Authorize(Roles = "3")]
         public ActionResult GenerarArchivo()
         {
             enArchivoCargaCongnos archivo = new enArchivoCargaCongnos();
@@ -32,85 +33,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             List<int?> id = db.CreateArchivoBalance(archivoCargaCongnos.LstIdCompaniasCognos.First().ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, archivoCargaCongnos.TipoArchivo.ToString(), 1).ToList();
           
             return RedirectToAction("Index", "ArchivoProcesadoDetalle", new { id = id.FirstOrDefault(), tipoArchivo = archivoCargaCongnos.TipoArchivo });
-        }
-
-        //
-        // GET: /GenerarArchivoCognos/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /GenerarArchivoCognos/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        //
-        // POST: /GenerarArchivoCognos/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /GenerarArchivoCognos/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /GenerarArchivoCognos/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /GenerarArchivoCognos/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /GenerarArchivoCognos/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        }       
     }
 }

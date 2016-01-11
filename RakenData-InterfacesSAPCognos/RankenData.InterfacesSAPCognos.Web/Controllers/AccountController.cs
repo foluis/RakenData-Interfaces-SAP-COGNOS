@@ -9,12 +9,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using System.Web.Security;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private EntitiesRakenData db = new EntitiesRakenData();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -43,17 +45,45 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            //adicionar gurpos al framework de seguridad
+            foreach(var grupo in db.Grupo.ToList())
+            {
+                if(!System.Web.Security.Roles.RoleExists(grupo.Id.ToString()))
+                {
+                    System.Web.Security.Roles.CreateRole(grupo.Id.ToString());
+                }     
+            }
+    
+
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+                //Validar el usuario en el directoiro activo
+                if (LDAP.ValidarUsuario(model.UserName, model.Password))
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    User usuario = db.User.FirstOrDefault(usu => usu.Username == model.UserName);
+
+                    if (usuario != null) // El usuario existe
+                    {
+                        //asignar al usuario sus roles segun el grupo en la bd
+                        foreach (var grupo in usuario.GrupoUsuario)
+                        {
+                            if (!System.Web.Security.Roles.IsUserInRole(usuario.Username, grupo.IdGrupo.ToString()))
+                            {
+                                System.Web.Security.Roles.AddUserToRole(usuario.Username, grupo.IdGrupo.ToString());
+                            }                            
+                        }
+
+                        FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+                        return RedirectToLocal(returnUrl);
+                    }
+                    else // El usuario no existe y se adiciona a la base de datos
+                    {
+                        db.User.Add(new User() { Username = model.UserName, IsActive = true });
+                        db.SaveChanges();
+                        ModelState.AddModelError("", "El usuario no se encontraba en el sistema, se adiciono pero se requiere configurar sus grupos de seguridad");
+                        return View(model);
+                    }
                 }
             }
 
@@ -289,8 +319,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            FormsAuthentication.SignOut();
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
+            //AuthenticationManager.SignOut();
+            //return RedirectToAction("Index", "Home");
         }
 
         //
@@ -378,7 +411,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 

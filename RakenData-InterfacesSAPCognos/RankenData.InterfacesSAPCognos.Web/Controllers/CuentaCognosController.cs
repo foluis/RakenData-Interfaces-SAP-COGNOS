@@ -21,6 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CuentaCognos/file cargue masivo
+        [Authorize(Roles="1")]
         public ActionResult Index(HttpPostedFileBase file)
         {
             var cuentacognos = db.CuentaCognos.Include(c => c.Anexo).Where(cc=> cc.IsActive == true);

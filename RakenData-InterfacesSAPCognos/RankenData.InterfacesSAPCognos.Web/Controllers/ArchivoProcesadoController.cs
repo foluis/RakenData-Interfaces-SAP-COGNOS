@@ -15,6 +15,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /ArchivoProcesado/
+          [Authorize(Roles = "3")]
         public ActionResult Index()
         {
             var archivoprocesado = db.ArchivoProcesado.Include(a => a.CompaniaCognos).Include(a => a.TipoArchivoCreacion).Include(a => a.User);

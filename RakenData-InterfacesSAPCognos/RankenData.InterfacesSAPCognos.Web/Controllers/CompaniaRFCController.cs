@@ -20,6 +20,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CompaniaRFC/
+         [Authorize(Roles = "1")]
         public ActionResult Index(HttpPostedFileBase file)
         {
             var companiarfc = db.CompaniaRFC.Include(c => c.CompaniaCognos1);

@@ -21,6 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CuentaSAP/
+        [Authorize(Roles="1")]
         public ActionResult Index(HttpPostedFileBase file)
         {
             var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1).Where(cc => cc.IsActive == true);
