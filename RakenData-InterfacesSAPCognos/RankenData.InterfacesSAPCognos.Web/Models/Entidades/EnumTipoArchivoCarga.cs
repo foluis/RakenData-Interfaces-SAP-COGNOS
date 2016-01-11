@@ -7,7 +7,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models.Entidades
 {
     public enum EnumTipoArchivoCarga
     {
-         Balance =1,
+         Balance =1, 
          Intercompanias = 2
     }
 }
