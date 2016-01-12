@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure;
 using Ranken.ISC.FileManager.WriteFiles;
 using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 using Ranken.ISC.FileManager;
+using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {

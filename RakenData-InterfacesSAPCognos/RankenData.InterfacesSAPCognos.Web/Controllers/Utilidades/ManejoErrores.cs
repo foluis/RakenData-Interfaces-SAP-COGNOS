@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace RankenData.InterfacesSAPCognos.Web.Controllers
+namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
 {
     public static class ManejoErrores
     {

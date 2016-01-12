@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using RankenData.InterfacesSAPCognos.Web.Models;
 using System.Web.Security;
+using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {

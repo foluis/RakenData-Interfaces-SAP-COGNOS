@@ -183,10 +183,11 @@
     <Compile Include="Controllers\GenerarArchivoCognosController.cs" />
     <Compile Include="Controllers\GrupoUsuarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LDAP.cs" />
-    <Compile Include="Controllers\ManejoErrores.cs" />
-    <Compile Include="Controllers\TimerCargaAutomatica.cs" />
+    <Compile Include="Controllers\Utilidades\LDAP.cs" />
+    <Compile Include="Controllers\Utilidades\ManejoErrores.cs" />
+    <Compile Include="Controllers\Utilidades\TimerCargaAutomatica.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\Utilidades\Log.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -237,6 +238,7 @@
     <Compile Include="Models\Entidades\enArchivoProcesadoDetalle.cs" />
     <Compile Include="Models\Entidades\EnumTipoArchivoCarga.cs" />
     <Compile Include="Models\Entidades\EnumTipoModificacion.cs" />
+    <Compile Include="Models\Entidades\EnumTypeLog.cs" />
     <Compile Include="Models\Grupo.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>

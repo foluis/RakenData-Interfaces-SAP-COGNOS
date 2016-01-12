@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 
-namespace RankenData.InterfacesSAPCognos.Web.Controllers
+namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
 {
     public static class LDAP
     {
