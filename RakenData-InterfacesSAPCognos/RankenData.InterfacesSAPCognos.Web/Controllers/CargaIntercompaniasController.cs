@@ -21,7 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         //
         // GET: /CargaIntercompanias/
-          [Authorize(Roles = "2")]
+          //[Authorize(Roles = "2")]
         public ActionResult Index()
         {
             return View();
@@ -29,7 +29,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
          // Cargar Intercompania
 
-          [Authorize(Roles = "2")]
+          //[Authorize(Roles = "2")]
         [HttpPost]
         public string CargarIntercompania()
         {

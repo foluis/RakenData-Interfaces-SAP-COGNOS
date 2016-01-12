@@ -15,7 +15,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
         //
         // GET: /GenerarArchivoCognos/
-         [Authorize(Roles = "3")]
+         //[Authorize(Roles = "3")]
         public ActionResult GenerarArchivo()
         {
             enArchivoCargaCongnos archivo = new enArchivoCargaCongnos();

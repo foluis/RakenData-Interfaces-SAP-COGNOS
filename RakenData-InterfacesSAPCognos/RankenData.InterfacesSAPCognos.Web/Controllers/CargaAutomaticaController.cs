@@ -15,7 +15,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CargaAutomatica/
-          [Authorize(Roles = "2")]
+          //[Authorize(Roles = "2")]
         public ActionResult Index()
         {
             var cargaautomatica = db.CargaAutomatica.Include(c => c.TipoArchivoCarga);

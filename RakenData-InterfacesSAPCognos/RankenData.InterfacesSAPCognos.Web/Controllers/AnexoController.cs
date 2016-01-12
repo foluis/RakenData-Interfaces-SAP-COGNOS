@@ -21,7 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /Anexo/
-         [Authorize(Roles = "1")]
+         //[Authorize(Roles = "1")]
         public ActionResult Index(HttpPostedFileBase file)
         {           
             if (file != null && file.ContentLength > 0)

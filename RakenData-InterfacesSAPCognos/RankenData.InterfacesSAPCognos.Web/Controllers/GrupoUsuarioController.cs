@@ -15,7 +15,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /GrupoUsuario/
-         [Authorize(Roles = "4")]
+         //[Authorize(Roles = "4")]
         public ActionResult Index()
         {
             var grupousuario = db.GrupoUsuario.Include(g => g.Grupo).Include(g => g.User);

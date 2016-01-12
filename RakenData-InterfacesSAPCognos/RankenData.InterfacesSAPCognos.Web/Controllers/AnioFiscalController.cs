@@ -15,7 +15,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /AnioFiscal/
-         [Authorize(Roles = "1")]
+         //[Authorize(Roles = "1")]
         public ActionResult Index()
         {          
             return View(db.AnioFiscal.ToList());

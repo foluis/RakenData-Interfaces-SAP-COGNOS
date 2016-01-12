@@ -16,7 +16,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /ArchivoCarga/
-          [Authorize(Roles = "2")]
+          //[Authorize(Roles = "2")]
         public ActionResult Index(DateTime? startDate, DateTime? endDate)
         {
             if (startDate != null && endDate == null)
