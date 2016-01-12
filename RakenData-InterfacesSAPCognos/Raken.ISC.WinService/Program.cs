@@ -17,7 +17,7 @@ namespace Raken.ISC.WinService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new ServiceRaken()
             };
             ServiceBase.Run(ServicesToRun);
         }
