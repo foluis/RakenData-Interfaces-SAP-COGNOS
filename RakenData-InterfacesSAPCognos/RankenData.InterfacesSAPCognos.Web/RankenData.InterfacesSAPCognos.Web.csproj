@@ -174,7 +174,7 @@
     <Compile Include="Controllers\CargaAutomaticaController.cs" />
     <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CargaIntercompaniasController.cs" />
-    <Compile Include="Controllers\CargarArchivo.cs" />
+    <Compile Include="Controllers\Utilidades\CargarArchivo.cs" />
     <Compile Include="Controllers\CompaniaCognosController.cs" />
     <Compile Include="Controllers\CompaniaRFCController.cs" />
     <Compile Include="Controllers\CuentaCognosController.cs" />

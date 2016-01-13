@@ -30,7 +30,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             {
                 case EnumTypeLog.Error:
                     //using (StreamWriter file = File.AppendText(GlobalInformation.LogPath + "/Log Error " + date + ".txt"))
-                    using (StreamWriter file = File.AppendText(logPath + "/App Log " + date + ".rjh"))
+                    using (StreamWriter file = File.AppendText(logPath + "/Log Error " + date + ".txt"))
                     {
                         string excepcion = string.Empty;
                         if (ex != null)
@@ -41,9 +41,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                                 excepcion = excepcion + ex.InnerException.Message;
                             }
                         }
-
-                        excepcion = excepcion.Replace(@"d:\SkyDrive\Empleos\06 RJH Consultores\Proyectos\Verificación de CFDI\Proyecto CFDI Miguel-Luis", string.Empty);
-
+                                                
                         message = menssageError + "  Error: " + excepcion + time;
                         Console.WriteLine(message);
                         file.WriteLine(message);

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -18,6 +19,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
         List<CargaAutomatica> lstCargaAutomatica = null;
         DAT_Reader datReader = new DAT_Reader();
+        string ruta;
 
         /// <summary>
         /// Inicalizar timer
@@ -32,7 +34,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             time = 30000; //TODO: Esta linea es de pruebas
             timer.Interval = time;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-           // timer.Start();
+            timer.Start();
         }
 
         /// <summary>
@@ -43,30 +45,44 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
             string nombreArchivo = string.Empty;
-            string result= string.Empty;
+            string result = string.Empty;
             string errores = string.Empty;
             if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1")
             {
-                this.lstCargaAutomatica = db.CargaAutomatica.Where(ca => DbFunctions.TruncateTime(ca.FechaProgramada) == DbFunctions.TruncateTime(DateTime.Now)).ToList();
+                foreach (CargaAutomatica cargaAutomatica in db.CargaAutomatica.ToList())
+                {
+                    if (cargaAutomatica.FechaProgramada.Date == DateTime.Now.Date)
+                    {
+                        this.lstCargaAutomatica.Add(cargaAutomatica);
+
+                    }
+                }
+
                 if (lstCargaAutomatica != null && lstCargaAutomatica.Count > 0)
                 {
                     foreach (CargaAutomatica cargaAutomatica in lstCargaAutomatica)
                     {
                         if (cargaAutomatica.TipoArchivo == (int)EnumTipoArchivoCarga.Balance)
                         {
-                             nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.Month.ToString() + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
-                              result = System.IO.File.ReadAllText(@"C:\Users\mgonzalez\Documents\ProyectoLuisF\prueba.DAT");
-                              errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
+                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.Month.ToString() + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
+                            ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
+                            result = System.IO.File.ReadAllText(ruta);
+                            errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
                         }
                         else // Si el archivo es intercompañias
                         {
-                             nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.Month.ToString() + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
-                              result = System.IO.File.ReadAllText(@"C:\Users\mgonzalez\Documents\ProyectoLuisF\prueba.DAT");
-                              errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
+                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.Month.ToString() + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
+                            ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
+                            result = System.IO.File.ReadAllText(@"C:\Users\mgonzalez\Documents\ProyectoLuisF\prueba.DAT");
+                            errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
                         }
-                        
+
                         if (string.IsNullOrEmpty(errores))
                         {
+                            //cargaAutomatica.
+                            //db.Entry(cargaAutomatica).State = EntityState.Modified;
+                            //db.SaveChanges();
+
                             Log.WriteLog("El archivo : " + nombreArchivo + " se cargo exitosamente", EnumTypeLog.Event, true);
                         }
                         else
