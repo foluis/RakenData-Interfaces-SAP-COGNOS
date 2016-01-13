@@ -127,7 +127,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                             throw new MissingFieldException();
                         }
 
-                        string[] destinationMails = ToEmailUser.Replace(",", ";").Split(';');
+                        //string[] destinationMails = ToEmailUser.Replace(",", ";").Split(';');
+                        List<string> destinationMails = mail.To;
                         foreach (string theMail in destinationMails)
                         {
                             mailMessage.To.Add(new MailAddress(theMail));

@@ -19,6 +19,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
         List<CargaAutomatica> lstCargaAutomatica = null;
         DAT_Reader datReader = new DAT_Reader();
+        MailInfo mailInfo = new MailInfo();
         string ruta;
 
         /// <summary>
@@ -26,10 +27,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         /// </summary>
         public void Init()
         {
-            MailInfo mailInfo = new MailInfo();
-            mailInfo.Subject = "prueba";
-            mailInfo.Message = "prueba de mensaje";
-            AdmMail.Enviar(mailInfo);
+            
+            //mailInfo.Subject = "prueba 5";
+            //mailInfo.To = new List<string>() { "mmbatu@hotmail.com", "mmbattou@gmail.com" };
+                       
+            //mailInfo.Message = "prueba de mensaje 555";
+            //AdmMail.Enviar(mailInfo);
 
             //string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
             //System.Timers.Timer timer = new System.Timers.Timer();
@@ -84,11 +87,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if (string.IsNullOrEmpty(errores))
                         {
+                            //TODO: guardar que ya se subio en la base de datos y tener el correo para enviar el resultado
                             //cargaAutomatica.
                             //db.Entry(cargaAutomatica).State = EntityState.Modified;
                             //db.SaveChanges();
 
                             Log.WriteLog("El archivo : " + nombreArchivo + " se cargo exitosamente", EnumTypeLog.Event, true);
+
+                            mailInfo.Subject = "prueba 5";
+                            //mailInfo.To = cargaAutomatica.correo.Replace(",", ";").Split(';');
+
+                            mailInfo.Message = "prueba de mensaje 555";
+                            AdmMail.Enviar(mailInfo);
+
+
+
                         }
                         else
                         {
