@@ -28,15 +28,33 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
         public static string CargarArchivoBD(string nombreArchivo, string datosCargar, EnumTipoArchivoCarga tipoArchivo)
         {
             ArchivoCarga archivoCarga = new ArchivoCarga();
-            List<ArchivoCargaDetalle> lstarchivoCargaDetalle = new List<ArchivoCargaDetalle>();
+            List<ArchivoCargaDetalle> lstarchivoCargaDetalle = null;
             StringBuilder errores = new StringBuilder();
             StringBuilder sbcompaniasNoCargadas = new StringBuilder();
             StringBuilder sbcuentasNoCargadas = new StringBuilder();
+            List<ValidateFileToLoad_Result> anioMes_YaExistentes = null;
+            MEXSALCTA[] Mexsalcta = null;
+            MEX_SALINT[] Mexsalint = null;
+            short anio;
+            byte mes;
+
             Random r = new Random();
             DAT_Reader datReader = new DAT_Reader();
-            MEXSALCTA[] Mexsalcta = datReader.StartReading_MEXSALCTA(datosCargar);
 
-            List<ValidateFileToLoad_Result> anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
+            if (tipoArchivo == EnumTipoArchivoCarga.Balance)
+            {
+                Mexsalcta = datReader.StartReading_MEXSALCTA(datosCargar);
+                anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
+                anio = Mexsalcta[0].Anio;
+                mes = Mexsalcta[0].Mes;
+            }
+            else
+            {
+                Mexsalint = datReader.StartReading_MEX_SALINT(datosCargar);
+                anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalint[0].Anio, Mexsalint[0].Mes).ToList();
+                anio = (short)Mexsalint[0].Anio;
+                mes = (byte)Mexsalint[0].Mes;
+            }
 
             if (anioMes_YaExistentes.Count == 0)
             {
@@ -52,9 +70,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 archivoCarga.Nombre = nombreArchivo + r.Next(100); //TODO: random para pruebas
                 archivoCarga.Identificador = "B/R" + DateTime.Today.Month.ToString() + DateTime.Today.Year.ToString().Substring(2);
                 archivoCarga.Fecha = DateTime.Now;
-                archivoCarga.TipoArchivoCarga = (int)EnumTipoArchivoCarga.Balance;
-                archivoCarga.Anio_Col3 = Mexsalcta[0].Anio;
-                archivoCarga.Mes_Col4 = Mexsalcta[0].Mes;
+                archivoCarga.TipoArchivoCarga = (int)tipoArchivo;
+                archivoCarga.Anio_Col3 = anio;
+                archivoCarga.Mes_Col4 = mes;
                 archivoCarga.Usuario = 1; //TODO: id del usuario
 
                 //Guardar en bd
@@ -77,36 +95,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 }
 
 
-                // Insert tabla archivo carga detalle
-                for (int i = 0; i < Mexsalcta.Length; i++)
+                if (tipoArchivo == EnumTipoArchivoCarga.Balance)
                 {
-                    lstarchivoCargaDetalle.Add(
-                         new ArchivoCargaDetalle()
-                         {
-                             ArchivoCarga = archivoCarga.Id,
-                             FilaArchivo = i + 1,
-                             Escenario = int.Parse(Mexsalcta[i].Escenario),
-                             Versión = byte.Parse(Mexsalcta[i].Version),
-                             Anio = Mexsalcta[i].Anio,
-                             Mes = Mexsalcta[i].Mes,
-                             UnidadDeNegocio = byte.Parse(Mexsalcta[i].UnidadNegocio),
-                             Cuenta = Mexsalcta[i].Cuenta,
-                             Moneda = Mexsalcta[i].Moneda,
-                             GAAP = Mexsalcta[i].GAAP,
-                             Interfase = Mexsalcta[i].Interfase,
-                             NominalAjustado = byte.Parse(Mexsalcta[i].NominalAjustado),
-                             Compania = Mexsalcta[i].Compania,
-                             CopaniaRelacionada = null,
-                             MovimientoDebitoPeriodo = Mexsalcta[i].MovimientoDebitoPeriodo,
-                             MovimientoCreditoPeriodo = Mexsalcta[i].MovimientoCreditoPeriodo,
-                             MovimientoDebitoAcumulado = Mexsalcta[i].MovimientoDébitoAcumulado,
-                             MovimientoCreditoAcumulado = Mexsalcta[i].MovimientoCréditoAcumulado,
-                             SaldoAcumuladoPeriodo = Mexsalcta[i].SaldoAcumuladoPeriodo,
-                             HoraActualizacion = Mexsalcta[i].HoraActualizacion.ToString("yyyyMMddHHmm"),
-                             UsuarioActualizacion = Mexsalcta[i].UsuarioSctualizacion
-                         });
+                    lstarchivoCargaDetalle = MapeaDetalleBalance(Mexsalcta, archivoCarga.Id);
+                }
+                else
+                {
+                    lstarchivoCargaDetalle = MapeaDetalleIntercompania(Mexsalint, archivoCarga.Id);
                 }
 
+                // Insert tabla archivo carga detalle
                 db.ArchivoCargaDetalle.AddRange(lstarchivoCargaDetalle);
                 try
                 {
@@ -159,7 +157,87 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             }
 
             return string.Empty;
-        }        
+        }
+
+        /// <summary>
+        /// Mapea el objeto mexsalcta en la lista archivo carga detalle
+        /// </summary>
+        /// <param name="Mexsalcta"></param>
+        /// <returns></returns>
+        private static List<ArchivoCargaDetalle> MapeaDetalleBalance(MEXSALCTA[] Mexsalcta, int archivoCargaID)
+        {
+            List<ArchivoCargaDetalle> lstarchivoCargaDetalle = new List<ArchivoCargaDetalle>();
+            for (int i = 0; i < Mexsalcta.Length; i++)
+            {
+                lstarchivoCargaDetalle.Add(
+                     new ArchivoCargaDetalle()
+                     {
+                         ArchivoCarga = archivoCargaID,
+                         FilaArchivo = i + 1,
+                         Escenario = int.Parse(Mexsalcta[i].Escenario),
+                         Versión = byte.Parse(Mexsalcta[i].Version),
+                         Anio = Mexsalcta[i].Anio,
+                         Mes = Mexsalcta[i].Mes,
+                         UnidadDeNegocio = byte.Parse(Mexsalcta[i].UnidadNegocio),
+                         Cuenta = Mexsalcta[i].Cuenta,
+                         Moneda = Mexsalcta[i].Moneda,
+                         GAAP = Mexsalcta[i].GAAP,
+                         Interfase = Mexsalcta[i].Interfase,
+                         NominalAjustado = byte.Parse(Mexsalcta[i].NominalAjustado),
+                         Compania = Mexsalcta[i].Compania,
+                         CopaniaRelacionada = null,
+                         MovimientoDebitoPeriodo = Mexsalcta[i].MovimientoDebitoPeriodo,
+                         MovimientoCreditoPeriodo = Mexsalcta[i].MovimientoCreditoPeriodo,
+                         MovimientoDebitoAcumulado = Mexsalcta[i].MovimientoDébitoAcumulado,
+                         MovimientoCreditoAcumulado = Mexsalcta[i].MovimientoCréditoAcumulado,
+                         SaldoAcumuladoPeriodo = Mexsalcta[i].SaldoAcumuladoPeriodo,
+                         HoraActualizacion = Mexsalcta[i].HoraActualizacion.ToString("yyyyMMddHHmm"),
+                         UsuarioActualizacion = Mexsalcta[i].UsuarioSctualizacion
+                     });
+            }
+
+            return lstarchivoCargaDetalle;
+        }
+
+        /// <summary>
+        /// Mapea el objeto mexsalcta en la lista archivo carga detalle
+        /// </summary>
+        /// <param name="Mexsalcta"></param>
+        /// <param name="archivoCargaID"></param>
+        /// <returns></returns>
+        private static List<ArchivoCargaDetalle> MapeaDetalleIntercompania(MEX_SALINT[] Mexsalint, int archivoCargaID)
+        {
+            List<ArchivoCargaDetalle> lstarchivoCargaDetalle = new List<ArchivoCargaDetalle>();
+            for (int i = 0; i < Mexsalint.Length; i++)
+            {
+                lstarchivoCargaDetalle.Add(
+                     new ArchivoCargaDetalle()
+                     {
+                         ArchivoCarga = archivoCargaID,
+                         FilaArchivo = i + 1,
+                         Escenario = int.Parse(Mexsalint[i].Escenario),
+                         Versión = byte.Parse(Mexsalint[i].Version),
+                         Anio = (short)Mexsalint[i].Anio,
+                         Mes = (byte)Mexsalint[i].Mes,
+                         UnidadDeNegocio = byte.Parse(Mexsalint[i].UnidadNegocio),
+                         Cuenta = Mexsalint[i].Cuenta,
+                         Moneda = Mexsalint[i].Moneda,
+                         GAAP = Mexsalint[i].GAAP,
+                         Interfase = Mexsalint[i].Interfase,
+                         NominalAjustado = byte.Parse(Mexsalint[i].NominalAjustado),
+                         Compania = Mexsalint[i].Compania,
+                         CopaniaRelacionada = Mexsalint[i].CompaniaRelacionada,
+                         MovimientoDebitoPeriodo = Mexsalint[i].MovimientoDebitoPeriodo,
+                         MovimientoCreditoPeriodo = Mexsalint[i].MovimientoCreditoPeriodo,
+                         MovimientoDebitoAcumulado = Mexsalint[i].MovimientoDebitoAcumulado,
+                         MovimientoCreditoAcumulado = Mexsalint[i].MovimientoCreditoAcumulado,
+                         SaldoAcumuladoPeriodo = Mexsalint[i].SaldoAcumuladoPeriodo,
+                         HoraActualizacion = Mexsalint[i].HoraActualizacion.ToString("yyyyMMddHHmm"),
+                         UsuarioActualizacion = Mexsalint[i].UsuarioActualizacion
+                     });
+            }
+            return lstarchivoCargaDetalle; 
+        }
     }
 }
 

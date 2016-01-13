@@ -99,9 +99,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                             mailInfo.Message = "prueba de mensaje 555";
                             AdmMail.Enviar(mailInfo);
-
-
-
                         }
                         else
                         {
