@@ -174,6 +174,7 @@
     <Compile Include="Controllers\CargaAutomaticaController.cs" />
     <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CargaIntercompaniasController.cs" />
+    <Compile Include="Controllers\Utilidades\AdmMail.cs" />
     <Compile Include="Controllers\Utilidades\CargarArchivo.cs" />
     <Compile Include="Controllers\CompaniaCognosController.cs" />
     <Compile Include="Controllers\CompaniaRFCController.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Controllers\GrupoUsuarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Utilidades\LDAP.cs" />
+    <Compile Include="Controllers\Utilidades\MailInfo.cs" />
     <Compile Include="Controllers\Utilidades\ManejoErrores.cs" />
     <Compile Include="Controllers\Utilidades\TimerCargaAutomatica.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Models\Entidades\EnumTipoArchivoCarga.cs" />
     <Compile Include="Models\Entidades\EnumTipoModificacion.cs" />
     <Compile Include="Models\Entidades\EnumTypeLog.cs" />
+    <Compile Include="Models\Entidades\Result.cs" />
     <Compile Include="Models\Grupo.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>

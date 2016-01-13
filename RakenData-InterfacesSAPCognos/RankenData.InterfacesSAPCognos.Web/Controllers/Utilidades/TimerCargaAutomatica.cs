@@ -26,15 +26,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         /// </summary>
         public void Init()
         {
-            string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
-            System.Timers.Timer timer = new System.Timers.Timer();
-            int time = int.Parse(tiempoCargaAutomatica);
-            time = time < 0 ? 1 : time; //minimo cada hora
-            // time = time * 3600000;
-            time = 30000; //TODO: Esta linea es de pruebas
-            timer.Interval = time;
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-            timer.Start();
+            MailInfo mailInfo = new MailInfo();
+            mailInfo.Subject = "prueba";
+            mailInfo.Message = "prueba de mensaje";
+            AdmMail.Enviar(mailInfo);
+
+            //string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
+            //System.Timers.Timer timer = new System.Timers.Timer();
+            //int time = int.Parse(tiempoCargaAutomatica);
+            //time = time < 0 ? 1 : time; //minimo cada hora
+            //// time = time * 3600000;
+            //time = 30000; //TODO: Esta linea es de pruebas
+            //timer.Interval = time;
+            //timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
+            //timer.Start();
         }
 
         /// <summary>
