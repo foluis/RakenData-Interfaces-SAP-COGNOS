@@ -32,7 +32,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 string errores = CargeMasivoCuentaCognos(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores);
+                    ModelState.AddModelError("Error", errores);                
 
                 }
             }
@@ -79,8 +79,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                 if (cuentaExiste == null)
                 {
-                    cuentaExiste.IsActive = true;
-                    db.CuentaCognos.Add(cuentaExiste);
+                    cuentaCognos.IsActive = true;
+                    db.CuentaCognos.Add(cuentaCognos);
                 }
                 else
                 {

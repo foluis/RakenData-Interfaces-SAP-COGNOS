@@ -33,13 +33,52 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
 
         public static string ErrorValidacionDb(DbUpdateException e)
         {
-            string inner=e.InnerException != null ? e.InnerException.Message : "";
+            string inner = string.Empty;
+
+            if( e.InnerException != null )
+            {
+                if (e.InnerException.InnerException != null)
+                {
+                    if (e.InnerException.InnerException.InnerException != null)
+                    {
+                        inner = e.InnerException.InnerException.InnerException.Message;
+                    }
+                    else
+                    {
+                        inner = e.InnerException.InnerException.Message;
+                    }
+                }
+                else 
+                {
+                    inner = e.InnerException.Message;
+                }
+            } 
+                
             return "ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message + " Exepción: " + inner; 
         }
 
         public static string ErrorExepcion(Exception e)
         {
-            string inner = e.InnerException != null ? e.InnerException.Message : "";
+            string inner = string.Empty;
+
+            if (e.InnerException != null)
+            {
+                if (e.InnerException.InnerException != null)
+                {
+                    if (e.InnerException.InnerException.InnerException != null)
+                    {
+                        inner = e.InnerException.InnerException.InnerException.Message;
+                    }
+                    else
+                    {
+                        inner = e.InnerException.InnerException.Message;
+                    }
+                }
+                else
+                {
+                    inner = e.InnerException.Message;
+                }
+            } 
             return "ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message + " Exepción: " + inner; 
         }
 

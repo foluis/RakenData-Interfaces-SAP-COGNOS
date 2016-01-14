@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,6 +11,8 @@ using Ranken.ISC.FileManager.ReadFiles;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
+using System.Collections.Generic;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -21,7 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CompaniaRFC/
-         //[Authorize(Roles = "1")]
+        //[Authorize(Roles = "1")]
         public ActionResult Index(HttpPostedFileBase file)
         {
             var companiarfc = db.CompaniaRFC.Include(c => c.CompaniaCognos1);
@@ -30,10 +30,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 string errores = CargeCompaniaRFC(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores);
-
+                    ModelState.AddModelError("Error", errores);                
                 }
-            }     
+            }
             return View(companiarfc.ToList());
         }
 
@@ -71,33 +70,45 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 companiaRFC = new CompaniaRFC()
                 {
-                    RFC=dato[0],
-                    Descripcion= dato[1],
+                    RFC = dato[0],
+                    Descripcion = dato[1],
                     CompaniaCognos = companiaCognos
                 };
-                if (ModelState.IsValid)
+
+                CompaniaRFC companiaRFCExiste = db.CompaniaRFC.FirstOrDefault(cc => cc.RFC == companiaRFC.RFC);
+
+                if (companiaRFCExiste == null)
                 {
                     db.CompaniaRFC.Add(companiaRFC);
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch (DbEntityValidationException e)
-                    {                      
-                        return ManejoErrores.ErrorValidacion(e);
-                    }
-                    catch (DbUpdateException e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores.ToString();
-                    }
-                    catch (Exception e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores.ToString();
-                    }
+                }
+                else
+                {
+                    companiaRFCExiste.Descripcion = companiaRFC.Descripcion;
+                    companiaRFCExiste.CompaniaCognos = companiaRFC.CompaniaCognos;
+                    db.Entry(companiaRFCExiste).State = EntityState.Modified;
+                }
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
                 }
             }
+
             return errores.ToString();
         }
 
@@ -128,7 +139,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,RFC,Descripcion,CompaniaCognos")] CompaniaRFC companiarfc)
+        public ActionResult Create([Bind(Include = "Id,RFC,Descripcion,CompaniaCognos")] CompaniaRFC companiarfc)
         {
             if (ModelState.IsValid)
             {
@@ -170,7 +181,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,RFC,Descripcion,CompaniaCognos")] CompaniaRFC companiarfc)
+        public ActionResult Edit([Bind(Include = "Id,RFC,Descripcion,CompaniaCognos")] CompaniaRFC companiarfc)
         {
             if (ModelState.IsValid)
             {

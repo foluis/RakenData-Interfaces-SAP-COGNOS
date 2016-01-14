@@ -13,6 +13,7 @@ using Ranken.ISC.FileManager.ReadFiles;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -26,10 +27,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {           
             if (file != null && file.ContentLength > 0)
             {
-                StringBuilder errores = CargeAnexo(file);
+                string errores = CargeAnexo(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores.ToString());
+                    ModelState.AddModelError("Error", errores);
                 }
             }
             return View(db.Anexo.ToList().Where(a=> a.IsActive == true));
@@ -37,7 +38,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // Carga masiva de cargue compania RFC
         // return: errores y si no hay devuelve el objeto vacio        
-        public StringBuilder CargeAnexo(HttpPostedFileBase file)
+        public string CargeAnexo(HttpPostedFileBase file)
         {
             Anexo anexo = null;
             StringBuilder errores = new StringBuilder();
@@ -45,52 +46,72 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
             string result = System.Text.Encoding.UTF8.GetString(binData);
+            bool modificable = false;
             var records = result.Split('\n');
             DAT_Reader datReader = new DAT_Reader();
 
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
-                if (dato.Length < 1)
+                if (dato.Length < 2)
                 {
                     errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
                 }
+
+                if (bool.TryParse(dato[2], out modificable) == false)
+                {
+                    errores.AppendLine("No. Registro" + i + " ERROR: MODIFICABLE DEBE TENER EL VALOR (TRUE O FALSE)");
+         
+                }
                 if (errores.Length > 0)
                 {
-                    return errores;
+                    return errores.ToString();
 
                 }
                 anexo = new Anexo()
                 {
                     Clave = dato[0],
                     Descripcion = dato[1],
+                    Modificable = modificable
                    
                 };
                 if (ModelState.IsValid)
                 {
-                    db.Anexo.Add(anexo);
+                    Anexo anexoExiste = db.Anexo.FirstOrDefault(cc => cc.Clave == anexo.Clave);
+                    if (anexoExiste == null)
+                    {
+                        anexo.IsActive = true;
+                        db.Anexo.Add(anexo);
+                    }
+                    else
+                    {
+                        anexoExiste.Descripcion = anexo.Descripcion;
+                        anexoExiste.Modificable = anexo.Modificable;
+                        anexoExiste.IsActive = true;
+                        db.Entry(anexoExiste).State = EntityState.Modified;
+                    }
                     try
                     {
                         db.SaveChanges();
                     }
                     catch (DbEntityValidationException e)
-                    {                        
-                        errores.AppendLine(ManejoErrores.ErrorValidacion(e));
-                        return errores;
+                    {
+                        Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
                     }
                     catch (DbUpdateException e)
                     {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
                     }
                     catch (Exception e)
                     {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores;
+                        Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
                     }
                 }
             }
-            return errores;
+            return errores.ToString();
         }
 
         // GET: /Anexo/Details/5
@@ -119,33 +140,45 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="id,Clave,Descripcion,IsActive")] Anexo anexo)
+        public ActionResult Create([Bind(Include = "id,Clave,Descripcion,IsActive,Modificable")] Anexo anexo)
         {
             StringBuilder errores = new StringBuilder();
             if (ModelState.IsValid)
             {
-                anexo.IsActive = true;
-                db.Anexo.Add(anexo);
+                Anexo anexoExiste = db.Anexo.FirstOrDefault(cc => cc.Clave == anexo.Clave);
+                if (anexoExiste == null)
+                {
+                    anexo.IsActive = true;
+                    db.Anexo.Add(anexo);
+                }
+                else
+                {
+                    anexoExiste.Descripcion = anexo.Descripcion;
+                    anexoExiste.Modificable = anexo.Modificable;
+                    anexoExiste.IsActive = true;
+                    db.Entry(anexoExiste).State = EntityState.Modified;
+                }                
 
                 try
                 {
                     db.SaveChanges();
                 }
                 catch (DbEntityValidationException e)
-                {                 
-                    ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear el anexo");
                     return View();
                 }
                 catch (DbUpdateException e)
                 {
-                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                    ModelState.AddModelError("Error", errores.ToString());
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear el anexo");
                     return View();
                 }
                 catch (Exception e)
                 {
-                    errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                    ModelState.AddModelError("Error", errores.ToString());
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear el anexo");
                     return View();
                 }
                 return RedirectToAction("Index");

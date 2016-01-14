@@ -13,6 +13,7 @@ using Ranken.ISC.FileManager.ReadFiles;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -21,16 +22,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /CompaniaCognos/
-         //[Authorize(Roles = "1")]
+        //[Authorize(Roles = "1")]
         public ActionResult Index(HttpPostedFileBase file)
-        {
+        {     
             if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeCompaniaCognos(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores);
-
+                    ModelState.AddModelError("Error", errores);                   
                 }
             }
             return View(db.CompaniaCognos.ToList());
@@ -73,27 +73,36 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     Clave = clave,
                     Descripcion = dato[1]
                 };
-                if (ModelState.IsValid)
+
+                CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == companiaCognos.Clave);
+
+                if (companiaCognosExiste == null)
                 {
                     db.CompaniaCognos.Add(companiaCognos);
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch (DbEntityValidationException e)
-                    {
-                        return ManejoErrores.ErrorValidacion(e);
-                    }
-                    catch (DbUpdateException e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores.ToString();
-                    }
-                    catch (Exception e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores.ToString();
-                    }
+                }
+                else
+                {
+                    companiaCognosExiste.Descripcion = companiaCognos.Descripcion;
+                    db.Entry(companiaCognosExiste).State = EntityState.Modified;
+                }
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
                 }
             }
             return errores.ToString();
@@ -196,7 +205,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 db.SaveChanges();
             }
             catch (DbEntityValidationException e)
-            {                
+            {
                 ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
                 return View();
             }
