@@ -182,8 +182,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 CuentaSAP cuentaSapExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == cuentasap.Numero);
                 if (cuentaSapExiste == null)
                 {
-                    cuentaSapExiste.IsActive = true;
-                    db.CuentaSAP.Add(cuentaSapExiste);
+                    cuentasap.IsActive = true;
+                    db.CuentaSAP.Add(cuentasap);
                 }
                 else
                 {

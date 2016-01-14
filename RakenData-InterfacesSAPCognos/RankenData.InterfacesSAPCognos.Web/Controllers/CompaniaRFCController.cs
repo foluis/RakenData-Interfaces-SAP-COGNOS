@@ -141,6 +141,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,RFC,Descripcion,CompaniaCognos")] CompaniaRFC companiarfc)
         {
+            ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion", companiarfc.CompaniaCognos);
             if (ModelState.IsValid)
             {
                 var existCompania = db.CompaniaRFC.Select(crfc => crfc.CompaniaCognos == companiarfc.CompaniaCognos).FirstOrDefault();
@@ -152,11 +153,31 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
 
                 db.CompaniaRFC.Add(companiarfc);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la Compañia");
+                    return View();
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la Compañia");
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la Compañia");
+                    return View();
+                };
                 return RedirectToAction("Index");
             }
-
-            ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion", companiarfc.CompaniaCognos);
+    
             return View(companiarfc);
         }
 

@@ -37,8 +37,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             MEX_SALINT[] Mexsalint = null;
             short anio;
             byte mes;
-
-            Random r = new Random();
             DAT_Reader datReader = new DAT_Reader();
 
             if (tipoArchivo == EnumTipoArchivoCarga.Balance)
@@ -67,8 +65,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             if (anioMes_YaExistentes[0].IdTipo == 0)
             {
                 //Insert tabla archivocarga
-                archivoCarga.Nombre = nombreArchivo + r.Next(100); //TODO: random para pruebas
-                archivoCarga.Identificador = "B/R" + DateTime.Today.Month.ToString() + DateTime.Today.Year.ToString().Substring(2);
+                archivoCarga.Nombre = nombreArchivo;
+                archivoCarga.Identificador = "B/R" + DateTime.Today.ToString("MM") + DateTime.Today.Year.ToString().Substring(2);
                 archivoCarga.Fecha = DateTime.Now;
                 archivoCarga.TipoArchivoCarga = (int)tipoArchivo;
                 archivoCarga.Anio_Col3 = anio;
@@ -133,7 +131,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 {
                     sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Compañias: </br>");
                     companiasNoCargadas.ForEach(cnc =>
-                        sbcompaniasNoCargadas.AppendLine(cnc.Description + " " + cnc.Value + "</br>")
+                        sbcompaniasNoCargadas.AppendLine(cnc.Descripcion + " " + cnc.Value + "</br>")
                         );
                 }
 
@@ -144,7 +142,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 {
                     sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Cuentas: </br>");
                     cuentasNoCargadas.ForEach(cnc =>
-                        sbcuentasNoCargadas.AppendLine(cnc.Description + " " + cnc.Value + "</br>")
+                        sbcuentasNoCargadas.AppendLine(cnc.Descripcion + " " + cnc.Value + "</br>")
                         );
                 }
 
@@ -152,8 +150,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 {
                     return sbcompaniasNoCargadas.ToString() + "</br>" + sbcuentasNoCargadas.ToString();
                 }
-
-                return string.Empty;
             }
 
             return string.Empty;

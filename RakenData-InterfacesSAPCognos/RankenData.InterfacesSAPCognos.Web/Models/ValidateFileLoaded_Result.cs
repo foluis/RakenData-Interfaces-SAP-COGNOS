@@ -14,8 +14,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     public partial class ValidateFileLoaded_Result
     {
         public int IdTipo { get; set; }
-        public string Description { get; set; }
         public string Value { get; set; }
         public string Description_Value { get; set; }
+        public string Descripcion { get; set; }
     }
 }

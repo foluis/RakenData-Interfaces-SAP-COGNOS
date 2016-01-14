@@ -131,9 +131,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ArchivoCarga archivocarga = db.ArchivoCarga.Find(id);
-            db.ArchivoCarga.Remove(archivocarga);
-            db.SaveChanges();
+            //ArchivoCarga archivocarga = db.ArchivoCarga.Find(id);
+            //List<ArchivoCargaDetalle> archivocargaDetalle = db.ArchivoCargaDetalle.Where(ac=> ac.ArchivoCarga == id).ToList();
+            //db.ArchivoCargaDetalle.RemoveRange(archivocargaDetalle);
+            //db.ArchivoCarga.Remove(archivocarga);
+            //db.SaveChanges();
+            db.EliminarArchivoCarga(id);
             return RedirectToAction("Index");
         }
 

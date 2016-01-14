@@ -118,7 +118,7 @@
             $('#CuentaCargo').val('')
             $('#CuentaAbono').val('');
         }
-        else {
+        else if ($('#TipoCuentaSAP').val() == 2) {
             $('#divEsOpen').show();
         }
         if ($('#EsOpen').val() == "true") {

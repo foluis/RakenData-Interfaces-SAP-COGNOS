@@ -740,9 +740,9 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           </EntityContainer>
         <ComplexType Name="ValidateFileLoaded_Result">
           <Property Type="Int32" Name="IdTipo" Nullable="false" />
-          <Property Type="String" Name="Description" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="Value" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="Description_Value" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Description_Value" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="22" />
         </ComplexType>
         <ComplexType Name="ValidateFileToLoad_Result">
           <Property Type="Int32" Name="IdTipo" Nullable="false" />
@@ -1267,9 +1267,9 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <ResultMapping>
               <ComplexTypeMapping TypeName="ModelRankenData.ValidateFileLoaded_Result">
                 <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Description_Value" ColumnName="Description_Value" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
