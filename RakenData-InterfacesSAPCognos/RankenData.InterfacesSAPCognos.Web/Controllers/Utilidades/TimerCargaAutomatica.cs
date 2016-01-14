@@ -1,5 +1,4 @@
 ﻿using Ranken.ISC.FileManager.ReadFiles;
-using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
 using RankenData.InterfacesSAPCognos.Web.Models;
 using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
@@ -7,10 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.IO;
 using System.Linq;
-using System.Web;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -30,12 +27,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
             System.Timers.Timer timer = new System.Timers.Timer();
             int time = int.Parse(tiempoCargaAutomatica);
-            time = time < 0 ? 1 : time; //minimo cada hora
+            time = time < 0 ? 3 : time; //minimo cada 3 hora
             // time = time * 3600000;
             time = 30000; //TODO: Esta linea es de pruebas
             timer.Interval = time;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-            timer.Start();
+            if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1")
+            {
+                timer.Start();
+            }
         }
 
         /// <summary>
@@ -57,7 +57,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     if (cargaAutomatica.FechaProgramada.Date == DateTime.Now.Date)
                     {
                         this.lstCargaAutomatica.Add(cargaAutomatica);
-
                     }
                 }
 
@@ -90,7 +89,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                             mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
                             mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
-
                             mailInfo.Message = ConfigurationManager.AppSettings["emailSubject"]; ;
                             AdmMail.Enviar(mailInfo);
                         }
@@ -99,14 +97,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             Log.WriteLog("El archivo : " + nombreArchivo + " el archivo presento presento los siguientes errores: " + errores, EnumTypeLog.Event, true);
                             mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
                             mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
-
                             mailInfo.Message = "El archivo : " + nombreArchivo + " el archivo presento presento los siguientes errores: " + errores; ;
                             AdmMail.Enviar(mailInfo);
                         }
                     }
                 }
-            }
-         
+            }         
         }
     }
 }
