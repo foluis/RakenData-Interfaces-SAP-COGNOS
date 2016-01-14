@@ -68,15 +68,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         {
                             nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
                             ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
-                            result = System.IO.File.ReadAllText(ruta);
-                            errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
+                            if (System.IO.File.Exists(ruta))
+                            {
+                                result = System.IO.File.ReadAllText(ruta);
+                                errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
+                            }
                         }
                         else // Si el archivo es intercompañias
                         {
                             nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
                             ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
-                            result = System.IO.File.ReadAllText(@"C:\Users\mgonzalez\Documents\ProyectoLuisF\prueba.DAT");
-                            errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
+                            if (System.IO.File.Exists(ruta))
+                            {
+                                result = System.IO.File.ReadAllText(@"C:\Users\mgonzalez\Documents\ProyectoLuisF\prueba.DAT");
+                                errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
+                            }
                         }
 
                         if (string.IsNullOrEmpty(errores))

@@ -30,6 +30,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             {
                 case EnumTypeLog.Error:
                     //using (StreamWriter file = File.AppendText(GlobalInformation.LogPath + "/Log Error " + date + ".txt"))
+                    if (!Directory.Exists(logPath))
+                    {
+                        Directory.CreateDirectory(logPath);
+                    }
                     using (StreamWriter file = File.AppendText(logPath + "/Log Error " + date + ".txt"))
                     {
                         string excepcion = string.Empty;
@@ -54,6 +58,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
 
                     if (writeLog == "1")
                     {
+                        if (!Directory.Exists(logPath))
+                        {
+                            Directory.CreateDirectory(logPath);
+                        }
                         using (StreamWriter file = File.AppendText(logPath + "/Log Event " + date + ".txt"))
                         {
                             string excepcion = string.Empty;
