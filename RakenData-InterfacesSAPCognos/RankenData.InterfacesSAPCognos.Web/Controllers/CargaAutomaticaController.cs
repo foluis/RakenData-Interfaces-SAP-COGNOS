@@ -7,6 +7,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
+using System.Data.Entity.Validation;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
+using System.Data.Entity.Infrastructure;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -49,16 +53,38 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
+        public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
         {
+            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
             if (ModelState.IsValid)
             {
+                cargaautomatica.Usuario = 1; //todo: usuario quemado
                 db.CargaAutomatica.Add(cargaautomatica);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo realizar la programacion automatica");
+                    return View();
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo realizar la programacion automatica");
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo realizar la programacion automatica");
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
-
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
+            
             return View(cargaautomatica);
         }
 
@@ -83,7 +109,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
+        public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
         {
             if (ModelState.IsValid)
             {
