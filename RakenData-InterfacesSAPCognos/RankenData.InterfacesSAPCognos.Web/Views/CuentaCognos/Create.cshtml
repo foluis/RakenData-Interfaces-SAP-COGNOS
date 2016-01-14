@@ -5,7 +5,12 @@
 }
 
 <h2>Cuentas de mayor</h2>
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Mensaje</div>
+    @Html.ValidationMessage("Error");
+         
+}
 
 @using (Html.BeginForm()) 
 {

@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "Crear";
 }
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Mensaje: </div>
+    @Html.ValidationMessage("Error")
+}
 <h2>Crear</h2>
 
 @using (Html.BeginForm()) 
@@ -101,20 +105,45 @@
 
 
 <script>
-    $(document).ready(function (e) {       
+    $(document).ready(function (e) {
         $('#divEsOpen').hide();
         $('#divCuentaCargo').hide();
         $('#divCuentaAbono').hide();
+
+        if ($('#TipoCuentaSAP').val() == 1) {
+            $('#divEsOpen').hide();
+            $('#divCuentaCargo').hide();
+            $('#divCuentaAbono').hide();
+            $('#EsOpen').val('false');
+            $('#CuentaCargo').val('')
+            $('#CuentaAbono').val('');
+        }
+        else {
+            $('#divEsOpen').show();
+        }
+        if ($('#EsOpen').val() == "true") {
+            $('#divCuentaCargo').show();
+            $('#divCuentaAbono').show();
+        }
+        else {
+            $('#divCuentaCargo').hide();
+            $('#divCuentaAbono').hide();
+            $('#CuentaCargo').val('')
+            $('#CuentaAbono').val('');
+        }
 
         $('#TipoCuentaSAP').change(function () {
             if ($('#TipoCuentaSAP').val() == 1) {
                 $('#divEsOpen').hide();
                 $('#divCuentaCargo').hide();
                 $('#divCuentaAbono').hide();
+                $('#EsOpen').val('false');
+                $('#CuentaCargo').val('')
+                $('#CuentaAbono').val('');
             }
             else {
                 $('#divEsOpen').show();
-            }            
+            }
         });
         $('#EsOpen').change(function () {
             if ($('#EsOpen').val() == "true") {
@@ -124,6 +153,8 @@
             else {
                 $('#divCuentaCargo').hide();
                 $('#divCuentaAbono').hide();
+                $('#CuentaCargo').val('')
+                $('#CuentaAbono').val('');
             }
         });
     });

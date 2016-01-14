@@ -14,6 +14,7 @@ using System.Data.Entity.Infrastructure;
 using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 using System.Data.Entity.Validation;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         //[Authorize(Roles="1")]
         public ActionResult Index(HttpPostedFileBase file)
         {
-            var cuentacognos = db.CuentaCognos.Include(c => c.Anexo).Where(cc=> cc.IsActive == true);
+            var cuentacognos = db.CuentaCognos.Include(c => c.Anexo).Where(cc => cc.IsActive == true);
             if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeMasivoCuentaCognos(file);
@@ -73,28 +74,43 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     AnexoId = anexoid,
                     IsActive = true
                 };
-                if (ModelState.IsValid)
+
+                CuentaCognos cuentaExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentaCognos.Numero);
+
+                if (cuentaExiste == null)
                 {
-                    db.CuentaCognos.Add(cuentaCognos);
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch (DbEntityValidationException e)
-                    {                        
-                        return ManejoErrores.ErrorValidacion(e);
-                    }
-                    catch (DbUpdateException e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores.ToString();
-                    }
-                    catch (Exception e)
-                    {
-                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                        return errores.ToString();
-                    }
+                    cuentaExiste.IsActive = true;
+                    db.CuentaCognos.Add(cuentaExiste);
                 }
+                else
+                {
+                    cuentaExiste.Descripcion = cuentaCognos.Descripcion;
+                    cuentaExiste.AnexoId = cuentaCognos.AnexoId;
+                    cuentaExiste.IsActive = true;
+                    db.Entry(cuentaExiste).State = EntityState.Modified;
+                }
+
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    return "No se pudo cargar el archivo";
+                }
+
             }
             return errores.ToString();
         }
@@ -129,15 +145,50 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive")] CuentaCognos cuentacognos)
         {
+            ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
             if (ModelState.IsValid)
             {
-                cuentacognos.IsActive = true;
-                db.CuentaCognos.Add(cuentacognos);
-                db.SaveChanges();
+                CuentaCognos cuentaExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentacognos.Numero);
+                if (cuentaExiste == null)
+                {
+                    cuentacognos.IsActive = true;
+                    db.CuentaCognos.Add(cuentacognos);
+                }
+                else
+                {
+                    cuentaExiste.Descripcion = cuentacognos.Descripcion;
+                    cuentaExiste.AnexoId = cuentacognos.AnexoId;
+                    cuentaExiste.IsActive = true;
+                    db.Entry(cuentaExiste).State = EntityState.Modified;
+                }
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
                 return RedirectToAction("Index");
+
             }
 
-            ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
+           
             return View(cuentacognos);
         }
 

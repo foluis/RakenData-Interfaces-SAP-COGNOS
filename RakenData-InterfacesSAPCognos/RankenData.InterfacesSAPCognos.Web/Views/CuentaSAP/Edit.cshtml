@@ -66,7 +66,7 @@
         <div id="divCuentaCargo" class="form-group">
             @Html.LabelFor(model => model.CuentaCargo, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CuentaCargo)
+                @Html.DropDownList("CuentaCargo", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaCargo)
             </div>
         </div>
@@ -74,7 +74,7 @@
         <div id="divCuentaAbono" class="form-group">
             @Html.LabelFor(model => model.CuentaAbono, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CuentaAbono)
+                  @Html.DropDownList("CuentaAbono", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaAbono)
             </div>
         </div>
@@ -102,11 +102,36 @@
         $('#divCuentaCargo').hide();
         $('#divCuentaAbono').hide();
 
+        if ($('#TipoCuentaSAP').val() == 1) {
+            $('#divEsOpen').hide();
+            $('#divCuentaCargo').hide();
+            $('#divCuentaAbono').hide();
+            $('#EsOpen').val('false');
+            $('#CuentaCargo').val('')
+            $('#CuentaAbono').val('');
+        }
+        else {
+            $('#divEsOpen').show();
+        }
+        if ($('#EsOpen').val() == "true") {
+            $('#divCuentaCargo').show();
+            $('#divCuentaAbono').show();
+        }
+        else {
+            $('#divCuentaCargo').hide();
+            $('#divCuentaAbono').hide();
+            $('#CuentaCargo').val('')
+            $('#CuentaAbono').val('');
+        }
+
         $('#TipoCuentaSAP').change(function () {
             if ($('#TipoCuentaSAP').val() == 1) {
                 $('#divEsOpen').hide();
                 $('#divCuentaCargo').hide();
                 $('#divCuentaAbono').hide();
+                $('#EsOpen').val('false');
+                $('#CuentaCargo').val('')
+                $('#CuentaAbono').val('');
             }
             else {
                 $('#divEsOpen').show();
@@ -120,6 +145,8 @@
             else {
                 $('#divCuentaCargo').hide();
                 $('#divCuentaAbono').hide();
+                $('#CuentaCargo').val('')
+                $('#CuentaAbono').val('');
             }
         });
     });

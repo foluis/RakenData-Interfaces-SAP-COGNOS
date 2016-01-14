@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -10,10 +8,10 @@ using RankenData.InterfacesSAPCognos.Web.Models;
 using System.Text;
 using System.IO;
 using Ranken.ISC.FileManager.ReadFiles;
-using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -155,20 +153,58 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
-        {
-            if (ModelState.IsValid)
-            {
-                cuentasap.IsActive = true;
-                db.CuentaSAP.Add(cuentasap);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
+        {            
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
             ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
             ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
-
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
+         
+            if (ModelState.IsValid)
+            {
+                CuentaSAP cuentaSapExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == cuentasap.Numero);
+                if (cuentaSapExiste == null)
+                {
+                    cuentaSapExiste.IsActive = true;
+                    db.CuentaSAP.Add(cuentaSapExiste);
+                }
+                else
+                {
+                    cuentaSapExiste.Descripcion = cuentasap.Descripcion;                      
+                    cuentaSapExiste.CuentaCognos = cuentasap.CuentaCognos;                    
+                    cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;
+                    cuentaSapExiste.EsOpen = cuentasap.EsOpen;
+                    cuentaSapExiste.CuentaCargo = cuentasap.CuentaCargo;
+                    cuentaSapExiste.CuentaAbono = cuentasap.CuentaAbono;
+                    cuentaSapExiste.IsActive = true;
+                    db.Entry(cuentaSapExiste).State = EntityState.Modified;
+                }
+                
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
+                return RedirectToAction("Index");
+            }
+
+            
             return View(cuentasap);
         }
 
@@ -185,7 +221,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
-            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
+            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);           
+            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
+            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero",cuentasap.CuentaAbono);
+           
             return View(cuentasap);
         }
 
@@ -199,9 +238,29 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             StringBuilder errores = new StringBuilder();
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
+            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
+            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
 
             if (ModelState.IsValid)
-            {               
+            {
+                if (cuentasap.TipoCuentaSAP == 1)
+                {
+                    cuentasap.EsOpen = null;
+                    cuentasap.CuentaCargo = null;
+                    cuentasap.CuentaAbono = null; 
+                }
+
+                if (cuentasap.EsOpen == null || !cuentasap.EsOpen.Value)
+                {
+                    cuentasap.CuentaCargo = null;
+                    cuentasap.CuentaAbono = null;
+                }
+                else if (cuentasap.CuentaCargo == null || cuentasap.CuentaAbono== null)//cuentasap.EsOpen = true
+                {
+                    ModelState.AddModelError("Error", "Por favor ingrese una cuenta cognos");
+                    return View();
+                }
+                cuentasap.IsActive = true;
                 db.Entry(cuentasap).State = EntityState.Modified;
                 try
                 {                    

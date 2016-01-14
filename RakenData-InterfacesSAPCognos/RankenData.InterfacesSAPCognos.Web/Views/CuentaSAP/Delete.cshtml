@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "Borrar";
 }
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Mensaje: </div>
+    @Html.ValidationMessage("Error")
+}
 <h2>Borrar</h2>
 
 <h3>Esta seguro de eliminar esto?</h3>
