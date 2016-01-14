@@ -26,21 +26,31 @@
             @Html.DisplayFor(model => model.RutaArchivo)
         </dd>
 
+      
+
         <dt>
-            @Html.DisplayNameFor(model => model.Usuario)
+            @Html.Label("Tipo Archivo Carga")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Usuario)
+            @Html.DisplayFor(model => model.TipoArchivoCarga.Nombre)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TipoArchivoCarga.Nombre)
+            @Html.DisplayNameFor(model => model.Email)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WasLoaded)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WasLoaded)
+        </dd>
+
 
     </dl>
 </div>
