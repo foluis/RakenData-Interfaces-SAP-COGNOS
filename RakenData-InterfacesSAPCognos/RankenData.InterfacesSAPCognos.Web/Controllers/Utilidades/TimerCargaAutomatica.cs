@@ -26,23 +26,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         /// Inicalizar timer
         /// </summary>
         public void Init()
-        {
-            
-            //mailInfo.Subject = "prueba 5";
-            //mailInfo.To = new List<string>() { "mmbatu@hotmail.com", "mmbattou@gmail.com" };
-                       
-            //mailInfo.Message = "prueba de mensaje 555";
-            //AdmMail.Enviar(mailInfo);
-
-            //string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
-            //System.Timers.Timer timer = new System.Timers.Timer();
-            //int time = int.Parse(tiempoCargaAutomatica);
-            //time = time < 0 ? 1 : time; //minimo cada hora
-            //// time = time * 3600000;
-            //time = 30000; //TODO: Esta linea es de pruebas
-            //timer.Interval = time;
-            //timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-            //timer.Start();
+        {   
+            string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
+            System.Timers.Timer timer = new System.Timers.Timer();
+            int time = int.Parse(tiempoCargaAutomatica);
+            time = time < 0 ? 1 : time; //minimo cada hora
+            // time = time * 3600000;
+            time = 30000; //TODO: Esta linea es de pruebas
+            timer.Interval = time;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
+            timer.Start();
         }
 
         /// <summary>
@@ -55,7 +48,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             string nombreArchivo = string.Empty;
             string result = string.Empty;
             string errores = string.Empty;
-            if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1")
+            this.lstCargaAutomatica = new List<CargaAutomatica>();
+
+             if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1" && db.CargaAutomatica != null && db.CargaAutomatica.Count() > 0)
             {
                 foreach (CargaAutomatica cargaAutomatica in db.CargaAutomatica.ToList())
                 {
@@ -87,27 +82,31 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if (string.IsNullOrEmpty(errores))
                         {
-                            //TODO: guardar que ya se subio en la base de datos y tener el correo para enviar el resultado
-                            //cargaAutomatica.
-                            //db.Entry(cargaAutomatica).State = EntityState.Modified;
-                            //db.SaveChanges();
+                             cargaAutomatica.WasLoaded = true;
+                            db.Entry(cargaAutomatica).State = EntityState.Modified;
+                            db.SaveChanges();
 
                             Log.WriteLog("El archivo : " + nombreArchivo + " se cargo exitosamente", EnumTypeLog.Event, true);
 
-                            mailInfo.Subject = "prueba 5";
-                            //mailInfo.To = cargaAutomatica.correo.Replace(",", ";").Split(';');
+                            mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
+                            mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
 
-                            mailInfo.Message = "prueba de mensaje 555";
+                            mailInfo.Message = ConfigurationManager.AppSettings["emailSubject"]; ;
                             AdmMail.Enviar(mailInfo);
                         }
                         else
                         {
                             Log.WriteLog("El archivo : " + nombreArchivo + " el archivo presento presento los siguientes errores: " + errores, EnumTypeLog.Event, true);
+                            mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
+                            mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
+
+                            mailInfo.Message = "El archivo : " + nombreArchivo + " el archivo presento presento los siguientes errores: " + errores; ;
+                            AdmMail.Enviar(mailInfo);
                         }
                     }
                 }
             }
-            //TODO: enviar correo electronico
+         
         }
     }
 }

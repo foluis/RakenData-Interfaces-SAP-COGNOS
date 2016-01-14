@@ -49,7 +49,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
+        public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo")] CargaAutomatica cargaautomatica)
+        public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,Usuario,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
         {
             if (ModelState.IsValid)
             {

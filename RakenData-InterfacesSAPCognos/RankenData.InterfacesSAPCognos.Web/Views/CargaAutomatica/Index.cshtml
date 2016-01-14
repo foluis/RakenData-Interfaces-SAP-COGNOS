@@ -25,6 +25,9 @@
         <th>
             @Html.DisplayNameFor(model => model.TipoArchivoCarga.Nombre)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
         <th></th>
     </tr>
 
@@ -41,6 +44,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TipoArchivoCarga.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |

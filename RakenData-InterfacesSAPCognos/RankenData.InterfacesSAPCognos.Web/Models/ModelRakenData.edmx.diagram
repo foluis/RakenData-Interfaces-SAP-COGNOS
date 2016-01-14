@@ -43,7 +43,7 @@
         <AssociationConnector Association="ModelRankenData.FK_GrupoUsuario_User" />
         <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_TipoModificacion" />
         <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_User" />
-        <EntityTypeShape EntityType="ModelRankenData.CargaAutomatica" Width="1.5" PointX="5.75" PointY="16.25" />
+        <EntityTypeShape EntityType="ModelRankenData.CargaAutomatica" Width="1.5" PointX="5.75" PointY="16.125" />
         <AssociationConnector Association="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga" />
         </Diagram>
     </edmx:Diagrams>

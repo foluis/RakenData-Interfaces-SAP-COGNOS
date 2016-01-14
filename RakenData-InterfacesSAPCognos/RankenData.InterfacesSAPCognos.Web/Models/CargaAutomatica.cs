@@ -19,6 +19,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string RutaArchivo { get; set; }
         public int Usuario { get; set; }
         public int TipoArchivo { get; set; }
+        public string Email { get; set; }
+        public bool WasLoaded { get; set; }
     
         public virtual TipoArchivoCarga TipoArchivoCarga { get; set; }
     }
