@@ -722,7 +722,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="User" EntitySet="User" />
             <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
           </AssociationSet>
-          <FunctionImport Name="CreateArchivoIntercompanias" ReturnType="Collection(ModelRankenData.CreateArchivoIntercompanias_Result)">
+          <FunctionImport Name="CreateArchivoIntercompanias" ReturnType="Collection(Int32)">
             <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
             <Parameter Name="Periodo" Mode="In" Type="Int32" />
             <Parameter Name="Anio" Mode="In" Type="Int32" />
@@ -1530,13 +1530,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="CreateArchivoIntercompanias" FunctionName="ModelRankenData.Store.CreateArchivoIntercompanias">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ModelRankenData.CreateArchivoIntercompanias_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="EliminarArchivoCarga" FunctionName="ModelRankenData.Store.EliminarArchivoCarga" />
           <EntitySetMapping Name="CargaAutomatica">

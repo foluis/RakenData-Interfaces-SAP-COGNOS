@@ -1,11 +1,18 @@
 ﻿@model RankenData.InterfacesSAPCognos.Web.Models.Entidades.enArchivoCargaCongnos
 @{
-    ViewBag.Title = "Generar Archivos Cognos";
+    ViewBag.Title = "Procesar Archivos Cognos";
 }
 
-<h2>Generar Archivos</h2>
 
-<p>Generar Archivos Cognos</p>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Mensaje</div>
+    @Html.ValidationMessage("Error");
+
+}
+<h2>Procesar Archivos</h2>
+
+<p>Procesar Archivos Cognos</p>
 
 @using (Html.BeginForm())
 {
@@ -40,13 +47,13 @@
         <div class="form-group">
             @Html.Label("TipoArchivo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("TipoArchivo")               
+                @Html.DropDownList("TipoArchivo", (MultiSelectList)ViewBag.TipoArchivo, new { multiple = "multiple", size = 3 })               
                 @Html.ValidationMessageFor(model => model.TipoArchivo)
             </div>
         </div>    
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Generar" class="btn btn-default" />
+                <input type="submit" value="Procesar" class="btn btn-default" />
             </div>
         </div>
     </div>

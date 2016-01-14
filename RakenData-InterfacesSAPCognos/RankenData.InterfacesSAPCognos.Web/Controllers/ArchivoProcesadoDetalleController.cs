@@ -22,7 +22,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: /ArchivoProcesadoDetalle/
-        public ActionResult Index(string id, int tipoArchivo, string error = null)
+        public ActionResult Index(string id, int? tipoArchivo, string error = null)
         {
             int idArchivo;
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle;
@@ -145,6 +145,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Create()
         {          
               return View();
+
         }
 
         // POST: /ArchivoProcesadoDetalle/Create
@@ -176,7 +177,28 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             if (ModelState.IsValid)
             {
                 db.ArchivoProcesadoDetalle.Add(archivoprocesadodetalle);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
+                catch (DbUpdateException e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                    ModelState.AddModelError("Error", "No se pudo crear la cuenta");
+                    return View();
+                }
                 return RedirectToAction("Index", new { id = archivoprocesadodetalle.ArchivoProcesadoId, tipoArchivo = tipoArchivo });
             }
 
@@ -223,6 +245,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 db.Entry(archivoprocesadodetalle).State = EntityState.Modified;
                 try
                 {
+                    historial.Account = archivoprocesadodetalle.Account;
                     historial.ArchivoProcesadoDetalleId = archivoprocesadodetalle.Id;
                     historial.Amount = archivoprocesadodetalle.Amount;
                     historial.TransactionAmount = archivoprocesadodetalle.TransactionAmount;

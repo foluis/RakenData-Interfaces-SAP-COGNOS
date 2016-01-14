@@ -54,7 +54,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 foreach (CargaAutomatica cargaAutomatica in db.CargaAutomatica.ToList())
                 {
-                    if (cargaAutomatica.FechaProgramada.Date == DateTime.Now.Date)
+                    if (cargaAutomatica.FechaProgramada.Date == DateTime.Now.Date && cargaAutomatica.WasLoaded == false)
                     {
                         this.lstCargaAutomatica.Add(cargaAutomatica);
                     }
@@ -66,14 +66,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     {
                         if (cargaAutomatica.TipoArchivo == (int)EnumTipoArchivoCarga.Balance)
                         {
-                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.Month.ToString() + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
+                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
                             ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
                             result = System.IO.File.ReadAllText(ruta);
                             errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
                         }
                         else // Si el archivo es intercompañias
                         {
-                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.Month.ToString() + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
+                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
                             ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
                             result = System.IO.File.ReadAllText(@"C:\Users\mgonzalez\Documents\ProyectoLuisF\prueba.DAT");
                             errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);

@@ -121,7 +121,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoResultados", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter);
         }
     
-        public virtual ObjectResult<CreateArchivoIntercompanias_Result> CreateArchivoIntercompanias(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario)
+        public virtual ObjectResult<Nullable<int>> CreateArchivoIntercompanias(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario)
         {
             var sociedadesCognosParameter = sociedadesCognos != null ?
                 new ObjectParameter("SociedadesCognos", sociedadesCognos) :
@@ -143,7 +143,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
                 new ObjectParameter("Usuario", usuario) :
                 new ObjectParameter("Usuario", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CreateArchivoIntercompanias_Result>("CreateArchivoIntercompanias", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoIntercompanias", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter);
         }
     
         public virtual int EliminarArchivoCarga(Nullable<int> archivoCargaId)
