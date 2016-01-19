@@ -14,12 +14,21 @@ namespace Ranken.ISC.FileManager.ReadFiles
         public MEXSALCTA[] StartReading_MEXSALCTA(string path)
         {
             var engine = new FileHelperEngine<MEXSALCTA>();
-
+            MEXSALCTA[] result = null;
             //path = path == string.Empty ? @"D:\SkyDrive\Empleos\08.1 Raken Data Group\Farmacias Benavides\MEX_SALCTA_20151211.DAT" : path;
 
             //var result1 = engine.ReadFile(path);
             //MEXSALCTA[] result = engine.ReadFile(path);
-            MEXSALCTA[] result = engine.ReadString(path);
+            try
+            {
+                result = engine.ReadString(path);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
             //foreach (MEXSALCTA file in result1)
             //{
             //    int anio = file.Anio;

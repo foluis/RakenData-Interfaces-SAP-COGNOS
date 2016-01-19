@@ -67,7 +67,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length != 7)
                 {
-                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: numero,descripcion,cuentaCognos,TipoCuentaSAP,esOpen,CuentaCargo,CuentaAbono");
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: numero,descripcion,cuentaCognos,TipoCuentaSAP,esOpen,CuentaCargo,CuentaAbono");
                 }
                 else
                 {
@@ -89,7 +89,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                     if (int.TryParse(dato[3], out tipoCuentaSAP) == false)
                     {
-                        errores.AppendLine("No. Registro: " + i + " ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
+                        errores.AppendLine("No. Registro: " + (i + 1) + " ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
                     }
 
 
@@ -103,17 +103,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     }
                     else
                     {
-                        if (dato[4] == "TRUE")
+                        if (dato[4] == "TRUE" || dato[4] == "1")
                         {
                             esOpen = true;
                         }
-                        else if (dato[4] == "FALSE")
+                        else if (dato[4] == "FALSE" || dato[4] == "0")
                         {
                             esOpen = false;
                         }
                         else
                         {
-                            errores.AppendLine("No. Registro: " + i + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
+                            errores.AppendLine("No. Registro: " + (i + 1) + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
                         }
 
                         //if (bool.TryParse(dato[4], out esOpen) == false)
@@ -147,8 +147,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             cuentaCargo = cuentaCargoExiste.Id;
                         }
                     }
-
-
 
                     //else if (NullableInt.TryParse(dato[5], out cuentaCargo) == false)
                     //{

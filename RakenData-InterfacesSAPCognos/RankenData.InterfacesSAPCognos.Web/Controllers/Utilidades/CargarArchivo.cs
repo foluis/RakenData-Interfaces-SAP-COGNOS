@@ -39,117 +39,137 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             byte mes;
             DAT_Reader datReader = new DAT_Reader();
 
-            if (tipoArchivo == EnumTipoArchivoCarga.Balance)
+            try
             {
-                Mexsalcta = datReader.StartReading_MEXSALCTA(datosCargar);
-                anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
-                anio = Mexsalcta[0].Anio;
-                mes = Mexsalcta[0].Mes;
-            }
-            else
-            {
-                Mexsalint = datReader.StartReading_MEX_SALINT(datosCargar);
-                anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalint[0].Anio, Mexsalint[0].Mes).ToList();
-                anio = (short)Mexsalint[0].Anio;
-                mes = (byte)Mexsalint[0].Mes;
-            }
-
-            if (anioMes_YaExistentes.Count == 0)
-            {
-                return "No se cargo el archivo";
-            }
-            if (anioMes_YaExistentes[0].IdTipo == -1)
-            {
-                return "No se carga el archivo si el periodo ya existe";
-            }
-            if (anioMes_YaExistentes[0].IdTipo == 0)
-            {
-                //Insert tabla archivocarga
-                archivoCarga.Nombre = nombreArchivo;
-                archivoCarga.Identificador = "B/R" + DateTime.Today.ToString("MM") + DateTime.Today.Year.ToString().Substring(2);
-                archivoCarga.Fecha = DateTime.Now;
-                archivoCarga.TipoArchivoCarga = (int)tipoArchivo;
-                archivoCarga.Anio_Col3 = anio;
-                archivoCarga.Mes_Col4 = mes;
-                archivoCarga.Usuario = 1; //TODO: id del usuario
-
-                //Guardar en bd
-                db.ArchivoCarga.Add(archivoCarga);
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    return ManejoErrores.ErrorValidacion(e);
-                }
-                catch (DbUpdateException e)
-                {
-                    return ManejoErrores.ErrorValidacionDb(e);
-                }
-                catch (Exception e)
-                {
-                    return ManejoErrores.ErrorExepcion(e);
-                }
-
-
                 if (tipoArchivo == EnumTipoArchivoCarga.Balance)
                 {
-                    lstarchivoCargaDetalle = MapeaDetalleBalance(Mexsalcta, archivoCarga.Id);
+                    Mexsalcta = datReader.StartReading_MEXSALCTA(datosCargar);
+                    anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
+                    anio = Mexsalcta[0].Anio;
+                    mes = Mexsalcta[0].Mes;
                 }
                 else
                 {
-                    lstarchivoCargaDetalle = MapeaDetalleIntercompania(Mexsalint, archivoCarga.Id);
+                    Mexsalint = datReader.StartReading_MEX_SALINT(datosCargar);
+                    anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalint[0].Anio, Mexsalint[0].Mes).ToList();
+                    anio = (short)Mexsalint[0].Anio;
+                    mes = (byte)Mexsalint[0].Mes;
                 }
 
-                // Insert tabla archivo carga detalle
-                db.ArchivoCargaDetalle.AddRange(lstarchivoCargaDetalle);
-                try
+                if (anioMes_YaExistentes.Count == 0)
                 {
+                    return "No se cargo el archivo";
+                }
+                if (anioMes_YaExistentes[0].IdTipo == -1)
+                {
+                    return "No se carga el archivo si el periodo ya existe";
+                }
+                if (anioMes_YaExistentes[0].IdTipo == 0)
+                {
+                    //Insert tabla archivocarga
+                    archivoCarga.Nombre = nombreArchivo;
+                    archivoCarga.Identificador = "B/R" + DateTime.Today.ToString("MM") + DateTime.Today.Year.ToString().Substring(2);
+                    archivoCarga.Fecha = DateTime.Now;
+                    archivoCarga.TipoArchivoCarga = (int)tipoArchivo;
+                    archivoCarga.Anio_Col3 = anio;
+                    archivoCarga.Mes_Col4 = mes;
+                    archivoCarga.Usuario = 1; //TODO: id del usuario
+
+                    //Guardar en bd
+                    db.ArchivoCarga.Add(archivoCarga);
+                    //try
+                    //{
                     db.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    return ManejoErrores.ErrorValidacion(e);
-                }
-                catch (DbUpdateException e)
-                {
-                    return ManejoErrores.ErrorValidacionDb(e);
-                }
-                catch (Exception e)
-                {
-                    return ManejoErrores.ErrorExepcion(e);
-                }
+                    //}
+                    //catch (DbEntityValidationException e)
+                    //{
+                    //    return ManejoErrores.ErrorValidacion(e);
+                    //}
+                    //catch (DbUpdateException e)
+                    //{
+                    //    return ManejoErrores.ErrorValidacionDb(e);
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    return ManejoErrores.ErrorExepcion(e);
+                    //}
 
 
-                List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
+                    if (tipoArchivo == EnumTipoArchivoCarga.Balance)
+                    {
+                        lstarchivoCargaDetalle = MapeaDetalleBalance(Mexsalcta, archivoCarga.Id);
+                    }
+                    else
+                    {
+                        lstarchivoCargaDetalle = MapeaDetalleIntercompania(Mexsalint, archivoCarga.Id);
+                    }
 
-                // Companias no cargadas
-                List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 2).ToList();
+                    // Insert tabla archivo carga detalle
+                    db.ArchivoCargaDetalle.AddRange(lstarchivoCargaDetalle);
+                    //try
+                    //{
+                    db.SaveChanges();
+                    //}
+                    //catch (DbEntityValidationException e)
+                    //{
+                    //    return ManejoErrores.ErrorValidacion(e);
+                    //}
+                    //catch (DbUpdateException e)
+                    //{
+                    //    return ManejoErrores.ErrorValidacionDb(e);
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    return ManejoErrores.ErrorExepcion(e);
+                    //}
 
-                if (companiasNoCargadas.Count > 0)
-                {
-                    sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Compañias: </br>");
-                    companiasNoCargadas.ForEach(cnc =>
-                        sbcompaniasNoCargadas.AppendLine(cnc.Descripcion + " " + cnc.Value + "</br>")
-                        );
+                    List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
+
+                    // Companias no cargadas
+                    List<ValidateFileLoaded_Result> companiasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 2).ToList();
+
+                    if (companiasNoCargadas.Count > 0)
+                    {
+                        sbcompaniasNoCargadas.AppendLine("No se han cargado las siguientes Compañias: </br>");
+                        companiasNoCargadas.ForEach(cnc =>
+                            sbcompaniasNoCargadas.AppendLine(cnc.Descripcion + " " + cnc.Value + "</br>")
+                            );
+                    }
+
+                    // Cuentas no cargadas
+                    List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 1).ToList();
+
+                    if (cuentasNoCargadas.Count > 0)
+                    {
+                        sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Cuentas: </br>");
+                        cuentasNoCargadas.ForEach(cnc =>
+                            sbcuentasNoCargadas.AppendLine(cnc.Descripcion + " " + cnc.Value + "</br>")
+                            );
+                    }
+
+                    if (sbcompaniasNoCargadas.ToString() != string.Empty || sbcuentasNoCargadas.ToString() != string.Empty)
+                    {
+                        return sbcompaniasNoCargadas.ToString() + "</br>" + sbcuentasNoCargadas.ToString();
+                    }
                 }
-
-                // Cuentas no cargadas
-                List<ValidateFileLoaded_Result> cuentasNoCargadas = cuentasCompanias_NoExistentes.Where(cc => cc.IdTipo == 1).ToList();
-
-                if (cuentasNoCargadas.Count > 0)
-                {
-                    sbcuentasNoCargadas.AppendLine("No se han cargado las siguientes Cuentas: </br>");
-                    cuentasNoCargadas.ForEach(cnc =>
-                        sbcuentasNoCargadas.AppendLine(cnc.Descripcion + " " + cnc.Value + "</br>")
-                        );
-                }
-
-                if (sbcompaniasNoCargadas.ToString() != string.Empty || sbcuentasNoCargadas.ToString() != string.Empty)
-                {
-                    return sbcompaniasNoCargadas.ToString() + "</br>" + sbcuentasNoCargadas.ToString();
-                }
+            }
+            catch (DbEntityValidationException e)
+            {
+                return ManejoErrores.ErrorValidacion(e);
+            }
+            catch (DbUpdateException e)
+            {
+                return ManejoErrores.ErrorValidacionDb(e);
+            }
+            catch (FileHelpers.FileHelpersException)
+            {
+                throw;
+                //string fieldName = ((FileHelpers.ConvertException)ex).FieldName;
+                //string lineNumber = ((FileHelpers.ConvertException)ex).LineNumber.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ManejoErrores.ErrorExepcion(ex);
             }
 
             return string.Empty;
@@ -232,7 +252,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                          UsuarioActualizacion = Mexsalint[i].UsuarioActualizacion
                      });
             }
-            return lstarchivoCargaDetalle; 
+            return lstarchivoCargaDetalle;
         }
     }
 }

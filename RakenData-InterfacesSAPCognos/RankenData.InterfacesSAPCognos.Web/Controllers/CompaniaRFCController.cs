@@ -60,12 +60,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
-                if (dato.Length < 2)
+                if (dato.Length != 3)
                 {
-                    //errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");
-                    Log.WriteLog("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos", EnumTypeLog.Error, true);
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");
+                    //Log.WriteLog("No. Registro" +  (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos", EnumTypeLog.Error, true);
                     //continue;
-
                 }
                 else
                 {

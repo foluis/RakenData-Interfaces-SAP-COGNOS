@@ -33,7 +33,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 if (errores.Length > 0)
                 {
                     ModelState.AddModelError("Error", errores);
-
                 }
             }
             return View(cuentacognos.ToList());
@@ -55,7 +54,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
 
             CuentaCognos cuentaCognos = null;
-            int anexoid;            
+            //int anexoid;            
 
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
@@ -66,9 +65,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
-                if (dato.Length < 3)
+                if (dato.Length != 3)
                 {
-                    errores.AppendLine("No. Registro " + (i + 1) + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
+                    errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
                     //continue;
                 }
                 else

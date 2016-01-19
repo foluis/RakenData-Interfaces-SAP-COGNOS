@@ -60,61 +60,64 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
-                if (dato.Length < 2)
+                if (dato.Length != 2)
                 {
-                    //errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
-                    Log.WriteLog("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION", EnumTypeLog.Error, true);
-                    continue;
-                }
-                if (int.TryParse(dato[0], out clave) == false)
-                {
-                    errores.AppendLine("No. Registro: " + i + " ERROR: LA CLAVE NO ES NUMERICO");
-                }
-
-                if (errores.Length > 0)
-                {
-                    return errores.ToString();
-
-                }
-
-                string descripcion = dato[1].Replace("\r",string.Empty);
-                descripcion = dato[1].Length > 35 ? descripcion.Substring(0, 34) : descripcion;
-
-                companiaCognos = new CompaniaCognos()
-                {
-                    Clave = clave,
-                    Descripcion = descripcion
-                };
-
-                CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == companiaCognos.Clave);
-
-                if (companiaCognosExiste == null)
-                {
-                    db.CompaniaCognos.Add(companiaCognos);
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
+                    //Log.WriteLog("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION", EnumTypeLog.Error, true);                    
                 }
                 else
                 {
-                    companiaCognosExiste.Descripcion = companiaCognos.Descripcion;
-                    db.Entry(companiaCognosExiste).State = EntityState.Modified;
-                }
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (DbUpdateException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
+
+                    if (int.TryParse(dato[0], out clave) == false)
+                    {
+                        errores.AppendLine("No. Registro: " + (i + 1) + " ERROR: LA CLAVE NO ES NUMERICO");
+                    }
+
+                    //if (errores.Length > 0)
+                    //{
+                    //    return errores.ToString();
+
+                    //}
+
+                    string descripcion = dato[1].Replace("\r", string.Empty);
+                    descripcion = dato[1].Length > 35 ? descripcion.Substring(0, 34) : descripcion;
+
+                    companiaCognos = new CompaniaCognos()
+                    {
+                        Clave = clave,
+                        Descripcion = descripcion
+                    };
+
+                    CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == companiaCognos.Clave);
+
+                    if (companiaCognosExiste == null)
+                    {
+                        db.CompaniaCognos.Add(companiaCognos);
+                    }
+                    else
+                    {
+                        companiaCognosExiste.Descripcion = companiaCognos.Descripcion;
+                        db.Entry(companiaCognosExiste).State = EntityState.Modified;
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
+                    }
                 }
             }
             return errores.ToString();
