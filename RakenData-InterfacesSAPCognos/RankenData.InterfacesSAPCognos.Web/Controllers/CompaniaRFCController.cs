@@ -44,6 +44,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             int companiaCognos;
             StringBuilder errores = new StringBuilder();
 
+            string extension = Path.GetExtension(file.FileName);
+            if (extension != ".txt")
+            {
+                errores.AppendLine("El Archivo debe ser un archivo plano de texto con extencion .txt");
+                return errores.ToString();
+            }
+
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
             string result = System.Text.Encoding.UTF8.GetString(binData);
@@ -55,57 +62,84 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length < 2)
                 {
-                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");
+                    //errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");
+                    Log.WriteLog("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos", EnumTypeLog.Error, true);
+                    //continue;
 
-                }
-                if (int.TryParse(dato[2], out companiaCognos) == false)
-                {
-                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA COMPANIA COGNOS NO ES NUMERICO");
-                }
-
-                if (errores.Length > 0)
-                {
-                    return errores.ToString();
-
-                }
-                companiaRFC = new CompaniaRFC()
-                {
-                    RFC = dato[0],
-                    Descripcion = dato[1],
-                    CompaniaCognos = companiaCognos
-                };
-
-                CompaniaRFC companiaRFCExiste = db.CompaniaRFC.FirstOrDefault(cc => cc.RFC == companiaRFC.RFC);
-
-                if (companiaRFCExiste == null)
-                {
-                    db.CompaniaRFC.Add(companiaRFC);
                 }
                 else
                 {
-                    companiaRFCExiste.Descripcion = companiaRFC.Descripcion;
-                    companiaRFCExiste.CompaniaCognos = companiaRFC.CompaniaCognos;
-                    db.Entry(companiaRFCExiste).State = EntityState.Modified;
-                }
+                    string claveCompaniaCognos = dato[2].Replace("\r", string.Empty);
+                    int claveCompaniaCognosId= 0;
 
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (DbUpdateException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
+                    if (int.TryParse(claveCompaniaCognos, out companiaCognos))
+                    {
+                        claveCompaniaCognosId = companiaCognos;
+                    }
+
+                    CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveCompaniaCognosId);
+
+                    if (companiaCognosExiste == null)
+                    {
+                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA COMPANIA COGNOS NO EXISTE. ");
+                        //continue;
+                    }
+                    else
+                    {
+                        //if (int.TryParse(companiaCognosExiste.id, out companiaCognos) == false)
+                        //{
+                        //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA COMPANIA COGNOS NO ES NUMERICO");
+                        //}
+
+                        //if (errores.Length > 0)
+                        //{
+                        //    return errores.ToString();
+
+                        //}
+
+                        string descripcion = dato[1].Replace("\r", string.Empty);
+                        descripcion = dato[1].Length > 35 ? descripcion.Substring(0, 34) : descripcion;
+
+                        companiaRFC = new CompaniaRFC()
+                        {
+                            RFC = dato[0],
+                            Descripcion = descripcion,
+                            CompaniaCognos = companiaCognosExiste.Id
+                        };
+
+                        CompaniaRFC companiaRFCExiste = db.CompaniaRFC.FirstOrDefault(cc => cc.RFC == companiaRFC.RFC);
+
+                        if (companiaRFCExiste == null)
+                        {
+                            db.CompaniaRFC.Add(companiaRFC);
+                        }
+                        else
+                        {
+                            companiaRFCExiste.Descripcion = companiaRFC.Descripcion;
+                            companiaRFCExiste.CompaniaCognos = companiaRFC.CompaniaCognos;
+                            db.Entry(companiaRFCExiste).State = EntityState.Modified;
+                        }
+
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                            return "No se pudo cargar el archivo";
+                        }
+                        catch (DbUpdateException e)
+                        {
+                            Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                            return "No se pudo cargar el archivo";
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                            return "No se pudo cargar el archivo";
+                        }
+                    }
                 }
             }
 

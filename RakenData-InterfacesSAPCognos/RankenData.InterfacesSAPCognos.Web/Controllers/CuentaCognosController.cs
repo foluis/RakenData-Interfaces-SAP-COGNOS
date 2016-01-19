@@ -32,7 +32,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 string errores = CargeMasivoCuentaCognos(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores);                
+                    ModelState.AddModelError("Error", errores);
 
                 }
             }
@@ -44,10 +44,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [HttpPost]
         public string CargeMasivoCuentaCognos(HttpPostedFileBase file)
         {
-            CuentaCognos cuentaCognos = null;
-            int anexoid;
+            string extension = Path.GetExtension(file.FileName);
 
             StringBuilder errores = new StringBuilder();
+
+            if (extension != ".txt")
+            {
+                errores.AppendLine("El Archivo debe ser un archivo plano de texto con extencion .txt");
+                return errores.ToString();
+            }
+
+            CuentaCognos cuentaCognos = null;
+            int anexoid;            
 
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
@@ -60,55 +68,71 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length < 3)
                 {
-                    errores.AppendLine("No. Registro " + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
-
-                }
-                if (int.TryParse(dato[2], out anexoid) == false)
-                {
-                    errores.AppendLine("No. Registro " + i + " ERROR: EL ID DEL ANEXO NO ES NUMERICO");
-                }
-                cuentaCognos = new CuentaCognos()
-                {
-                    Numero = dato[0],
-                    Descripcion = dato[1],
-                    AnexoId = anexoid,
-                    IsActive = true
-                };
-
-                CuentaCognos cuentaExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentaCognos.Numero);
-
-                if (cuentaExiste == null)
-                {
-                    cuentaCognos.IsActive = true;
-                    db.CuentaCognos.Add(cuentaCognos);
+                    errores.AppendLine("No. Registro " + (i + 1) + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
+                    //continue;
                 }
                 else
                 {
-                    cuentaExiste.Descripcion = cuentaCognos.Descripcion;
-                    cuentaExiste.AnexoId = cuentaCognos.AnexoId;
-                    cuentaExiste.IsActive = true;
-                    db.Entry(cuentaExiste).State = EntityState.Modified;
-                }
+                    string claveAnexo = dato[2].Replace("\r", string.Empty);
 
+                    Anexo anexoExiste = db.Anexo.FirstOrDefault(cc => cc.Clave == claveAnexo);
 
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (DbUpdateException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
+                    if (anexoExiste == null)
+                    {
+                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DEL ANEXO NO EXISTE. ");
+                        //continue;
+                    }
+
+                    //if (int.TryParse(dato[2], out anexoid) == false)
+                    //{
+                    //    errores.AppendLine("No. Registro " + i + " ERROR: EL ID DEL ANEXO NO ES NUMERICO");
+                    //}
+
+                    else
+                    {
+                        cuentaCognos = new CuentaCognos()
+                        {
+                            Numero = dato[0],
+                            Descripcion = dato[1],
+                            AnexoId = anexoExiste.id,
+                            IsActive = true
+                        };
+
+                        CuentaCognos cuentaExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentaCognos.Numero);
+
+                        if (cuentaExiste == null)
+                        {
+                            cuentaCognos.IsActive = true;
+                            db.CuentaCognos.Add(cuentaCognos);
+                        }
+                        else
+                        {
+                            cuentaExiste.Descripcion = cuentaCognos.Descripcion;
+                            cuentaExiste.AnexoId = cuentaCognos.AnexoId;
+                            cuentaExiste.IsActive = true;
+                            db.Entry(cuentaExiste).State = EntityState.Modified;
+                        }
+
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                            return "No se pudo cargar el archivo";
+                        }
+                        catch (DbUpdateException e)
+                        {
+                            Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                            return "No se pudo cargar el archivo";
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                            return "No se pudo cargar el archivo";
+                        }
+                    }
                 }
 
             }
@@ -188,7 +212,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             }
 
-           
+
             return View(cuentacognos);
         }
 

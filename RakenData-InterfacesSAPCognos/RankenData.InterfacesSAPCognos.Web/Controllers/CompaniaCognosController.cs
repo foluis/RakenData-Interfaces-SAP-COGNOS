@@ -44,6 +44,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             int clave;
             StringBuilder errores = new StringBuilder();
 
+            string extension = Path.GetExtension(file.FileName);
+            if (extension != ".txt")
+            {
+                errores.AppendLine("El Archivo debe ser un archivo plano de texto con extencion .txt");
+                return errores.ToString();
+            }
+
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
             string result = System.Text.Encoding.UTF8.GetString(binData);
@@ -55,8 +62,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length < 2)
                 {
-                    errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
-
+                    //errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
+                    Log.WriteLog("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION", EnumTypeLog.Error, true);
+                    continue;
                 }
                 if (int.TryParse(dato[0], out clave) == false)
                 {
@@ -68,10 +76,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     return errores.ToString();
 
                 }
+
+                string descripcion = dato[1].Replace("\r",string.Empty);
+                descripcion = dato[1].Length > 35 ? descripcion.Substring(0, 34) : descripcion;
+
                 companiaCognos = new CompaniaCognos()
                 {
                     Clave = clave,
-                    Descripcion = dato[1]
+                    Descripcion = descripcion
                 };
 
                 CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == companiaCognos.Clave);

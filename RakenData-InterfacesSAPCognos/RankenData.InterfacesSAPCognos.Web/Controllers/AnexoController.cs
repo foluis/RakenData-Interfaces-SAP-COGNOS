@@ -43,6 +43,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             Anexo anexo = null;
             StringBuilder errores = new StringBuilder();
 
+            string extension = Path.GetExtension(file.FileName);
+            if (extension != ".txt")
+            {
+                errores.AppendLine("El Archivo debe ser un archivo plano de texto con extencion .txt");
+                return errores.ToString();
+            }
+
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
             string result = System.Text.Encoding.UTF8.GetString(binData);

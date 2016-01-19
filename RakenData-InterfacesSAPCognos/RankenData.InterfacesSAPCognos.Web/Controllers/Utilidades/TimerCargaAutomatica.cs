@@ -23,7 +23,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         /// Inicalizar timer
         /// </summary>
         public void Init()
-        {   
+        {
             string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
             System.Timers.Timer timer = new System.Timers.Timer();
             int time = int.Parse(tiempoCargaAutomatica);
@@ -50,7 +50,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             string errores = string.Empty;
             this.lstCargaAutomatica = new List<CargaAutomatica>();
 
-             if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1" && db.CargaAutomatica != null && db.CargaAutomatica.Count() > 0)
+            if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1" && db.CargaAutomatica != null && db.CargaAutomatica.Count() > 0)
             {
                 foreach (CargaAutomatica cargaAutomatica in db.CargaAutomatica.ToList())
                 {
@@ -87,7 +87,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if (string.IsNullOrEmpty(errores))
                         {
-                             cargaAutomatica.WasLoaded = true;
+                            cargaAutomatica.WasLoaded = true;
                             db.Entry(cargaAutomatica).State = EntityState.Modified;
                             db.SaveChanges();
 
@@ -108,7 +108,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         }
                     }
                 }
-            }         
+            }
         }
     }
 }

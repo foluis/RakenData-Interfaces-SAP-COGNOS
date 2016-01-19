@@ -31,7 +31,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 string errores = CargeMasivoCuentaSAP(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores);             
+                    ModelState.AddModelError("Error", errores);
                 }
             }
 
@@ -42,10 +42,19 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // return: errores y si no hay devuelve el objeto vacio        
         public string CargeMasivoCuentaSAP(HttpPostedFileBase file)
         {
-            CuentaSAP cuentasap = null;
-            int cuentaCognos, tipoCuentaSAP, cuentaCargo, cuentaAbono;
-            bool esOpen;
+            CuentaSAP cuentasap = null;            
+            int tipoCuentaSAP = 0;
+            int? cuentaCargo = null;
+            int? cuentaAbono = null;
+            bool? esOpen = null;
             StringBuilder errores = new StringBuilder();
+
+            string extension = Path.GetExtension(file.FileName);
+            if (extension != ".txt")
+            {
+                errores.AppendLine("El Archivo debe ser un archivo plano de texto con extencion .txt");
+                return errores.ToString();
+            }
 
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
@@ -56,88 +65,198 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
-                if (dato.Length < 5)
+                if (dato.Length != 7)
                 {
                     errores.AppendLine("No. Registro" + i + " ERROR: lA ESTRUCTURA DEL ARCHIVO NO ES: numero,descripcion,cuentaCognos,TipoCuentaSAP,esOpen,CuentaCargo,CuentaAbono");
-
-                }
-                if (int.TryParse(dato[2], out cuentaCognos) == false)
-                {
-                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA COGNOS NO ES NUMERICO");
-                }
-                if (int.TryParse(dato[3], out tipoCuentaSAP) == false)
-                {
-                    errores.AppendLine("No. Registro: " + i + " ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
-                }
-                if (bool.TryParse(dato[4], out esOpen) == false)
-                {
-                    errores.AppendLine("No. Registro: " + i + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
-                }
-                if (int.TryParse(dato[5], out cuentaCargo) == false)
-                {
-                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
-                }
-                if (int.TryParse(dato[6], out cuentaAbono) == false)
-                {
-                    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA ABONO NO ES NUMERICO");
-                }
-                if (errores.Length > 0)
-                {
-                    return errores.ToString();
-
-                }
-
-                cuentasap = new CuentaSAP()
-                {
-                    Numero = dato[0],
-                    Descripcion = dato[1],
-                    CuentaCognos = cuentaCognos,
-                    IsActive = true,
-                    TipoCuentaSAP = tipoCuentaSAP,
-                    EsOpen = esOpen,
-                    CuentaCargo = cuentaCargo,
-                    CuentaAbono = cuentaAbono,
-                };
-
-                CuentaSAP cuentaSapExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == cuentasap.Numero);
-                if (cuentaSapExiste == null)
-                {
-                    cuentasap.IsActive = true;
-                    db.CuentaSAP.Add(cuentasap);
                 }
                 else
                 {
-                    cuentaSapExiste.Descripcion = cuentasap.Descripcion;
-                    cuentaSapExiste.CuentaCognos = cuentasap.CuentaCognos;
-                    cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;
-                    cuentaSapExiste.EsOpen = cuentasap.EsOpen;
-                    cuentaSapExiste.CuentaCargo = cuentasap.CuentaCargo;
-                    cuentaSapExiste.CuentaAbono = cuentasap.CuentaAbono;
-                    cuentaSapExiste.IsActive = true;
-                    db.Entry(cuentaSapExiste).State = EntityState.Modified;
-                }
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (DbUpdateException e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
-                    return "No se pudo cargar el archivo";
+                    //if (int.TryParse(dato[2], out cuentaCognos) == false)
+                    //{
+                    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA COGNOS NO ES NUMERICO");
+                    //}
+
+                    string cuentaCognos = dato[2].Replace("\r", string.Empty);
+
+                    CuentaCognos cuentaCognosExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentaCognos);
+
+                    if (cuentaCognosExiste == null)
+                    {
+                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA CUENTA COGNOS NO EXISTE. ");
+                        //continue;
+                    }
+
+
+                    if (int.TryParse(dato[3], out tipoCuentaSAP) == false)
+                    {
+                        errores.AppendLine("No. Registro: " + i + " ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
+                    }
+
+
+                    if (dato[4] == "NULL")
+                    {
+                        esOpen = null;
+                    }
+                    else if (string.IsNullOrWhiteSpace(dato[4]))
+                    {
+                        esOpen = null;
+                    }
+                    else
+                    {
+                        if (dato[4] == "TRUE")
+                        {
+                            esOpen = true;
+                        }
+                        else if (dato[4] == "FALSE")
+                        {
+                            esOpen = false;
+                        }
+                        else
+                        {
+                            errores.AppendLine("No. Registro: " + i + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
+                        }
+
+                        //if (bool.TryParse(dato[4], out esOpen) == false)
+                        //{
+                        //    errores.AppendLine("No. Registro: " + i + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
+                        //}
+                    }
+
+                    string dato5 = dato[5];
+                    if (dato5 == "NULL")
+                    {
+                        cuentaCargo = null;
+                    }
+                    else if (string.IsNullOrWhiteSpace(dato5))
+                    {
+                        cuentaCargo = null;
+                    }
+                    else
+                    {
+                        //cuentaCargo = dato[5].Replace("\r", string.Empty);
+
+                        CuentaCognos cuentaCargoExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == dato5);
+
+                        if (cuentaCargoExiste == null)
+                        {
+                            errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA CUENTA COGNOS (CUENTA CARGO) NO EXISTE. ");
+                            //continue;
+                        }
+                        else
+                        {
+                            cuentaCargo = cuentaCargoExiste.Id;
+                        }
+                    }
+
+
+
+                    //else if (NullableInt.TryParse(dato[5], out cuentaCargo) == false)
+                    //{
+                    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
+                    //}
+
+
+                    //if (int.TryParse(dato[5], out cuentaCargo) == false)
+                    //{
+                    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
+                    //}
+
+                    string dato6 = dato[6].Replace("\r", "");
+                    if (dato6 == "NULL")
+                    {
+                        cuentaAbono = null;
+                    }
+                    else if (string.IsNullOrWhiteSpace(dato6))
+                    {
+                        cuentaAbono = null;
+                    }
+                    else
+                    {
+                        //else if (NullableInt.TryParse(dato[6].Replace("\r", ""), out cuentaAbono) == false)
+                        //{cuentaAbono
+                        //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA ABONO NO ES NUMERICO");
+                        //}
+
+                        CuentaCognos cuentaAbonoExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == dato6);
+
+                        if (cuentaAbonoExiste == null)
+                        {
+                            errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA CUENTA COGNOS (CUENTA CARGO) NO EXISTE. ");
+                            //continue;
+                        }
+                        else
+                        {
+                            cuentaAbono = cuentaAbonoExiste.Id;
+                        }
+                    }
+
+                    if (errores.Length > 0)
+                    {
+                        return errores.ToString();
+                    }
+
+                    cuentasap = new CuentaSAP()
+                    {
+                        Numero = dato[0],
+                        Descripcion = dato[1],
+                        CuentaCognos = cuentaCognosExiste.Id,
+                        IsActive = true,
+                        TipoCuentaSAP = tipoCuentaSAP,
+                        EsOpen = esOpen,
+                        CuentaCargo = cuentaCargo,
+                        CuentaAbono = cuentaAbono
+                    };
+
+                    CuentaSAP cuentaSapExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == cuentasap.Numero);
+                    if (cuentaSapExiste == null)
+                    {
+                        cuentasap.IsActive = true;
+                        db.CuentaSAP.Add(cuentasap);
+                    }
+                    else
+                    {
+                        cuentaSapExiste.Descripcion = cuentasap.Descripcion;
+                        cuentaSapExiste.CuentaCognos = cuentasap.CuentaCognos;
+                        cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;
+                        cuentaSapExiste.EsOpen = cuentasap.EsOpen;
+                        cuentaSapExiste.CuentaCargo = cuentasap.CuentaCargo;
+                        cuentaSapExiste.CuentaAbono = cuentasap.CuentaAbono;
+                        cuentaSapExiste.IsActive = true;
+                        db.Entry(cuentaSapExiste).State = EntityState.Modified;
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                        return "No se pudo cargar el archivo";
+                    }
                 }
             }
-
             return errores.ToString();
+        }
+
+        public static class NullableInt
+        {
+            public static bool TryParse(string text, out int? outValue)
+            {
+                int parsedValue;
+                bool success = int.TryParse(text, out parsedValue);
+                outValue = success ? (int?)parsedValue : null;
+                return success;
+            }
         }
 
         // GET: /CuentaSAP/Details/5
