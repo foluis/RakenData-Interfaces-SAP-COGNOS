@@ -62,12 +62,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 }
                 if (anioMes_YaExistentes[0].IdTipo == -1)
                 {
-                    return "No se carga el archivo si el periodo ya existe";
+                    return "El periodo que contiene el archivo ya existe";
                 }
                 if (anioMes_YaExistentes[0].IdTipo == 0)
                 {
                     //Insert tabla archivocarga
-                    archivoCarga.Nombre = nombreArchivo;
+                    archivoCarga.Nombre = nombreArchivo.Substring(nombreArchivo.LastIndexOf(@"\") + 1);
                     archivoCarga.Identificador = "B/R" + DateTime.Today.ToString("MM") + DateTime.Today.Year.ToString().Substring(2);
                     archivoCarga.Fecha = DateTime.Now;
                     archivoCarga.TipoArchivoCarga = (int)tipoArchivo;

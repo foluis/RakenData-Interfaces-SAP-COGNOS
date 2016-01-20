@@ -47,9 +47,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         string result = System.Text.Encoding.UTF8.GetString(binData);
                         try
                         {
-                            //MEX_SALCTA
-                            //errores = CargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Balance);
-                            errores.AppendLine(CargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Balance));
+                            string cargaArchivoResult = CargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Balance);
+                            if (!string.IsNullOrEmpty(cargaArchivoResult))
+                            {
+                                errores.AppendLine(cargaArchivoResult);
+                            }
                         }
                         catch (FileHelpers.FileHelpersException ex)
                         {

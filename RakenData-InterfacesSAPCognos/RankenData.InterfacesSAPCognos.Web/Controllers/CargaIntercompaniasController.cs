@@ -33,22 +33,61 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [HttpPost]
         public string CargarIntercompania()
         {
-            string errores = string.Empty;
+            StringBuilder errores = new StringBuilder();
 
             if (Request.Files.Count > 0)
             {
                 HttpPostedFileBase file = Request.Files[0];
 
-                if (file != null && file.ContentLength > 0)
+                if (file.FileName.Substring(file.FileName.Length - 4).ToLower() != ".dat")
                 {
-                    BinaryReader b = new BinaryReader(file.InputStream);
-                    byte[] binData = b.ReadBytes((int)file.InputStream.Length);
-                    string result = System.Text.Encoding.UTF8.GetString(binData);
+                    errores.AppendLine("La extensión del archivo debe ser de tipo \".dat\" ");
+                }
+                else if (file.FileName.ToLower().IndexOf("mex_salint") == -1)
+                {
+                    errores.AppendLine("El archivo debe ser de balance y resultados (\"MEX_SALINT_YYYYMMDD\")");
+                }
+                else
+                {
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        BinaryReader b = new BinaryReader(file.InputStream);
+                        byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+                        string result = System.Text.Encoding.UTF8.GetString(binData);
 
-                    errores = CargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Intercompanias);
+                        try
+                        {
+                            string cargaArchivoResult = CargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Intercompanias);
+                            if(!string.IsNullOrEmpty(cargaArchivoResult))
+                            {
+                                errores.AppendLine(cargaArchivoResult);
+                            }
+                        }
+                        catch (FileHelpers.FileHelpersException ex)
+                        {
+                            string fieldName = ((FileHelpers.ConvertException)ex).FieldName;
+                            string lineNumber = ((FileHelpers.ConvertException)ex).LineNumber.ToString();
+                            string messageOriginal = ((FileHelpers.ConvertException)ex).MessageOriginal;
+
+                            errores.AppendLine("No. Registro " + lineNumber + " - Columna: " + fieldName + " - Mensaje: " + messageOriginal);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                            errores.AppendLine("No se pudo cargar el archivo");
+                        }
+                    }
+                    else
+                    {
+                        errores.AppendLine("Verifique el archivo, al parecer esta vacío");
+                    }
                 }
             }
-            return errores;
+            else
+            {
+                errores.AppendLine("Seleccione un archivo");
+            }
+            return errores.ToString();
         }
 
 
