@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\mgonzalez\Documents\GitHub\RakenData-Interfaces-SAP-COGNOS\RakenData-InterfacesSAPCognos\RankenData.InterfacesSAPCognos.Web\Models\ModelRakenData.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\LuisFernando\Documents\GitHub\RakenData-Interfaces-SAP-COGNOS\RakenData-InterfacesSAPCognos\RankenData.InterfacesSAPCognos.Web\Models\ModelRakenData.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

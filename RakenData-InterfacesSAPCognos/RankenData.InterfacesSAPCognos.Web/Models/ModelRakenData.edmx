@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ModelRankenData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelRankenData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AdministracionAplicacion">
           <Key>
             <PropertyRef Name="Id" />
@@ -504,6 +504,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
         <Function Name="ValidateFileToLoad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Anio" Type="int" Mode="In" />
           <Parameter Name="Mes" Type="int" Mode="In" />
+          <Parameter Name="TipoArchivoCargaId" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ModelRankenDataStoreContainer">
           <EntitySet Name="AdministracionAplicacion" EntityType="Self.AdministracionAplicacion" Schema="dbo" store:Type="Tables" />
@@ -615,6 +616,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <FunctionImport Name="ValidateFileToLoad" ReturnType="Collection(ModelRankenData.ValidateFileToLoad_Result)">
             <Parameter Name="Anio" Mode="In" Type="Int32" />
             <Parameter Name="Mes" Mode="In" Type="Int32" />
+            <Parameter Name="TipoArchivoCargaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CreateArchivoBalance" ReturnType="Collection(Int32)">
             <Parameter Name="SociedadesCognos" Mode="In" Type="String" />

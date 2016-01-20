@@ -44,14 +44,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 if (tipoArchivo == EnumTipoArchivoCarga.Balance)
                 {
                     Mexsalcta = datReader.StartReading_MEXSALCTA(datosCargar);
-                    anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes).ToList();
+                    anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalcta[0].Anio, Mexsalcta[0].Mes, (int)tipoArchivo).ToList();
                     anio = Mexsalcta[0].Anio;
                     mes = Mexsalcta[0].Mes;
                 }
                 else
                 {
                     Mexsalint = datReader.StartReading_MEX_SALINT(datosCargar);
-                    anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalint[0].Anio, Mexsalint[0].Mes).ToList();
+                    anioMes_YaExistentes = db.ValidateFileToLoad(Mexsalint[0].Anio, Mexsalint[0].Mes, (int)tipoArchivo).ToList();
                     anio = (short)Mexsalint[0].Anio;
                     mes = (byte)Mexsalint[0].Mes;
                 }

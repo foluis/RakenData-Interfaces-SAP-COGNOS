@@ -58,7 +58,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileLoaded_Result>("ValidateFileLoaded", fileLoadedIdParameter);
         }
     
-        public virtual ObjectResult<ValidateFileToLoad_Result> ValidateFileToLoad(Nullable<int> anio, Nullable<int> mes)
+        public virtual ObjectResult<ValidateFileToLoad_Result> ValidateFileToLoad(Nullable<int> anio, Nullable<int> mes, Nullable<int> tipoArchivoCargaId)
         {
             var anioParameter = anio.HasValue ?
                 new ObjectParameter("Anio", anio) :
@@ -68,7 +68,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
                 new ObjectParameter("Mes", mes) :
                 new ObjectParameter("Mes", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileToLoad_Result>("ValidateFileToLoad", anioParameter, mesParameter);
+            var tipoArchivoCargaIdParameter = tipoArchivoCargaId.HasValue ?
+                new ObjectParameter("TipoArchivoCargaId", tipoArchivoCargaId) :
+                new ObjectParameter("TipoArchivoCargaId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileToLoad_Result>("ValidateFileToLoad", anioParameter, mesParameter, tipoArchivoCargaIdParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> CreateArchivoBalance(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario)
