@@ -44,7 +44,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             id = db.CreateArchivoBalance(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1).ToList();
                             if (id != null && id.Count() > 0 && id.First().Value == -1)
                             {
-                                ModelState.AddModelError("Error", "No se genero el archivo");
+                                ModelState.AddModelError("Error", "No hay datos para procesar archivo");
                                 return View();
                             }
                             break;
@@ -52,7 +52,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             id = db.CreateArchivoResultados(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1).ToList();
                             if (id != null && id.Count() > 0 && id.First().Value == -1)
                             {
-                                ModelState.AddModelError("Error", "No se genero el archivo");
+                                ModelState.AddModelError("Error", "No hay datos para procesar archivo");
                                 return View();
                             }
                             break;
@@ -60,7 +60,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             id = db.CreateArchivoIntercompanias(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1).ToList();
                             if (id != null && id.Count() >0 && id.First().Value == -1)
                             {
-                                ModelState.AddModelError("Error", "No se genero el archivo");
+                                ModelState.AddModelError("Error", "No hay datos para procesar archivo");
                                 return View();
                             }
                             break;

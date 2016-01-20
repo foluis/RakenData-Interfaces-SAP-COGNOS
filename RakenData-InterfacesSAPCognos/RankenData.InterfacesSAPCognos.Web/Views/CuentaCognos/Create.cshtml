@@ -22,7 +22,8 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })*@
+            @Html.LabelFor(model => model.Numero,"Número", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Numero)
                 @Html.ValidationMessageFor(model => model.Numero)
@@ -30,7 +31,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })*@
+            @Html.LabelFor(model => model.Descripcion,"Descripción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Descripcion)
                 @Html.ValidationMessageFor(model => model.Descripcion)
@@ -38,7 +40,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AnexoId, "AnexoId", new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.AnexoId, "AnexoId", new { @class = "control-label col-md-2" })*@
+            @Html.LabelFor(model => model.AnexoId, "Anexo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("AnexoId", String.Empty)
                 @Html.ValidationMessageFor(model => model.AnexoId)
