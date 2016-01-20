@@ -68,7 +68,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 {
                     //Insert tabla archivocarga
                     archivoCarga.Nombre = nombreArchivo.Substring(nombreArchivo.LastIndexOf(@"\") + 1);
-                    archivoCarga.Identificador = "B/R" + DateTime.Today.ToString("MM") + DateTime.Today.Year.ToString().Substring(2);
+
+                    if(tipoArchivo == EnumTipoArchivoCarga.Balance)
+                        archivoCarga.Identificador = "B/R" + DateTime.Today.ToString("MM") + DateTime.Today.Year.ToString().Substring(2);
+                    else
+                        archivoCarga.Identificador = "INT" + DateTime.Today.ToString("MM") + DateTime.Today.Year.ToString().Substring(2);
+
                     archivoCarga.Fecha = DateTime.Now;
                     archivoCarga.TipoArchivoCarga = (int)tipoArchivo;
                     archivoCarga.Anio_Col3 = anio;
