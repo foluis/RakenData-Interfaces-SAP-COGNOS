@@ -41,9 +41,9 @@ namespace Ranken.ISC.FileManager.WriteFiles
                         break;
                 }
 
-                string fileNname = string.Format("{0}{0}.csv", fileName, fecha);              
+                string fileNname = string.Format("{0}{1}.csv", fileName, fecha);              
 
-                var finalPath = path + fileNname;
+                var finalPath = path + @"\" + fileNname;
 
                 using (engine.BeginWriteFile(finalPath))
                 {
