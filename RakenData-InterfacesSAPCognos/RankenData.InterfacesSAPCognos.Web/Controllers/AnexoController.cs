@@ -24,7 +24,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /Anexo/
          //[Authorize(Roles = "1")]
         public ActionResult Index(HttpPostedFileBase file)
-        {           
+        {
             if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeAnexo(file);
@@ -74,11 +74,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 {
                     return errores.ToString();
 
-                }
+                }                
+
                 anexo = new Anexo()
                 {
                     Clave = dato[0],
-                    Descripcion = dato[1],
+                    Descripcion = dato[1].Length <= 35 ? dato[1]: dato[1].Substring(0,35),
                     Modificable = modificable
                    
                 };

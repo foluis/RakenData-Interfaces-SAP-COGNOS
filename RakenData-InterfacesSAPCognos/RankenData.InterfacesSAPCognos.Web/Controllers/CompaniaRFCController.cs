@@ -97,7 +97,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         //}
 
                         string descripcion = dato[1].Replace("\r", string.Empty);
-                        descripcion = dato[1].Length > 35 ? descripcion.Substring(0, 34) : descripcion;
+                        descripcion = dato[1].Length <= 35 ? descripcion : descripcion.Substring(0, 35);
 
                         companiaRFC = new CompaniaRFC()
                         {
