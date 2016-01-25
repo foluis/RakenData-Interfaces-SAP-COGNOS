@@ -33,11 +33,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             time = 30000; //TODO: Esta linea es de pruebas
             timer.Interval = time;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-            procesaCargaAutomatica = db.AdministracionAplicacion.Where(aa => aa.Id == 1).FirstOrDefault().Valor;
-            if (procesaCargaAutomatica == "1")
+            try
             {
-                timer.Start();
+                procesaCargaAutomatica = db.AdministracionAplicacion.Where(aa => aa.Id == 1).FirstOrDefault().Valor;
+                if (procesaCargaAutomatica == "1")
+                {
+                    timer.Start();
+                }
             }
+            catch (Exception ex)
+            {
+                Log.WriteLog("No se pudo obtener informacion de la tabla de administracion para el proceso de Carga automatica, valide que tenga conección. Error: "  + ex.ToString(), EnumTypeLog.Error, true);
+            }            
         }
 
         /// <summary>
