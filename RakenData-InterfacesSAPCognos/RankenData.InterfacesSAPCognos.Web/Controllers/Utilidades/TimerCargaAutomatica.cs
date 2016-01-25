@@ -18,6 +18,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         DAT_Reader datReader = new DAT_Reader();
         MailInfo mailInfo = new MailInfo();
         string ruta;
+        string procesaCargaAutomatica = "0";
 
         /// <summary>
         /// Inicalizar timer
@@ -32,7 +33,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             time = 30000; //TODO: Esta linea es de pruebas
             timer.Interval = time;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-            if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1")
+            procesaCargaAutomatica = db.AdministracionAplicacion.Where(aa => aa.Id == 1).FirstOrDefault().Valor;
+            if (procesaCargaAutomatica == "1")
             {
                 timer.Start();
             }
@@ -50,9 +52,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             string errores = string.Empty;
             this.lstCargaAutomatica = new List<CargaAutomatica>();
 
-            if (ConfigurationManager.AppSettings["procesaCargaAutomatica"] == "1" && db.CargaAutomatica != null && db.CargaAutomatica.Count() > 0)
+            //ConfigurationManager.AppSettings["procesaCargaAutomatica"]
+
+            var cargaAutomaticaInfo = db.CargaAutomatica;
+
+            if (procesaCargaAutomatica == "1" && cargaAutomaticaInfo != null && cargaAutomaticaInfo.Count() > 0)
             {
-                foreach (CargaAutomatica cargaAutomatica in db.CargaAutomatica.ToList())
+                foreach (CargaAutomatica cargaAutomatica in cargaAutomaticaInfo.ToList())
                 {
                     if (cargaAutomatica.FechaProgramada.Date == DateTime.Now.Date && cargaAutomatica.WasLoaded == false)
                     {
@@ -80,7 +86,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
                             if (System.IO.File.Exists(ruta))
                             {
-                                result = System.IO.File.ReadAllText(@"C:\Users\mgonzalez\Documents\ProyectoLuisF\prueba.DAT");
+                                result = System.IO.File.ReadAllText(ruta);
                                 errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
                             }
                         }
@@ -91,7 +97,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             db.Entry(cargaAutomatica).State = EntityState.Modified;
                             db.SaveChanges();
 
-                            Log.WriteLog("El archivo : " + nombreArchivo + " se cargo exitosamente", EnumTypeLog.Event, true);
+                            Log.WriteLog("El archivo : " + nombreArchivo + " se cargó exitosamente", EnumTypeLog.Event, true);
 
                             mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
                             mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
@@ -100,10 +106,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         }
                         else
                         {
-                            Log.WriteLog("El archivo : " + nombreArchivo + " el archivo presento presento los siguientes errores: " + errores, EnumTypeLog.Event, true);
+                            Log.WriteLog("El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores, EnumTypeLog.Event, true);
                             mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
                             mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
-                            mailInfo.Message = "El archivo : " + nombreArchivo + " el archivo presento presento los siguientes errores: " + errores; ;
+                            mailInfo.Message = "El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores; ;
                             AdmMail.Enviar(mailInfo);
                         }
                     }

@@ -1,6 +1,7 @@
 ﻿using FileHelpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,12 @@ namespace Ranken.ISC.FileManager.WriteFiles
                         break;
                 }
 
-                string fileNname = string.Format("{0}{1}.csv", fileName, fecha);              
+                string fileNname = string.Format("{0}{1}.csv", fileName, fecha);
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
 
                 var finalPath = path + @"\" + fileNname;
 
