@@ -84,9 +84,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             if (archivoprocesadodetalle.Count == 0)
             {
                   return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "No hay información para generar el archivo" });    
-            }            
-                    
-            string ruta = db.AdministracionAplicacion.Where(aa => aa.Id == 3).FirstOrDefault().Valor;
+            }
+
+            //string ruta = HttpContext.Current.Server.MapPath(@"\Log");
+            string ruta = Server.MapPath(@"\ArchivosCreados");
+
+
             CSV_Writer csvWriter = new CSV_Writer();
 
             ArchivoProcesado archivoProcesado= db.ArchivoProcesado.Find(archivoprocesadodetalle.First().ArchivoProcesadoId);
