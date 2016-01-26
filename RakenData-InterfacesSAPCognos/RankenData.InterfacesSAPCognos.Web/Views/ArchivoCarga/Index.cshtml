@@ -12,8 +12,8 @@
 @using (Html.BeginForm())
 {
     <p>            
-        Fecha Inicio: @Html.TextBox("startDate","", new { type = "date" })
-        Fecha Fin: @Html.TextBox("endDate", "", new { type = "date" })
+        Fecha Inicio: @Html.TextBox("startDate","", new { type = "date", placeholder = "dd/mm/aaaa" })
+        Fecha Fin: @Html.TextBox("endDate", "", new { type = "date", placeholder = "dd/mm/aaaa" })
         <input type="submit" value="Buscar" />
     </p>
 }
@@ -74,3 +74,9 @@
 }
 
 </table>
+
+@*<script type='text/javascript'>
+    $(function(){        
+        $("input[type='date']").datepicker().attr('type','text');
+    });
+</script>*@
