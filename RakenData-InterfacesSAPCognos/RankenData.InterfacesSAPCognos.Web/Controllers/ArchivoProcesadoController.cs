@@ -7,6 +7,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using System.Data.Entity.Validation;
+using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
+using System.Data.Entity.Infrastructure;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -141,9 +145,33 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ArchivoProcesado archivoprocesado = db.ArchivoProcesado.Find(id);
-            db.ArchivoProcesado.Remove(archivoprocesado);
-            db.SaveChanges();
+            //ArchivoProcesado archivoprocesado = db.ArchivoProcesado.Find(id);
+            //db.ArchivoProcesado.Remove(archivoprocesado);
+
+            db.EliminarArchivoProcesado(id);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
+                ModelState.AddModelError("Error", "No se pudo eliminar el archivo");
+                return View();
+            }
+            catch (DbUpdateException e)
+            {
+                Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
+                ModelState.AddModelError("Error", "No se pudo eliminar el archivo");
+                return View();
+            }
+            catch (Exception e)
+            {
+                Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
+                ModelState.AddModelError("Error", "No se pudo eliminar el archivo");
+                return View();
+            }
             return RedirectToAction("Index");
         }
 

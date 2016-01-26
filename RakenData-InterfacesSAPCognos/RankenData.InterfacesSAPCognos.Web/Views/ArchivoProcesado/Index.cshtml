@@ -63,8 +63,13 @@
             @Html.DisplayFor(modelItem => item.User.Username)
         </td>
         <td>
-            @Html.ActionLink("Consultar Datos", "ConsultarDetalle", new { id = item.Id })   
+            @Html.ActionLink("Consultar Datos", "ConsultarDetalle", new { id = item.Id })
+            @if (!item.ArchivoGenerado)
+            {
+            @Html.ActionLink("Borrar", "Delete", new { id = item.Id })   
+            }
         </td>
+
     </tr>
 }
 
