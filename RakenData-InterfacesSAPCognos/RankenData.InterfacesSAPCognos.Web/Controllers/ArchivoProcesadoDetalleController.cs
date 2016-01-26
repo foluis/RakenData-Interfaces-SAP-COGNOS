@@ -100,7 +100,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     AccountName = ap.AccountName,
                     Actuality = ap.Actuality,
                     Amount = ap.Amount.ToString(),
-                    Company = ap.Company,
+                    //Company = ap.Company,
+                    Company = archivoProcesado.CompaniaCognos.Clave.ToString(),
                     CounterCompany = ap.CounterCompany,
                     Dim1 = ap.Dim1,
                     Dim2 = ap.Dim2,
@@ -113,7 +114,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
-            OperationResult archivoCreado = csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Descripcion, archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
+            OperationResult archivoCreado = csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Clave.ToString(), archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
             if (archivoCreado.IdError == 0)//Archivo Creado
             {
                 archivoProcesado.ArchivoGenerado = true;
