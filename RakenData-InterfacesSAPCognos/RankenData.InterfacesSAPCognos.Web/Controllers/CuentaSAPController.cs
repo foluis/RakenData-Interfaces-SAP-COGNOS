@@ -24,18 +24,27 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         //[Authorize(Roles="1")]
         public ActionResult Index(HttpPostedFileBase file)
         {
-            var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1).Where(cc => cc.IsActive == true);
-
-            if (file != null && file.ContentLength > 0)
+            try
             {
-                string errores = CargeMasivoCuentaSAP(file);
-                if (errores.Length > 0)
-                {
-                    ModelState.AddModelError("Error", errores);
-                }
-            }
+                var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1).Where(cc => cc.IsActive == true);
 
-            return View(cuentasap.ToList());
+                if (file != null && file.ContentLength > 0)
+                {
+                    string errores = CargeMasivoCuentaSAP(file);
+                    if (errores.Length > 0)
+                    {
+                        ModelState.AddModelError("Error", errores);
+                    }
+                }
+
+                return View(cuentasap.ToList());
+            }
+            catch (Exception ex)
+            {
+                string error =ex.ToString();
+                throw;
+            }
+           
         }
 
         // Carga masiva de cuentas SAP 
