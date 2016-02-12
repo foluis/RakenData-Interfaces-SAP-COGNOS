@@ -22,7 +22,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FechaProgramada, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.FechaProgramada, new { type = "date" })
+                @Html.TextBoxFor(model => model.FechaProgramada, new { type = "date", placeholder = "dd/mm/aaaa" })
                 @Html.ValidationMessageFor(model => model.FechaProgramada)
             </div>
         </div>

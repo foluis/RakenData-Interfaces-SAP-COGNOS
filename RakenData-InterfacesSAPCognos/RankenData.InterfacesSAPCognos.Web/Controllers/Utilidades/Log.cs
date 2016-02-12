@@ -24,7 +24,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
         {
             date = DateTime.Today.ToString("yyyy-MM-dd");
             time = "\t\t\t\t\t\tTime: " + DateTime.Now.ToString("HH:mm:ss");
-            logPath = HttpContext.Current.Server.MapPath(@"\Log");
+
+            logPath = HttpContext.Current == null ? AppDomain.CurrentDomain.BaseDirectory + @"Log" : HttpContext.Current.Server.MapPath(@"\Log");
+
             writeLog = ConfigurationManager.AppSettings["writeLog"];
             switch (typeLog)
             {

@@ -65,7 +65,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             if (procesaCargaAutomatica == "1" && cargaAutomaticaInfo != null && cargaAutomaticaInfo.Count() > 0)
             {
-                foreach (CargaAutomatica cargaAutomatica in cargaAutomaticaInfo.ToList())
+                var registrosCargaAutomatica = cargaAutomaticaInfo.ToList();
+                bool hayArchivo = false;
+                foreach (CargaAutomatica cargaAutomatica in registrosCargaAutomatica)
                 {
                     if (cargaAutomatica.FechaProgramada.Date == DateTime.Now.Date && cargaAutomatica.WasLoaded == false)
                     {
@@ -85,6 +87,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             {
                                 result = System.IO.File.ReadAllText(ruta);
                                 errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
+                                hayArchivo = true;
+                            }
+                            else
+                            {
+                                hayArchivo = false;
                             }
                         }
                         else // Si el archivo es intercompañias
@@ -95,10 +102,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             {
                                 result = System.IO.File.ReadAllText(ruta);
                                 errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
+                                hayArchivo = true;
+                            }
+                            else
+                            {
+                                hayArchivo = false;
                             }
                         }
 
-                        if (string.IsNullOrEmpty(errores))
+                        if (string.IsNullOrEmpty(errores) && hayArchivo)
                         {
                             cargaAutomatica.WasLoaded = true;
                             db.Entry(cargaAutomatica).State = EntityState.Modified;
@@ -111,7 +123,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             mailInfo.Message = ConfigurationManager.AppSettings["emailSubject"]; ;
                             AdmMail.Enviar(mailInfo);
                         }
-                        else
+                        else if(errores!= string.Empty)
                         {
                             Log.WriteLog("El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores, EnumTypeLog.Event, true);
                             mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];

@@ -82,22 +82,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
 
                     //Guardar en bd
                     db.ArchivoCarga.Add(archivoCarga);
-                    //try
-                    //{
-                    db.SaveChanges();
-                    //}
-                    //catch (DbEntityValidationException e)
-                    //{
-                    //    return ManejoErrores.ErrorValidacion(e);
-                    //}
-                    //catch (DbUpdateException e)
-                    //{
-                    //    return ManejoErrores.ErrorValidacionDb(e);
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    return ManejoErrores.ErrorExepcion(e);
-                    //}
+                   
+                    db.SaveChanges();                   
 
 
                     if (tipoArchivo == EnumTipoArchivoCarga.Balance)
@@ -109,24 +95,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                         lstarchivoCargaDetalle = MapeaDetalleIntercompania(Mexsalint, archivoCarga.Id);
                     }
 
+                    System.Threading.Thread.Sleep(500);
+
                     // Insert tabla archivo carga detalle
                     db.ArchivoCargaDetalle.AddRange(lstarchivoCargaDetalle);
-                    //try
-                    //{
-                    db.SaveChanges();
-                    //}
-                    //catch (DbEntityValidationException e)
-                    //{
-                    //    return ManejoErrores.ErrorValidacion(e);
-                    //}
-                    //catch (DbUpdateException e)
-                    //{
-                    //    return ManejoErrores.ErrorValidacionDb(e);
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    return ManejoErrores.ErrorExepcion(e);
-                    //}
+                  
+                    db.SaveChanges();                 
 
                     List<ValidateFileLoaded_Result> cuentasCompanias_NoExistentes = db.ValidateFileLoaded(archivoCarga.Id).ToList();
 
