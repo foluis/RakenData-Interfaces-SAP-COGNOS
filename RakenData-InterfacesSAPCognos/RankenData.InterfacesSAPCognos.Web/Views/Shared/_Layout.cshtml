@@ -35,7 +35,7 @@
                             </li>
                             <li>
                                 <a href="">Sociedades</a>
-                                <ul>                                    
+                                <ul>
                                     <li>@Html.ActionLink("Sociedad Cognos", "Index", "CompaniaCognos")</li>
                                     <li>@Html.ActionLink("Sociedad por RFC", "Index", "CompaniaRFC")</li>
                                 </ul>
@@ -45,7 +45,7 @@
                             <li>@Html.ActionLink("Datos de Cabecera", "Index", "DatosCabecera")</li>
                         </ul>
                     </li>
-                    <li> 
+                    <li>
                         <a href="">Carga Información</a>
                         <ul>
                             <li>
@@ -54,36 +54,36 @@
                                     <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaBalance")</li>
                                     <li>@Html.ActionLink("Eliminar Carga", "EliminarBalance", "CargaBalance")</li>
                                 </ul>
-                            </li>   
+                            </li>
                             <li>
                                 <a href="">Carga Intercompañia</a>
                                 <ul>
                                     <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaIntercompanias")</li>
                                     <li>@Html.ActionLink("Eliminar Intercompañia", "EliminarIntercompanias", "CargaIntercompanias")</li>
                                 </ul>
-                            </li>  
-                            <li>@Html.ActionLink("Programar Carga", "Index", "CargaAutomatica")</li> 
-                            <li>@Html.ActionLink("Monitor de Carga", "Index", "ArchivoCarga")</li>                     
+                            </li>
+                            <li>@Html.ActionLink("Programar Carga", "Index", "CargaAutomatica")</li>
+                            <li>@Html.ActionLink("Monitor de Carga", "Index", "ArchivoCarga")</li>
                         </ul>
                     </li>
                     <li>
                         <a href="">Generación de archivos</a>
-                        <ul>                            
-                            <li>@Html.ActionLink("Generar archivos Cognos", "GenerarArchivo", "GenerarArchivoCognos")</li> 
-                            <li>@Html.ActionLink("Monitor Archivos Generados", "Index", "ArchivoProcesado")</li>                           
+                        <ul>
+                            <li>@Html.ActionLink("Generar archivos Cognos", "GenerarArchivo", "GenerarArchivoCognos")</li>
+                            <li>@Html.ActionLink("Monitor Archivos Generados", "Index", "ArchivoProcesado")</li>
                         </ul>
-                   </li>
+                    </li>
                     <li>
                         <a href="">Administración</a>
                         <ul>
-                            @*<li>@Html.ActionLink("Administrar Usuarios", "Index", "User")</li>*@ 
-                            <li>@Html.ActionLink("Administrar Usuarios Grupo", "Index", "GrupoUsuario")</li>                          
+                            @*<li>@Html.ActionLink("Administrar Usuarios", "Index", "User")</li>*@
+                            <li>@Html.ActionLink("Administrar Usuarios Grupo", "Index", "GrupoUsuario")</li>
                         </ul>
                     </li>
-                  </ul>
-          
-                        @Html.Partial("_LoginPartial")
-</div>
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
         </div>
     </div>
     <div class="container body-content">

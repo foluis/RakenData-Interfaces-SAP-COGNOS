@@ -17,6 +17,12 @@ namespace Ranken.ISC.FileManager.WriteFiles
             try
             {
                 List<ArchivoResultado> archivoResultadoHeader = new List<ArchivoResultado>();
+
+                if(mes.Length == 1)
+                {
+                    mes = "0" + mes;
+                }
+
                 PrepareSpetialHeader(ref archivoResultadoHeader, anio, mes, sociedad);
 
                 archivoResultadoHeader.AddRange(archivoResultadoBody);

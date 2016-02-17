@@ -6,18 +6,18 @@
 
 @if (!ViewData.ModelState.IsValid)
 {
-    <div>Mensaje:</div> 
-    @Html.ValidationMessage("Error") 
+    <div>Mensaje:</div>
+    @Html.ValidationMessage("Error")
 }
 <h2>Anexos</h2>
 
 <p>Creación de Anexos</p>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Anexo</h4>
         <hr />
@@ -46,7 +46,7 @@
                 @Html.ValidationMessageFor(model => model.Modificable)
             </div>
         </div>
-               
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Crear" class="btn btn-default" />
