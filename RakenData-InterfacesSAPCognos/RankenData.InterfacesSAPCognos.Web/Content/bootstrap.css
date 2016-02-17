@@ -3807,13 +3807,13 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 10px 15px;  
 }
 
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: #eeeeee;  
 }
 
 .nav > li.disabled > a {
@@ -4489,13 +4489,15 @@ textarea.input-group-sm > .input-group-btn > .btn {
   color: #333333;
 }
 
+/*Fondo top menu (No seccion de las letras )*/
 .navbar-inverse {
-  background-color: #222222;
+  /*background-color: #222222;*/
+  background-color: #428bca;
   border-color: #080808;
 }
 
 .navbar-inverse .navbar-brand {
-  color: #999999;
+  color: #fff;
 }
 
 .navbar-inverse .navbar-brand:hover,
@@ -4508,14 +4510,17 @@ textarea.input-group-sm > .input-group-btn > .btn {
   color: #999999;
 }
 
+/*Color blanco de las letras del menu y fondo azul*/
 .navbar-inverse .navbar-nav > li > a {
-  color: #999999;
+  /*color: #999999;*/
+  color: #fff;
+  background-color: #428bca;
 }
 
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
   color: #ffffff;
-  background-color: transparent;
+  background-color: transparent;    
 }
 
 .navbar-inverse .navbar-nav > .active > a,
@@ -4585,6 +4590,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
     color: #ffffff;
     background-color: transparent;
+
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,
@@ -4601,7 +4607,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-link {
-  color: #999999;
+  color: red;
 }
 
 .navbar-inverse .navbar-link:hover {

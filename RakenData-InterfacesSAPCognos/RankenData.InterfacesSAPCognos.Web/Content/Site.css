@@ -60,11 +60,14 @@ input[type="checkbox"].input-validation-error {
         }
 
         .nav > li {
+
             float: left;
         }
 
+        /*Sub menus */
         .nav li a {
-            background-color: #000;
+            /*background-color: #000;*/
+            background-color: #428bca;
             color: #fff;
             text-decoration: none;
             padding: 10px 12px;
@@ -79,6 +82,7 @@ input[type="checkbox"].input-validation-error {
             display: none;
             position: absolute;
             min-width: 140px;
+            background-color: #428bca;
         }
              .nav li:hover > ul {
             display: block;

@@ -21,7 +21,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Clave" Type="varchar" MaxLength="4" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="Modificable" Type="bit" Nullable="false" />
         </EntityType>
@@ -131,7 +131,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Clave" Type="int" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="CompaniaRFC">
           <Key>
@@ -139,7 +139,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RFC" Type="varchar" MaxLength="13" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CompaniaCognos" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CuentaCognos">
@@ -148,7 +148,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Numero" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="AnexoId" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -158,7 +158,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Numero" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CuentaCognos" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="TipoCuentaSAP" Type="int" Nullable="false" />
@@ -225,7 +225,7 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TipoModificacion">
           <Key>
@@ -783,7 +783,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Clave" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="Modificable" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CuentaCognos" Relationship="ModelRankenData.FK_CuentaCognos_Anexo" FromRole="Anexo" ToRole="CuentaCognos" />
@@ -881,7 +881,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Clave" Type="Int32" Nullable="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" FromRole="CompaniaCognos" ToRole="ArchivoProcesado" />
           <NavigationProperty Name="CompaniaRFC" Relationship="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaCognos" ToRole="CompaniaRFC" />
         </EntityType>
@@ -891,7 +891,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RFC" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CompaniaCognos" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CompaniaCognos1" Relationship="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaRFC" ToRole="CompaniaCognos" />
         </EntityType>
@@ -901,7 +901,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Numero" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AnexoId" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Anexo" Relationship="ModelRankenData.FK_CuentaCognos_Anexo" FromRole="CuentaCognos" ToRole="Anexo" />
@@ -915,7 +915,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Numero" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CuentaCognos" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="TipoCuentaSAP" Type="Int32" Nullable="false" />
@@ -995,7 +995,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CuentaSAP" Relationship="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP" FromRole="TipoCuentaSAP" ToRole="CuentaSAP" />
         </EntityType>
         <EntityType Name="TipoModificacion">
