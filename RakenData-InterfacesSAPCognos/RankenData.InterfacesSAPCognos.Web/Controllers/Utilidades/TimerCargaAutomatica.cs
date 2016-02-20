@@ -86,7 +86,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             if (System.IO.File.Exists(ruta))
                             {
                                 result = System.IO.File.ReadAllText(ruta);
-                                errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
+                                CargarArchivo cargarArchivo = new CargarArchivo();
+                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
                                 hayArchivo = true;
                             }
                             else
@@ -101,7 +102,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             if (System.IO.File.Exists(ruta))
                             {
                                 result = System.IO.File.ReadAllText(ruta);
-                                errores = CargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
+                                CargarArchivo cargarArchivo = new CargarArchivo();
+                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
                                 hayArchivo = true;
                             }
                             else

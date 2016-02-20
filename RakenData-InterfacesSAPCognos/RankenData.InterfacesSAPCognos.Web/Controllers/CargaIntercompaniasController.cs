@@ -57,7 +57,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         try
                         {
-                            string cargaArchivoResult = CargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Intercompanias);
+                            CargarArchivo cargarArchivo = new CargarArchivo();
+                            string cargaArchivoResult = cargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Intercompanias);
                             if(!string.IsNullOrEmpty(cargaArchivoResult))
                             {
                                 errores.AppendLine(cargaArchivoResult);

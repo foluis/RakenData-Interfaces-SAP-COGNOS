@@ -13,10 +13,10 @@ using System.Web;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
 {
-    public static class CargarArchivo
+    public  class CargarArchivo
     {
 
-        private static EntitiesRakenData db = new EntitiesRakenData();
+        private  EntitiesRakenData db = new EntitiesRakenData();
 
         /// <summary>
         /// Carga los archivos segun su tipo en la base de datos
@@ -25,7 +25,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
         /// <param name="datosCargar">Datos del archivo</param>
         /// <param name="tipoArchivo">tipo de archivo Balance  o  Intercompanias</param>
         /// <returns></returns>
-        public static string CargarArchivoBD(string nombreArchivo, string datosCargar, EnumTipoArchivoCarga tipoArchivo)
+        public string CargarArchivoBD(string nombreArchivo, string datosCargar, EnumTipoArchivoCarga tipoArchivo)
         {
             ArchivoCarga archivoCarga = new ArchivoCarga();
             List<ArchivoCargaDetalle> lstarchivoCargaDetalle = null;
@@ -79,12 +79,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                     archivoCarga.Anio_Col3 = anio;
                     archivoCarga.Mes_Col4 = mes;
                     archivoCarga.Usuario = 1; //TODO: id del usuario
-
-                    //Guardar en bd
-                    db.ArchivoCarga.Add(archivoCarga);
+                  
+                    db.ArchivoCarga.Add(archivoCarga);                   
                    
-                    db.SaveChanges();                   
-
+                    db.SaveChanges();
 
                     if (tipoArchivo == EnumTipoArchivoCarga.Balance)
                     {
@@ -93,9 +91,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                     else
                     {
                         lstarchivoCargaDetalle = MapeaDetalleIntercompania(Mexsalint, archivoCarga.Id);
-                    }
-
-                    System.Threading.Thread.Sleep(500);
+                    }                
 
                     // Insert tabla archivo carga detalle
                     db.ArchivoCargaDetalle.AddRange(lstarchivoCargaDetalle);
