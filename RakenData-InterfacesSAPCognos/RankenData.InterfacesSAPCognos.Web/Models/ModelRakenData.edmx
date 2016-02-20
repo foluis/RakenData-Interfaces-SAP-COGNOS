@@ -480,6 +480,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Parameter Name="Anio" Type="int" Mode="In" />
           <Parameter Name="TiposArchivoCreacionId" Type="varchar" Mode="In" />
           <Parameter Name="Usuario" Type="int" Mode="In" />
+          <Parameter Name="tipoRedondeo" Type="int" Mode="In" />
         </Function>
         <Function Name="CreateArchivoIntercompanias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
@@ -487,6 +488,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Parameter Name="Anio" Type="int" Mode="In" />
           <Parameter Name="TiposArchivoCreacionId" Type="varchar" Mode="In" />
           <Parameter Name="Usuario" Type="int" Mode="In" />
+          <Parameter Name="tipoRedondeo" Type="int" Mode="In" />
         </Function>
         <Function Name="CreateArchivoResultados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
@@ -494,6 +496,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Parameter Name="Anio" Type="int" Mode="In" />
           <Parameter Name="TiposArchivoCreacionId" Type="varchar" Mode="In" />
           <Parameter Name="Usuario" Type="int" Mode="In" />
+          <Parameter Name="tipoRedondeo" Type="int" Mode="In" />
         </Function>
         <Function Name="EliminarArchivoCarga" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ArchivoCargaId" Type="int" Mode="In" />
@@ -627,6 +630,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <Parameter Name="Anio" Mode="In" Type="Int32" />
             <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
             <Parameter Name="Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="AnioFiscal" EntityType="ModelRankenData.AnioFiscal" />
           <FunctionImport Name="CreateArchivoResultados" ReturnType="Collection(Int32)">
@@ -635,6 +639,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <Parameter Name="Anio" Mode="In" Type="Int32" />
             <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
             <Parameter Name="Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="AdministracionAplicacion" EntityType="ModelRankenData.AdministracionAplicacion" />
           <EntitySet Name="Anexo" EntityType="ModelRankenData.Anexo" />
@@ -733,6 +738,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <Parameter Name="Anio" Mode="In" Type="Int32" />
             <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
             <Parameter Name="Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="EliminarArchivoCarga">
           <Parameter Name="ArchivoCargaId" Mode="In" Type="Int32" />
