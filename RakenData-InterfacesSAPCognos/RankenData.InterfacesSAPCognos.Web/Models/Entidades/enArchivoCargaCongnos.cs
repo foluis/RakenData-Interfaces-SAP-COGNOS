@@ -25,5 +25,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Models.Entidades
         /// Lista de tipos de compañia
         /// </summary>
         public List<int> TipoArchivo { get; set; }
+
+        /// <summary>
+        /// Lista de Redondeos
+        /// </summary>
+        public int Redondeos { get; set; }
     }
 }

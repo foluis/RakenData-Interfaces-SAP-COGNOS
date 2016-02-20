@@ -21,6 +21,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             enArchivoCargaCongnos archivo = new enArchivoCargaCongnos();
             ViewBag.LstIdCompaniasCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCreacion, "Id", "Nombre");
+
+            List<Redondear> lstRedondeo= new List<Redondear>();
+           lstRedondeo.Add(new Redondear(){ Id= 1, Nombre="Sin redondeo"});
+           lstRedondeo.Add(new Redondear() { Id = 2, Nombre = "Dividido 1.000" });
+           lstRedondeo.Add(new Redondear() { Id = 3, Nombre = "Dividido 1.000.000" });
+           ViewBag.Redondeos = new SelectList(lstRedondeo, "Id", "Nombre");
    
             return View(archivo);
         }
@@ -41,7 +47,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     {
                         case 1:
                             //todo: id de usuario quemado para los 3
-                            id = db.CreateArchivoBalance(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1).ToList();
+                            id = db.CreateArchivoBalance(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1, archivoCargaCongnos.Redondeos).ToList();
                             if (id != null && id.Count() > 0 && id.First().Value == -1)
                             {
                                 ModelState.AddModelError("Error", "No hay datos para procesar archivo");
@@ -49,7 +55,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             }
                             break;
                         case 2:
-                            id = db.CreateArchivoResultados(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1).ToList();
+                            id = db.CreateArchivoResultados(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1, archivoCargaCongnos.Redondeos).ToList();
                             if (id != null && id.Count() > 0 && id.First().Value == -1)
                             {
                                 ModelState.AddModelError("Error", "No hay datos para procesar archivo");
@@ -57,7 +63,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             }
                             break;
                         case 3:
-                            id = db.CreateArchivoIntercompanias(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1).ToList();
+                            id = db.CreateArchivoIntercompanias(companiaCognos.ToString(), archivoCargaCongnos.Periodo, archivoCargaCongnos.Anio, tipoArchivo.ToString(), 1, archivoCargaCongnos.Redondeos).ToList();
                             if (id != null && id.Count() >0 && id.First().Value == -1)
                             {
                                 ModelState.AddModelError("Error", "No hay datos para procesar archivo");

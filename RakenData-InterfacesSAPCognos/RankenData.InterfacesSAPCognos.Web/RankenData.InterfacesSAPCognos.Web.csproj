@@ -245,6 +245,7 @@
     <Compile Include="Models\Entidades\EnumTipoArchivoCarga.cs" />
     <Compile Include="Models\Entidades\EnumTipoModificacion.cs" />
     <Compile Include="Models\Entidades\EnumTypeLog.cs" />
+    <Compile Include="Models\Entidades\Redondear.cs" />
     <Compile Include="Models\Entidades\Result.cs" />
     <Compile Include="Models\Grupo.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
