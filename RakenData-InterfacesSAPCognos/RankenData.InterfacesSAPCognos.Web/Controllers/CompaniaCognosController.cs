@@ -79,7 +79,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                     //}
 
-                    string descripcion = dato[1].Replace("\r", string.Empty);
+                    string descripcion = dato[1].Replace("\r", string.Empty).ToUpper();
                     descripcion = dato[1].Length <= 35 ? descripcion : descripcion.Substring(0, 35);
 
                     companiaCognos = new CompaniaCognos()

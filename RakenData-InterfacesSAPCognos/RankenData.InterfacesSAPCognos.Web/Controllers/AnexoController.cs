@@ -79,7 +79,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 anexo = new Anexo()
                 {
                     Clave = dato[0],
-                    Descripcion = dato[1].Length <= 35 ? dato[1]: dato[1].Substring(0,35),
+                    Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper(): dato[1].Substring(0,35).ToUpper(),
                     Modificable = modificable
                    
                 };

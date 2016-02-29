@@ -205,7 +205,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     cuentasap = new CuentaSAP()
                     {
                         Numero = dato[0],
-                        Descripcion = dato[1].Length <= 35 ? dato[1] : dato[1].Substring(0, 35),
+                        Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper() : dato[1].Substring(0, 35).ToUpper(),
                         CuentaCognos = cuentaCognosExiste.Id,
                         IsActive = true,
                         TipoCuentaSAP = tipoCuentaSAP,

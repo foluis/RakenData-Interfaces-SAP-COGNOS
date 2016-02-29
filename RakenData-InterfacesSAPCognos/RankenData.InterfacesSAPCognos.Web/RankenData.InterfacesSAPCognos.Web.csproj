@@ -178,6 +178,7 @@
     <Compile Include="Controllers\CargaAutomaticaController.cs" />
     <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CargaIntercompaniasController.cs" />
+    <Compile Include="Controllers\SaldosInicialesController.cs" />
     <Compile Include="Controllers\Utilidades\AdmMail.cs" />
     <Compile Include="Controllers\Utilidades\CargarArchivo.cs" />
     <Compile Include="Controllers\CompaniaCognosController.cs" />
@@ -440,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\SaldosIniciales\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
