@@ -14,11 +14,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
     public partial class AnioFiscal
     {
+        public AnioFiscal()
+        {
+            this.SaldoInicial = new HashSet<SaldoInicial>();
+        }
+    
         public int Id { get; set; }
         public short Anio { get; set; }
         public short AnioInicio { get; set; }
         public byte MesInicio { get; set; }
         public short AnioFin { get; set; }
         public byte MesFin { get; set; }
+    
+        public virtual ICollection<SaldoInicial> SaldoInicial { get; set; }
     }
 }

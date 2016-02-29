@@ -273,6 +273,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelRakenData.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\SaldoInicial.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TipoArchivoCarga.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>

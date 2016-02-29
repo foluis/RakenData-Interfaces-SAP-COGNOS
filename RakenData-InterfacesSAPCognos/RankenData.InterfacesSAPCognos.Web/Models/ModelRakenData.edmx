@@ -203,6 +203,16 @@
           <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
           <Property Name="TipoModificacionId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="SaldoInicial">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CuentaSAPId" Type="int" Nullable="false" />
+          <Property Name="CompaniaRFCId" Type="int" Nullable="false" />
+          <Property Name="AnioFiscalId" Type="int" Nullable="false" />
+          <Property Name="Saldo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="TipoArchivoCarga">
           <Key>
             <PropertyRef Name="Id" />
@@ -474,6 +484,42 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SaldoInicial_AnioFiscal">
+          <End Role="AnioFiscal" Type="Self.AnioFiscal" Multiplicity="1" />
+          <End Role="SaldoInicial" Type="Self.SaldoInicial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnioFiscal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaldoInicial">
+              <PropertyRef Name="AnioFiscalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaldoInicial_CompaniaRFC">
+          <End Role="CompaniaRFC" Type="Self.CompaniaRFC" Multiplicity="1" />
+          <End Role="SaldoInicial" Type="Self.SaldoInicial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaRFC">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaldoInicial">
+              <PropertyRef Name="CompaniaRFCId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaldoInicial_CuentaSAP">
+          <End Role="CuentaSAP" Type="Self.CuentaSAP" Multiplicity="1" />
+          <End Role="SaldoInicial" Type="Self.SaldoInicial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaSAP">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaldoInicial">
+              <PropertyRef Name="CuentaSAPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="CreateArchivoBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
           <Parameter Name="Periodo" Type="int" Mode="In" />
@@ -529,6 +575,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <EntitySet Name="Grupo" EntityType="Self.Grupo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GrupoUsuario" EntityType="Self.GrupoUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistorialArchivoProcesadoDetalle" EntityType="Self.HistorialArchivoProcesadoDetalle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SaldoInicial" EntityType="Self.SaldoInicial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoArchivoCarga" EntityType="Self.TipoArchivoCarga" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoArchivoCreacion" EntityType="Self.TipoArchivoCreacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoCuentaSAP" EntityType="Self.TipoCuentaSAP" Schema="dbo" store:Type="Tables" />
@@ -609,6 +656,18 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_User" Association="Self.FK_HistorialArchivoProcesadoDetalle_User">
             <End Role="User" EntitySet="User" />
             <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaldoInicial_AnioFiscal" Association="Self.FK_SaldoInicial_AnioFiscal">
+            <End Role="AnioFiscal" EntitySet="AnioFiscal" />
+            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaldoInicial_CompaniaRFC" Association="Self.FK_SaldoInicial_CompaniaRFC">
+            <End Role="CompaniaRFC" EntitySet="CompaniaRFC" />
+            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaldoInicial_CuentaSAP" Association="Self.FK_SaldoInicial_CuentaSAP">
+            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -751,6 +810,19 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <FunctionImport Name="EliminarArchivoProcesado">
           <Parameter Name="ArchivoProcesadoId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="SaldoInicial" EntityType="ModelRankenData.SaldoInicial" />
+          <AssociationSet Name="FK_SaldoInicial_AnioFiscal" Association="ModelRankenData.FK_SaldoInicial_AnioFiscal">
+            <End Role="AnioFiscal" EntitySet="AnioFiscal" />
+            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaldoInicial_CompaniaRFC" Association="ModelRankenData.FK_SaldoInicial_CompaniaRFC">
+            <End Role="CompaniaRFC" EntitySet="CompaniaRFC" />
+            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaldoInicial_CuentaSAP" Association="ModelRankenData.FK_SaldoInicial_CuentaSAP">
+            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="ValidateFileLoaded_Result">
           <Property Type="Int32" Name="IdTipo" Nullable="false" />
@@ -772,6 +844,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="MesInicio" Type="Byte" Nullable="false" />
           <Property Name="AnioFin" Type="Int16" Nullable="false" />
           <Property Name="MesFin" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="SaldoInicial" Relationship="ModelRankenData.FK_SaldoInicial_AnioFiscal" FromRole="AnioFiscal" ToRole="SaldoInicial" />
         </EntityType>
         <EntityType Name="AdministracionAplicacion">
           <Key>
@@ -900,6 +973,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CompaniaCognos" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CompaniaCognos1" Relationship="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaRFC" ToRole="CompaniaCognos" />
+          <NavigationProperty Name="SaldoInicial" Relationship="ModelRankenData.FK_SaldoInicial_CompaniaRFC" FromRole="CompaniaRFC" ToRole="SaldoInicial" />
         </EntityType>
         <EntityType Name="CuentaCognos">
           <Key>
@@ -932,6 +1006,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <NavigationProperty Name="CuentaCognos2" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos1" FromRole="CuentaSAP" ToRole="CuentaCognos" />
           <NavigationProperty Name="CuentaCognos3" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos2" FromRole="CuentaSAP" ToRole="CuentaCognos" />
           <NavigationProperty Name="TipoCuentaSAP1" Relationship="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP" FromRole="CuentaSAP" ToRole="TipoCuentaSAP" />
+          <NavigationProperty Name="SaldoInicial" Relationship="ModelRankenData.FK_SaldoInicial_CuentaSAP" FromRole="CuentaSAP" ToRole="SaldoInicial" />
         </EntityType>
         <EntityType Name="DatosCabecera">
           <Key>
@@ -1271,6 +1346,55 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SaldoInicial">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CuentaSAPId" Type="Int32" Nullable="false" />
+          <Property Name="CompaniaRFCId" Type="Int32" Nullable="false" />
+          <Property Name="AnioFiscalId" Type="Int32" Nullable="false" />
+          <Property Name="Saldo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="AnioFiscal" Relationship="ModelRankenData.FK_SaldoInicial_AnioFiscal" FromRole="SaldoInicial" ToRole="AnioFiscal" />
+          <NavigationProperty Name="CompaniaRFC" Relationship="ModelRankenData.FK_SaldoInicial_CompaniaRFC" FromRole="SaldoInicial" ToRole="CompaniaRFC" />
+          <NavigationProperty Name="CuentaSAP" Relationship="ModelRankenData.FK_SaldoInicial_CuentaSAP" FromRole="SaldoInicial" ToRole="CuentaSAP" />
+        </EntityType>
+        <Association Name="FK_SaldoInicial_AnioFiscal">
+          <End Type="ModelRankenData.AnioFiscal" Role="AnioFiscal" Multiplicity="1" />
+          <End Type="ModelRankenData.SaldoInicial" Role="SaldoInicial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnioFiscal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaldoInicial">
+              <PropertyRef Name="AnioFiscalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaldoInicial_CompaniaRFC">
+          <End Type="ModelRankenData.CompaniaRFC" Role="CompaniaRFC" Multiplicity="1" />
+          <End Type="ModelRankenData.SaldoInicial" Role="SaldoInicial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaRFC">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaldoInicial">
+              <PropertyRef Name="CompaniaRFCId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaldoInicial_CuentaSAP">
+          <End Type="ModelRankenData.CuentaSAP" Role="CuentaSAP" Multiplicity="1" />
+          <End Type="ModelRankenData.SaldoInicial" Role="SaldoInicial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaSAP">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaldoInicial">
+              <PropertyRef Name="CuentaSAPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1560,6 +1684,17 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="EliminarArchivoProcesado" FunctionName="ModelRankenData.Store.EliminarArchivoProcesado" />
+          <EntitySetMapping Name="SaldoInicial">
+            <EntityTypeMapping TypeName="ModelRankenData.SaldoInicial">
+              <MappingFragment StoreEntitySet="SaldoInicial">
+                <ScalarProperty Name="Saldo" ColumnName="Saldo" />
+                <ScalarProperty Name="AnioFiscalId" ColumnName="AnioFiscalId" />
+                <ScalarProperty Name="CompaniaRFCId" ColumnName="CompaniaRFCId" />
+                <ScalarProperty Name="CuentaSAPId" ColumnName="CuentaSAPId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

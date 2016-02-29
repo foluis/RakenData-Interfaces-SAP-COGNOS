@@ -48,6 +48,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<TipoModificacion> TipoModificacion { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<CargaAutomatica> CargaAutomatica { get; set; }
+        public virtual DbSet<SaldoInicial> SaldoInicial { get; set; }
     
         public virtual ObjectResult<ValidateFileLoaded_Result> ValidateFileLoaded(Nullable<int> fileLoadedId)
         {

@@ -45,6 +45,10 @@
         <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_User" />
         <EntityTypeShape EntityType="ModelRankenData.CargaAutomatica" Width="1.5" PointX="5.75" PointY="16.125" />
         <AssociationConnector Association="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga" />
+        <EntityTypeShape EntityType="ModelRankenData.SaldoInicial" Width="1.5" PointX="9.375" PointY="8.75" />
+        <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_AnioFiscal" />
+        <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_CompaniaRFC" />
+        <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_CuentaSAP" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

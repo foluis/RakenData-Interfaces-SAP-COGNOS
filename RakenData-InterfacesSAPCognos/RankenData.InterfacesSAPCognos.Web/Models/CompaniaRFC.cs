@@ -14,11 +14,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
     public partial class CompaniaRFC
     {
+        public CompaniaRFC()
+        {
+            this.SaldoInicial = new HashSet<SaldoInicial>();
+        }
+    
         public int Id { get; set; }
         public string RFC { get; set; }
         public string Descripcion { get; set; }
         public int CompaniaCognos { get; set; }
     
         public virtual CompaniaCognos CompaniaCognos1 { get; set; }
+        public virtual ICollection<SaldoInicial> SaldoInicial { get; set; }
     }
 }
