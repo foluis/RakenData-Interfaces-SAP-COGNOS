@@ -24,7 +24,8 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Número", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Numero)
                 @Html.ValidationMessageFor(model => model.Numero)
@@ -32,7 +33,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Descripción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Descripcion)
                 @Html.ValidationMessageFor(model => model.Descripcion)
@@ -40,7 +42,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CuentaCognos, "CuentaCognos", new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.CuentaCognos, "CuentaCognos", new { @class = "control-label col-md-2" })*@
+            @Html.Label("Cuenta Cognos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CuentaCognos", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaCognos)
@@ -48,7 +51,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TipoCuentaSAP, "TipoCuentaSAP", new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.TipoCuentaSAP, "TipoCuentaSAP", new { @class = "control-label col-md-2" })*@
+            @Html.Label("Tipo cuenta SAP", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("TipoCuentaSAP", String.Empty)
                 @Html.ValidationMessageFor(model => model.TipoCuentaSAP)
@@ -56,7 +60,8 @@
         </div>
 
         <div id="divEsOpen" class="form-group">
-            @Html.LabelFor(model => model.EsOpen, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.EsOpen, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Es open", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EsOpen)
                 @Html.ValidationMessageFor(model => model.EsOpen)
@@ -64,7 +69,8 @@
         </div>
 
         <div id="divCuentaCargo" class="form-group">
-            @Html.LabelFor(model => model.CuentaCargo, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.CuentaCargo, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Cuenta cargo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CuentaCargo", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaCargo)
@@ -72,7 +78,8 @@
         </div>
 
         <div id="divCuentaAbono" class="form-group">
-            @Html.LabelFor(model => model.CuentaAbono, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.CuentaAbono, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Cuenta abono", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                   @Html.DropDownList("CuentaAbono", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaAbono)

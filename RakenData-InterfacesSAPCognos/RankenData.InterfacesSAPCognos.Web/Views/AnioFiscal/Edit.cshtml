@@ -12,13 +12,14 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Añio Fiscal</h4>
+        <h4>Año Fiscal</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Anio, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.Anio, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Año", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Anio)
                 @Html.ValidationMessageFor(model => model.Anio)
@@ -26,7 +27,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AnioInicio, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.AnioInicio, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Año inicio", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.AnioInicio)
                 @Html.ValidationMessageFor(model => model.AnioInicio)
@@ -34,7 +36,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.MesInicio, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.MesInicio, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Mes inicio", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.MesInicio)
                 @Html.ValidationMessageFor(model => model.MesInicio)
@@ -42,7 +45,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AnioFin, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.AnioFin, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Año fin", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.AnioFin)
                 @Html.ValidationMessageFor(model => model.AnioFin)
@@ -50,7 +54,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.MesFin, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.MesFin, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Mes fin", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.MesFin)
                 @Html.ValidationMessageFor(model => model.MesFin)
