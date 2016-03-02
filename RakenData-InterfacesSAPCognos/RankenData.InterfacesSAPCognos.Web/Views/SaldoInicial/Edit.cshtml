@@ -1,0 +1,100 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.SaldoInicial
+
+@{
+    ViewBag.Title = "Editar";
+}
+
+<h2>Editar</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Saldo Inicial</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.CuentaSAPId)
+        @Html.HiddenFor(model => model.CompaniaRFCId)
+        @Html.HiddenFor(model => model.AnioFiscalId)
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.CuentaSAPId, "CuentaSAPId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CuentaSAPId", String.Empty)
+                @Html.ValidationMessageFor(model => model.CuentaSAPId)
+            </div>
+        </div>*@
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.CompaniaRFCId, "CompaniaRFCId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CompaniaRFCId", String.Empty)
+                @Html.ValidationMessageFor(model => model.CompaniaRFCId)
+            </div>
+        </div>*@
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.AnioFiscalId, "AnioFiscalId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("AnioFiscalId", String.Empty)
+                @Html.ValidationMessageFor(model => model.AnioFiscalId)
+            </div>
+        </div>*@
+              
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.CuentaSAPValue, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            @Html.Label("Cuenta SAP", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.CuentaSAPValue)
+                @Html.ValidationMessageFor(model => model.CuentaSAPValue)*@
+                @Html.DisplayFor(model => model.CuentaSAPValue)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.CompaniaRFCValue, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            @Html.Label("Compania RFC", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.CompaniaRFCValue)
+                @Html.ValidationMessageFor(model => model.CompaniaRFCValue)*@
+                @Html.DisplayFor(model => model.CompaniaRFCValue)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.AnioFiscalValue, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            @Html.Label("Anio Fiscal", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.AnioFiscalValue)
+                @Html.ValidationMessageFor(model => model.AnioFiscalValue)*@
+                @Html.DisplayFor(model => model.AnioFiscalValue)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Saldo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Saldo)
+                @Html.ValidationMessageFor(model => model.Saldo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Regresar a la lista ", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -209,12 +209,13 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CuentaSAPId" Type="int" Nullable="false" />
-          <Property Name="CuentaSAPValue" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CuentaSAPValue" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CompaniaRFCId" Type="int" Nullable="false" />
           <Property Name="CompaniaRFCValue" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="AnioFiscalId" Type="int" Nullable="false" />
           <Property Name="AnioFiscalValue" Type="smallint" Nullable="false" />
           <Property Name="Saldo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="EsCargaMasiva" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TipoArchivoCarga">
           <Key>
@@ -1361,9 +1362,10 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <NavigationProperty Name="AnioFiscal" Relationship="ModelRankenData.FK_SaldoInicial_AnioFiscal" FromRole="SaldoInicial" ToRole="AnioFiscal" />
           <NavigationProperty Name="CompaniaRFC" Relationship="ModelRankenData.FK_SaldoInicial_CompaniaRFC" FromRole="SaldoInicial" ToRole="CompaniaRFC" />
           <NavigationProperty Name="CuentaSAP" Relationship="ModelRankenData.FK_SaldoInicial_CuentaSAP" FromRole="SaldoInicial" ToRole="CuentaSAP" />
-          <Property Name="CuentaSAPValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CuentaSAPValue" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CompaniaRFCValue" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
           <Property Name="AnioFiscalValue" Type="Int16" Nullable="false" />
+          <Property Name="EsCargaMasiva" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_SaldoInicial_AnioFiscal">
           <End Type="ModelRankenData.AnioFiscal" Role="AnioFiscal" Multiplicity="1" />
@@ -1693,6 +1695,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <EntitySetMapping Name="SaldoInicial">
             <EntityTypeMapping TypeName="ModelRankenData.SaldoInicial">
               <MappingFragment StoreEntitySet="SaldoInicial">
+                <ScalarProperty Name="EsCargaMasiva" ColumnName="EsCargaMasiva" />
                 <ScalarProperty Name="AnioFiscalValue" ColumnName="AnioFiscalValue" />
                 <ScalarProperty Name="CompaniaRFCValue" ColumnName="CompaniaRFCValue" />
                 <ScalarProperty Name="CuentaSAPValue" ColumnName="CuentaSAPValue" />

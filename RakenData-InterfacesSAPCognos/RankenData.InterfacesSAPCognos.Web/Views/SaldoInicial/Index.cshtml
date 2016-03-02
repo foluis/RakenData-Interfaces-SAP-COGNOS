@@ -1,0 +1,97 @@
+﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.SaldoInicial>
+
+@{
+    ViewBag.Title = "Index";
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>
+        Mensaje:
+    </div>
+    <div>
+        @Html.ValidationMessage("Error")        
+    </div>
+
+}
+<h2>Index</h2>
+
+@*<p>
+        @Html.ActionLink("Crear Nuevo", "Create")
+
+    </p>*@
+
+<p>
+    @using (Html.BeginForm("ActualizarSaldoInicial", "SaldoInicial", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <span>Año:</span> <input type="number" name="anioFiscal" id="anioFiscal" required /> <input type="submit" name="Submit" id="Submit" value="Actualizar Saldo Inicial" />
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.CuentaSAPValue)*@
+            @Html.Label("Cuenta SAP")
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.CompaniaRFCValue)*@
+            @Html.Label("Compañia RFC")
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.AnioFiscalValue)*@
+            @Html.Label("Año Fiscal")
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.AnioFiscal.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompaniaRFC.RFC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CuentaSAP.Numero)
+            </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Saldo)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CuentaSAPValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompaniaRFCValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnioFiscalValue)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.AnioFiscal.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompaniaRFC.RFC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CuentaSAP.Numero)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Saldo)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Detalle", "Details", new { id = item.id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>
+@using (Html.BeginForm("Index", "SaldoInicial", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" id="file" /> <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />
+}
+<br>
+

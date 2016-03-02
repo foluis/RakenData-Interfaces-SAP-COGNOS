@@ -22,6 +22,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string CuentaSAPValue { get; set; }
         public string CompaniaRFCValue { get; set; }
         public short AnioFiscalValue { get; set; }
+        public bool EsCargaMasiva { get; set; }
     
         public virtual AnioFiscal AnioFiscal { get; set; }
         public virtual CompaniaRFC CompaniaRFC { get; set; }

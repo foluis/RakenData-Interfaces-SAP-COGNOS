@@ -1,0 +1,85 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.SaldoInicial
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Borrar</h2>
+
+<h3>Esta seguro de eliminar esto?</h3>
+<div>
+    <h4>Saldo Iicial</h4>
+    <hr />
+    <dl class="dl-horizontal">
+       
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.CuentaSAPValue)*@
+            @Html.Label("Cuenta SAP")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaSAPValue)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.CompaniaRFCValue)*@
+            @Html.Label("Compania RFC")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaRFCValue)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.AnioFiscalValue)*@
+            @Html.Label("Anio Fiscal")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnioFiscalValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Saldo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Saldo)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.AnioFiscal.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnioFiscal.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompaniaRFC.RFC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaRFC.RFC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CuentaSAP.Numero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaSAP.Numero)
+        </dd>*@
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Regresar a la lista", "Index")
+        </div>
+    }
+</div>

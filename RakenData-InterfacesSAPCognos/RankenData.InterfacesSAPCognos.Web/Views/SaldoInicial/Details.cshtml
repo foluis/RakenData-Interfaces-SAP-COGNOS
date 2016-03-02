@@ -1,0 +1,75 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.SaldoInicial
+
+@{
+    ViewBag.Title = "Detalle";
+}
+
+<h2>Detalle</h2>
+
+<div>
+    <h4>Saldo Inicial</h4>
+    <hr />
+    <dl class="dl-horizontal">
+       
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CuentaSAPValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaSAPValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompaniaRFCValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaRFCValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnioFiscalValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnioFiscalValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Saldo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Saldo)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.AnioFiscal.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnioFiscal.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompaniaRFC.RFC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaRFC.RFC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CuentaSAP.Numero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaSAP.Numero)
+        </dd>*@
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Regresar a la lista ", "Index")
+</p>
