@@ -524,6 +524,9 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ActualizarSaldosIniciales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Anio" Type="int" Mode="In" />
+        </Function>
         <Function Name="CreateArchivoBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
           <Parameter Name="Periodo" Type="int" Mode="In" />
@@ -827,6 +830,9 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="CuentaSAP" EntitySet="CuentaSAP" />
             <End Role="SaldoInicial" EntitySet="SaldoInicial" />
           </AssociationSet>
+          <FunctionImport Name="ActualizarSaldosIniciales" ReturnType="Collection(Int32)">
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="ValidateFileLoaded_Result">
           <Property Type="Int32" Name="IdTipo" Nullable="false" />
@@ -1707,6 +1713,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ActualizarSaldosIniciales" FunctionName="ModelRankenData.Store.ActualizarSaldosIniciales" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -180,5 +180,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("EliminarArchivoProcesado", archivoProcesadoIdParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> ActualizarSaldosIniciales(Nullable<int> anio)
+        {
+            var anioParameter = anio.HasValue ?
+                new ObjectParameter("Anio", anio) :
+                new ObjectParameter("Anio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("ActualizarSaldosIniciales", anioParameter);
+        }
     }
 }
