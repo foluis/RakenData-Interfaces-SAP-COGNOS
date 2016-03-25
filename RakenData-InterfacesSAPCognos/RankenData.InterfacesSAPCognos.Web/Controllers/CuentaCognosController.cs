@@ -299,7 +299,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing) 
             {
                 db.Dispose();
             }
