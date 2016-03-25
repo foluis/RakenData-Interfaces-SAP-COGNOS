@@ -151,6 +151,9 @@
           <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="AnexoId" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="EsOpen" Type="bit" />
+          <Property Name="CuentaCargo" Type="int" />
+          <Property Name="CuentaAbono" Type="int" />
         </EntityType>
         <EntityType Name="CuentaSAP">
           <Key>
@@ -831,7 +834,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="SaldoInicial" EntitySet="SaldoInicial" />
           </AssociationSet>
           <FunctionImport Name="ActualizarSaldosIniciales" ReturnType="Collection(Int32)">
-            <Parameter Name="Anio" Mode="In" Type="Int32" />
+          <Parameter Name="Anio" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="ValidateFileLoaded_Result">
@@ -998,6 +1001,9 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <NavigationProperty Name="CuentaSAP" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos" FromRole="CuentaCognos" ToRole="CuentaSAP" />
           <NavigationProperty Name="CuentaSAP1" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos1" FromRole="CuentaCognos" ToRole="CuentaSAP" />
           <NavigationProperty Name="CuentaSAP2" Relationship="ModelRankenData.FK_CuentaSAP_CuentaCognos2" FromRole="CuentaCognos" ToRole="CuentaSAP" />
+          <Property Name="EsOpen" Type="Boolean" />
+          <Property Name="CuentaCargo" Type="Int32" />
+          <Property Name="CuentaAbono" Type="Int32" />
         </EntityType>
         <EntityType Name="CuentaSAP">
           <Key>
@@ -1572,6 +1578,9 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <EntitySetMapping Name="CuentaCognos">
             <EntityTypeMapping TypeName="ModelRankenData.CuentaCognos">
               <MappingFragment StoreEntitySet="CuentaCognos">
+                <ScalarProperty Name="CuentaAbono" ColumnName="CuentaAbono" />
+                <ScalarProperty Name="CuentaCargo" ColumnName="CuentaCargo" />
+                <ScalarProperty Name="EsOpen" ColumnName="EsOpen" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AnexoId" ColumnName="AnexoId" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />

@@ -18,8 +18,7 @@
     <h4>Cuenta Cognos</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @*@Html.DisplayNameFor(model => model.Numero)*@
+        <dt>            
             @Html.Label("Número")
         </dt>
 
@@ -27,14 +26,37 @@
             @Html.DisplayFor(model => model.Numero)
         </dd>
 
-        <dt>
-            @*@Html.DisplayNameFor(model => model.Descripcion)*@
+        <dt>            
             @Html.Label("Descripción")
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Descripcion)
-        </dd>      
+        </dd>     
+        
+        <dt>
+            @Html.Label("Es open")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EsOpen)
+        </dd>
+
+        <dt>
+            @Html.Label("Cuenta cargo")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaCargo)
+        </dd>
+
+        <dt>
+            @Html.Label("Cuenta abono")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaAbono)
+        </dd> 
 
         <dt>
             @Html.DisplayNameFor(model => model.Anexo.Clave)

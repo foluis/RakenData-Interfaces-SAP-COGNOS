@@ -26,6 +26,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string Descripcion { get; set; }
         public int AnexoId { get; set; }
         public bool IsActive { get; set; }
+        public Nullable<bool> EsOpen { get; set; }
+        public Nullable<int> CuentaCargo { get; set; }
+        public Nullable<int> CuentaAbono { get; set; }
     
         public virtual Anexo Anexo { get; set; }
         public virtual ICollection<CuentaSAP> CuentaSAP { get; set; }

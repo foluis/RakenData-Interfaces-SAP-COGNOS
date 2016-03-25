@@ -23,8 +23,7 @@
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })*@
+        <div class="form-group">            
             @Html.Label("Número", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Numero)
@@ -32,8 +31,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })*@
+        <div class="form-group">            
             @Html.Label("Descripción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Descripcion)
@@ -41,8 +39,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.CuentaCognos, "CuentaCognos", new { @class = "control-label col-md-2" })*@
+        <div class="form-group">            
             @Html.Label("Cuenta Cognos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CuentaCognos", String.Empty)
@@ -50,8 +47,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.TipoCuentaSAP, "TipoCuentaSAP", new { @class = "control-label col-md-2" })*@
+        <div class="form-group">            
             @Html.Label("Tipo cuenta SAP", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("TipoCuentaSAP", String.Empty)
@@ -59,8 +55,7 @@
             </div>
         </div>
 
-        <div id="divEsOpen" class="form-group">
-            @*@Html.LabelFor(model => model.EsOpen, new { @class = "control-label col-md-2" })*@
+        <div id="divEsOpen" class="form-group">            
             @Html.Label("Es open", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EsOpen)
@@ -68,8 +63,7 @@
             </div>
         </div>
 
-        <div id="divCuentaCargo" class="form-group">
-            @*@Html.LabelFor(model => model.CuentaCargo, new { @class = "control-label col-md-2" })*@
+        <div id="divCuentaCargo" class="form-group">            
             @Html.Label("Cuenta cargo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CuentaCargo", String.Empty)
@@ -78,7 +72,6 @@
         </div>
 
         <div id="divCuentaAbono" class="form-group">
-            @*@Html.LabelFor(model => model.CuentaAbono, new { @class = "control-label col-md-2" })*@
             @Html.Label("Cuenta abono", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                   @Html.DropDownList("CuentaAbono", String.Empty)

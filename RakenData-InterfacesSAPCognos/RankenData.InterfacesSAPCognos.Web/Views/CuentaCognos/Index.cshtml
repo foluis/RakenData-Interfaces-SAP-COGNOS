@@ -18,14 +18,21 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.Numero)*@            
-            Número
+        <th>            
+            @Html.Label("Número")
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Descripcion)*@
-            Descripción
+            @Html.Label("Descripción")
         </th>      
+        <th>
+            @Html.Label("Es open")
+        </th>
+        <th>
+            @Html.Label("Cuenta cargo")
+        </th>
+        <th>
+            @Html.Label("Cuenta abono")
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Anexo.Clave)
         </th>
@@ -38,9 +45,17 @@
             @Html.DisplayFor(modelItem => item.Numero)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-            
+            @Html.DisplayFor(modelItem => item.Descripcion)            
         </td>       
+        <td>
+            @Html.DisplayFor(modelItem => item.EsOpen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CuentaCargo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CuentaAbono)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Anexo.Clave)
         </td>

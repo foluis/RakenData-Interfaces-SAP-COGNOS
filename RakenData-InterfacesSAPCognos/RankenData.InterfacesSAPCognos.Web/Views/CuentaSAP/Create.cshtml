@@ -3,32 +3,24 @@
 @{
     ViewBag.Title = "Crear";
 }
+
+<h2>Cuentas de mayor</h2>
 @if (!ViewData.ModelState.IsValid)
 {
     <div>Mensaje: </div>
     @Html.ValidationMessage("Error")
 }
-<h2>Crear</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Cuenta SAP</h4>
+        <h4>Creación de Cuentas SAP</h4>
         <hr />
         @Html.ValidationSummary(true)
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Id)
-                @Html.ValidationMessageFor(model => model.Id)
-            </div>
-        </div>*@
-
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.Numero, new { @class = "control-label col-md-2" })*@
+        <div class="form-group">            
             @Html.Label("Número", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Numero)
@@ -36,8 +28,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })*@
+        <div class="form-group">            
             @Html.Label("Descripción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Descripcion)
@@ -46,7 +37,6 @@
         </div>
 
         <div class="form-group">
-            @*@Html.LabelFor(model => model.CuentaCognos, "CuentaCognos", new { @class = "control-label col-md-2" })*@
             @Html.Label("Cuenta Cognos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CuentaCognos", String.Empty)
@@ -55,7 +45,6 @@
         </div>
 
         <div class="form-group">
-            @*@Html.LabelFor(model => model.TipoCuentaSAP, "TipoCuentaSAP", new { @class = "control-label col-md-2" })*@
             @Html.Label("Tipo cuenta SAP", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("TipoCuentaSAP", String.Empty)
@@ -64,7 +53,6 @@
         </div>
        
         <div id="divEsOpen" class="form-group">
-            @*@Html.LabelFor(model => model.EsOpen, new { @class = "control-label col-md-2" })*@
             @Html.Label("Es open", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EsOpen,"EsOpen")
@@ -73,27 +61,20 @@
         </div>
 
         <div id="divCuentaCargo" class="form-group">
-            @*@Html.LabelFor(model => model.CuentaCargo, new { @class = "control-label col-md-2" })*@
             @Html.Label("Cuenta cargo", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @*@Html.EditorFor(model => model.CuentaCargo)
-                @Html.ValidationMessageFor(model => model.CuentaCargo)*@
+            <div class="col-md-10">                
                 @Html.DropDownList("CuentaCargo", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaCargo)
             </div>
         </div>
 
-        <div id="divCuentaAbono" class="form-group">
-            @*@Html.LabelFor(model => model.CuentaAbono, new { @class = "control-label col-md-2" })*@
+        <div id="divCuentaAbono" class="form-group">            
             @Html.Label("Cuenta abono", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @*@Html.EditorFor(model => model.CuentaAbono)
-                @Html.ValidationMessageFor(model => model.CuentaAbono)*@
+            <div class="col-md-10">                
                 @Html.DropDownList("CuentaAbono", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaAbono)
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Crear" class="btn btn-default" />

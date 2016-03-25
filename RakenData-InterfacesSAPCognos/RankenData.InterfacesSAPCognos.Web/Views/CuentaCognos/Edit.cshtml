@@ -23,9 +23,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Numero,"Número", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.Numero)
-                @*@Html.EditorFor(model => model.Numero)
-                @Html.ValidationMessageFor(model => model.Numero)*@
+                @Html.DisplayFor(model => model.Numero)            
             </div>
         </div>
 
@@ -36,12 +34,35 @@
                 @Html.ValidationMessageFor(model => model.Descripcion)
             </div>
         </div>
+
+        <div id="divEsOpen" class="form-group">
+            @Html.Label("Es open", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EsOpen)
+                @Html.ValidationMessageFor(model => model.EsOpen)
+            </div>
+        </div>
+
+        <div id="divCuentaCargo" class="form-group">
+            @Html.Label("Cuenta cargo", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CuentaCargo", String.Empty)
+                @Html.ValidationMessageFor(model => model.CuentaCargo)
+            </div>
+        </div>
+
+        <div id="divCuentaAbono" class="form-group">
+            @Html.Label("Cuenta abono", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CuentaAbono", String.Empty)
+                @Html.ValidationMessageFor(model => model.CuentaAbono)
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Anexo.Clave, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.Anexo.Clave)
-                @*@Html.EditorFor(model => model.Numero)
-                @Html.ValidationMessageFor(model => model.Numero)*@
+                @Html.DisplayFor(model => model.Anexo.Clave)            
             </div>
         </div>
 

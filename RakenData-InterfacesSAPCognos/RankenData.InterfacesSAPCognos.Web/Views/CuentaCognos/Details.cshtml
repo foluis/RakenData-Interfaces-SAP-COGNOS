@@ -11,7 +11,6 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @*@Html.DisplayNameFor(model => model.Numero)*@
             @Html.LabelFor(model => model.Numero, "Número")
         </dt>
 
@@ -20,13 +19,36 @@
         </dd>
 
         <dt>
-            @*@Html.DisplayNameFor(model => model.Descripcion)*@
             @Html.LabelFor(model => model.Descripcion,"Descripción")
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Descripcion)
         </dd>
+
+        <dt>
+            @Html.Label("Es open")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EsOpen)
+        </dd>
+
+        <dt>
+            @Html.Label("Cuenta cargo")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaCargo)
+        </dd>
+
+        <dt>
+            @Html.Label("Cuenta abono")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaAbono)
+        </dd>      
 
         <dt>
             @Html.DisplayNameFor(model => model.Anexo.Clave)

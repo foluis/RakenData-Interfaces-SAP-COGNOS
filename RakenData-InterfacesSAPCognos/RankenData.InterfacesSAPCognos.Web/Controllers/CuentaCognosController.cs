@@ -158,6 +158,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave");
+            var cuentasCognos = db.CuentaCognos;
+            ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero");
+            ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero");
             return View();
         }
 
@@ -166,9 +169,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive")] CuentaCognos cuentacognos)
+        public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive,EsOpen,CuentaCargo,CuentaAbono")] CuentaCognos cuentacognos)
         {
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
+            var cuentasCognos = db.CuentaCognos;
+            ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero");
+            ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero");
+
             if (ModelState.IsValid)
             {
                 CuentaCognos cuentaExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentacognos.Numero);
@@ -181,6 +188,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 {
                     cuentaExiste.Descripcion = cuentacognos.Descripcion;
                     cuentaExiste.AnexoId = cuentacognos.AnexoId;
+                    cuentaExiste.EsOpen = cuentacognos.EsOpen;
+                    cuentaExiste.CuentaCargo = cuentacognos.CuentaCargo;
+                    cuentaExiste.CuentaAbono = cuentacognos.CuentaAbono;
                     cuentaExiste.IsActive = true;
                     db.Entry(cuentaExiste).State = EntityState.Modified;
                 }
@@ -228,9 +238,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-
-
-
+            var cuentasCognos = db.CuentaCognos;
+            ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero", cuentacognos.CuentaCargo);
+            ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero", cuentacognos.CuentaAbono);
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
             return View(cuentacognos);
         }
@@ -240,7 +250,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive")] CuentaCognos cuentacognos)
+        public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive,EsOpen,CuentaCargo,CuentaAbono")] CuentaCognos cuentacognos)
         {
             if (ModelState.IsValid)
             {
