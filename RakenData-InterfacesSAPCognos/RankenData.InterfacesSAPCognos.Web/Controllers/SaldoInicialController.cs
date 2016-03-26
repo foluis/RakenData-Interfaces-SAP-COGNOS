@@ -23,9 +23,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         // GET: SaldoInicial
-        public ActionResult Index(HttpPostedFileBase file,string error = null)
+        public ActionResult Index(HttpPostedFileBase file, string error = null)
         {
-            if(error != null)
+            if (error != null)
             {
                 ModelState.AddModelError("Error", error);
             }
@@ -37,9 +37,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 {
                     ModelState.AddModelError("Error", errores);
                 }
-            }           
+            }
 
-            var saldoInicial = db.SaldoInicial.Include(s => s.AnioFiscal).Include(s => s.CompaniaRFC).Include(s => s.CuentaSAP);
+            var saldoInicial = db.SaldoInicial.Include(s => s.AnioFiscal).Include(s => s.CompaniaCognos).Include(s => s.CuentaCognos);
             return View(saldoInicial.ToList());
         }
 
@@ -58,7 +58,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             BinaryReader b = new BinaryReader(file.InputStream);
             byte[] binData = b.ReadBytes((int)file.InputStream.Length);
             string result = System.Text.Encoding.UTF8.GetString(binData);
-            
+
             var records = result.Split('\n');
             DAT_Reader datReader = new DAT_Reader();
 
@@ -67,26 +67,24 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length < 4)
                 {
-                    errores.AppendLine("No. Registro" + i + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: CUENTA SAP, SOCIEDAD RFC,AÑO FISCAL, SALDO");
+                    errores.AppendLine("No. Registro" + i + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: CUENTA COGNOS, SOCIEDAD COGNOS,AÑO FISCAL, SALDO");
                     return errores.ToString();
                 }
-                //if (errores.Length > 0)
-                //{
-                   
-                //}
 
-                var cuentaSAP = db.CuentaSAP.ToList().FirstOrDefault(a => a.IsActive == true && a.Numero == dato[0]);
-                var companiaRFC = db.CompaniaRFC.ToList().FirstOrDefault(a => a.RFC == dato[1]);
-                var anioFiscal = db.AnioFiscal.ToList().FirstOrDefault(a => a.Anio == Convert.ToInt16(dato[2].Replace("\r","")));
+                int clave = Convert.ToInt32(dato[1]);
 
-                if(cuentaSAP == null)
+                var cuentaCognos = db.CuentaCognos.ToList().FirstOrDefault(a => a.IsActive == true && a.Numero == dato[0]);
+                var companiaCognos = db.CompaniaCognos.ToList().FirstOrDefault(a => a.Clave == clave);
+                var anioFiscal = db.AnioFiscal.ToList().FirstOrDefault(a => a.Anio == Convert.ToInt16(dato[2].Replace("\r", "")));
+
+                if (cuentaCognos == null)
                 {
-                    errores.AppendLine("No. Registro " + i + " ERROR: LA CUENTA SAP (" + dato[0] + ") NO EXISTE \r\r");
+                    errores.AppendLine("No. Registro " + i + " ERROR: LA CUENTA COGNOS (" + dato[0] + ") NO EXISTE \r\r");
                 }
 
-                if (companiaRFC == null)
+                if (companiaCognos == null)
                 {
-                    errores.AppendLine("No. Registro " + i + " ERROR: LA COMPANIA RFC (" + dato[1] + ") NO EXISTE <br>");
+                    errores.AppendLine("No. Registro " + i + " ERROR: LA COMPANIA COGNOS (" + dato[1] + ") NO EXISTE <br>");
                 }
 
                 if (anioFiscal == null)
@@ -94,17 +92,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     errores.AppendLine("No. Registro " + i + " ERROR: EL AÑO FISCAL (" + dato[2] + ") NO EXISTE \r");
                 }
 
-                if(cuentaSAP == null || companiaRFC == null|| anioFiscal == null)
+                if (cuentaCognos == null || companiaCognos == null || anioFiscal == null)
                 {
                     continue;
                 }
 
                 saldoInicial = new SaldoInicial()
                 {
-                    CuentaSAPId = cuentaSAP.Id,
-                    CuentaSAPValue = dato[0],
-                    CompaniaRFCId = companiaRFC.Id,
-                    CompaniaRFCValue = dato[1],
+                    CuentaCognosId = cuentaCognos.Id,
+                    CuentaCognosValue = dato[0],
+                    CompaniaCognosId = companiaCognos.Id,
+                    CompaniaCognosValue = dato[1],
                     AnioFiscalId = anioFiscal.Id,
                     AnioFiscalValue = Convert.ToInt16(dato[2]),
                     Saldo = Convert.ToDecimal(dato[3]),
@@ -115,8 +113,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    SaldoInicial saldoInicialExiste = db.SaldoInicial.FirstOrDefault(si => si.CuentaSAPId == saldoInicial.CuentaSAPId &&
-                                                                                            si.CompaniaRFCId == saldoInicial.CompaniaRFCId &&
+                    SaldoInicial saldoInicialExiste = db.SaldoInicial.FirstOrDefault(si => si.CuentaCognosId == saldoInicial.CuentaCognosId &&
+                                                                                            si.CompaniaCognosId == saldoInicial.CompaniaCognosId &&
                                                                                             si.AnioFiscalId == saldoInicial.AnioFiscalId);
                     if (saldoInicialExiste == null)
                     {
@@ -124,7 +122,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     }
                     else
                     {
-                        saldoInicialExiste.Saldo = saldoInicial.Saldo;                       
+                        saldoInicialExiste.Saldo = saldoInicial.Saldo;
                         db.Entry(saldoInicialExiste).State = EntityState.Modified;
                     }
                     try
@@ -170,8 +168,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id");
-            ViewBag.CompaniaRFCId = new SelectList(db.CompaniaRFC, "Id", "RFC");
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero");
+            ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Clave");
+            ViewBag.CuentaCognosId = new SelectList(db.CuentaCognos, "Id", "Numero");
             return View();
         }
 
@@ -180,7 +178,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,CuentaSAPId,CompaniaRFCId,AnioFiscalId,Saldo,CuentaSAPValue,CompaniaRFCValue,AnioFiscalValue")] SaldoInicial saldoInicial)
+        public ActionResult Create([Bind(Include = "id,CuentaCognosId,CompaniaCognosId,AnioFiscalId,Saldo,CuentaCognosValue,CompaniaCognosValue,AnioFiscalValue")] SaldoInicial saldoInicial)
         {
             if (ModelState.IsValid)
             {
@@ -190,8 +188,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
 
             ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id", saldoInicial.AnioFiscalId);
-            ViewBag.CompaniaRFCId = new SelectList(db.CompaniaRFC, "Id", "RFC", saldoInicial.CompaniaRFCId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero", saldoInicial.CuentaSAPId);
+            ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Clave", saldoInicial.CompaniaCognosId);
+            ViewBag.CuentaCognosId = new SelectList(db.CuentaCognos, "Id", "Numero", saldoInicial.CuentaCognosId);
             return View(saldoInicial);
         }
 
@@ -207,9 +205,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id", saldoInicial.AnioFiscalId);
-            ViewBag.CompaniaRFCId = new SelectList(db.CompaniaRFC, "Id", "RFC", saldoInicial.CompaniaRFCId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero", saldoInicial.CuentaSAPId);
+            //ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id", saldoInicial.AnioFiscalId);
+            //ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Clave", saldoInicial.CompaniaCognosId);
+            //ViewBag.CuentaCognosId = new SelectList(db.CuentaCognos, "Id", "Numero", saldoInicial.CuentaCognosId);
             return View(saldoInicial);
         }
 
@@ -218,7 +216,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,CuentaSAPId,CompaniaRFCId,AnioFiscalId,Saldo,CuentaSAPValue,CompaniaRFCValue,AnioFiscalValue")] SaldoInicial saldoInicial)
+        //public ActionResult Edit([Bind(Include = "id,CuentaCognosId,CompaniaCognosId,AnioFiscalId,Saldo,CuentaCognosValue,CompaniaCognosValue,AnioFiscalValue")] SaldoInicial saldoInicial)
+        public ActionResult Edit(SaldoInicial saldoInicial)
         {
             if (ModelState.IsValid)
             {
@@ -227,9 +226,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id", saldoInicial.AnioFiscalId);
-            ViewBag.CompaniaRFCId = new SelectList(db.CompaniaRFC, "Id", "RFC", saldoInicial.CompaniaRFCId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero", saldoInicial.CuentaSAPId);
+            //ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id", saldoInicial.AnioFiscalId);
+            //ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Clave", saldoInicial.CompaniaCognosId);
+            //ViewBag.CuentaCognosId = new SelectList(db.CuentaCognos, "Id", "Numero", saldoInicial.CuentaCognosId);
             return View(saldoInicial);
         }
 
@@ -263,7 +262,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             int añoFiscal = Convert.ToInt32(anioFiscal);
             var oAnioFiscal = db.AnioFiscal.FirstOrDefault(a => a.AnioInicio == añoFiscal);
-            
+
             if (oAnioFiscal == null)
             {
                 return RedirectToAction("Index", new { error = "El año fiscal seleccionado no existe" });
@@ -281,7 +280,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 {
                     return RedirectToAction("Index", new { error = "Se calculó exitosamente el saldo inicial para el año " + anioFiscal });
                 }
-            }            
+            }
         }
 
         protected override void Dispose(bool disposing)

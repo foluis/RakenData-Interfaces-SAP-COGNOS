@@ -1,54 +1,50 @@
 ﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.SaldoInicial>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Saldos iniciales";
 }
+
 @if (!ViewData.ModelState.IsValid)
 {
     <div>
         Mensaje:
     </div>
     <div>
-        @Html.ValidationMessage("Error")        
+        @Html.ValidationMessage("Error")
     </div>
 
 }
-<h2>Index</h2>
+<h2>Saldos iniciales</h2>
 
-@*<p>
-        @Html.ActionLink("Crear Nuevo", "Create")
+<p>Administración de saldos iniciales</p>
 
-    </p>*@
 
-<p>
-    @using (Html.BeginForm("ActualizarSaldoInicial", "SaldoInicial", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <span>Año:</span> <input type="number" name="anioFiscal" id="anioFiscal" required /> <input type="submit" name="Submit" id="Submit" value="Actualizar Saldo Inicial" />
-    }
-</p>
 <table class="table">
     <tr>
         <th>
-            @*@Html.DisplayNameFor(model => model.CuentaSAPValue)*@
-            @Html.Label("Cuenta SAP")
+            @Html.Label("Id Cuenta Cognos")
         </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.CompaniaRFCValue)*@
-            @Html.Label("Compañia RFC")
+
+        <th>           
+            @Html.Label("Cuenta Cognos")
         </th>
+
         <th>
-            @*@Html.DisplayNameFor(model => model.AnioFiscalValue)*@
+            @Html.Label("Id Compañia Cognos")
+        </th>
+
+        <th>          
+            @Html.Label("Compañia Cognos")
+        </th>
+
+        <th>
+            @Html.Label("Id Año Fiscal")
+        </th>
+
+        <th>        
             @Html.Label("Año Fiscal")
         </th>
-        @*<th>
-                @Html.DisplayNameFor(model => model.AnioFiscal.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompaniaRFC.RFC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CuentaSAP.Numero)
-            </th>*@
+   
         <th>
             @Html.DisplayNameFor(model => model.Saldo)
         </th>
@@ -58,25 +54,25 @@
     @foreach (var item in Model)
     {
         <tr>
-
             <td>
-                @Html.DisplayFor(modelItem => item.CuentaSAPValue)
+                @Html.DisplayFor(modelItem => item.CuentaCognosId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CompaniaRFCValue)
+                @Html.DisplayFor(modelItem => item.CuentaCognosValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompaniaCognosId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompaniaCognosValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnioFiscalId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AnioFiscalValue)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.AnioFiscal.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CompaniaRFC.RFC)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CuentaSAP.Numero)
-                </td>*@
+         
             <td>
                 @Html.DisplayFor(modelItem => item.Saldo)
             </td>
@@ -91,7 +87,15 @@
 </table>
 @using (Html.BeginForm("Index", "SaldoInicial", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <input type="file" name="file" id="file" /> <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />
+    <div style="position:relative;">
+        <a class='btn btn-primary' href='javascript:;'>
+            SELECCIONE ARCHIVO...
+            <input type="file" name="file" id="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' size="40" onchange='$("#upload-file-info").html($(this).val());'>
+        </a>
+        &nbsp;
+        <span class='label label-info' id="upload-file-info"></span>
+    </div>
+    <br>
+    <input class="btn btn-primary" type="submit" name="Submit" id="Submit" value="Carga Masiva" />
 }
-<br>
 

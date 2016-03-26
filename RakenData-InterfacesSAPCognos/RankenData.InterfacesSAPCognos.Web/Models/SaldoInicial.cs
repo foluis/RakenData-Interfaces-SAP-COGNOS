@@ -15,17 +15,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     public partial class SaldoInicial
     {
         public int id { get; set; }
-        public int CuentaSAPId { get; set; }
-        public int CompaniaRFCId { get; set; }
+        public int CuentaCognosId { get; set; }
+        public string CuentaCognosValue { get; set; }
+        public int CompaniaCognosId { get; set; }
+        public string CompaniaCognosValue { get; set; }
         public int AnioFiscalId { get; set; }
-        public decimal Saldo { get; set; }
-        public string CuentaSAPValue { get; set; }
-        public string CompaniaRFCValue { get; set; }
         public short AnioFiscalValue { get; set; }
+        public decimal Saldo { get; set; }
         public bool EsCargaMasiva { get; set; }
     
         public virtual AnioFiscal AnioFiscal { get; set; }
-        public virtual CompaniaRFC CompaniaRFC { get; set; }
-        public virtual CuentaSAP CuentaSAP { get; set; }
+        public virtual CompaniaCognos CompaniaCognos { get; set; }
+        public virtual CuentaCognos CuentaCognos { get; set; }
     }
 }

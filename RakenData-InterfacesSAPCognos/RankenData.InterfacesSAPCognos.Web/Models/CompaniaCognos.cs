@@ -18,6 +18,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         {
             this.ArchivoProcesado = new HashSet<ArchivoProcesado>();
             this.CompaniaRFC = new HashSet<CompaniaRFC>();
+            this.SaldoInicial = new HashSet<SaldoInicial>();
         }
     
         public int Id { get; set; }
@@ -26,5 +27,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
         public virtual ICollection<ArchivoProcesado> ArchivoProcesado { get; set; }
         public virtual ICollection<CompaniaRFC> CompaniaRFC { get; set; }
+        public virtual ICollection<SaldoInicial> SaldoInicial { get; set; }
     }
 }

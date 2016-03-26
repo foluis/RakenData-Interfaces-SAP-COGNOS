@@ -19,6 +19,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             this.CuentaCognos1 = new HashSet<CuentaCognos>();
             this.CuentaCognos11 = new HashSet<CuentaCognos>();
             this.CuentaSAP = new HashSet<CuentaSAP>();
+            this.SaldoInicial = new HashSet<SaldoInicial>();
         }
     
         public int Id { get; set; }
@@ -36,5 +37,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual ICollection<CuentaCognos> CuentaCognos11 { get; set; }
         public virtual CuentaCognos CuentaCognos3 { get; set; }
         public virtual ICollection<CuentaSAP> CuentaSAP { get; set; }
+        public virtual ICollection<SaldoInicial> SaldoInicial { get; set; }
     }
 }
