@@ -26,8 +26,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /CuentaCognos/file cargue masivo
         //[Authorize(Roles="1")]
         public ActionResult Index(HttpPostedFileBase file)
-        {
-            var cuentacognos = db.CuentaCognos.Include(c => c.Anexo).Where(cc => cc.IsActive == true);
+        {         
+            var cuentacognos = db.CuentaCognos.
+                Include(c => c.Anexo).Where(cc => cc.IsActive == true);
+               
             if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeMasivoCuentaCognos(file);
@@ -115,6 +117,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             }
                         }                        
                     }
+
                    
 
                     if (insert)
@@ -124,8 +127,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             Numero = dato[0],
                             Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper() : dato[1].Substring(0, 35).ToUpper(),
                             EsOpen = oEsOpen,
-                            CuentaCargo = oCuentaCargo.Id,
-                            CuentaAbono = oCuentaAbono.Id,
+                            CuentaCargo = oCuentaCargo == null ? null : (int?)oCuentaCargo.Id,
+                            CuentaAbono = oCuentaAbono == null ? null : (int?)oCuentaAbono.Id,                            
                             AnexoId = anexoExiste.id,
                             IsActive = true
                         };
