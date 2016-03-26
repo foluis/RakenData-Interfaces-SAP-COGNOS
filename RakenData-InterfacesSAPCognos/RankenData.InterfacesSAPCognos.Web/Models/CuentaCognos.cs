@@ -16,9 +16,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     {
         public CuentaCognos()
         {
+            this.CuentaCognos1 = new HashSet<CuentaCognos>();
+            this.CuentaCognos11 = new HashSet<CuentaCognos>();
             this.CuentaSAP = new HashSet<CuentaSAP>();
-            this.CuentaSAP1 = new HashSet<CuentaSAP>();
-            this.CuentaSAP2 = new HashSet<CuentaSAP>();
         }
     
         public int Id { get; set; }
@@ -31,8 +31,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public Nullable<int> CuentaAbono { get; set; }
     
         public virtual Anexo Anexo { get; set; }
+        public virtual ICollection<CuentaCognos> CuentaCognos1 { get; set; }
+        public virtual CuentaCognos CuentaCognos2 { get; set; }
+        public virtual ICollection<CuentaCognos> CuentaCognos11 { get; set; }
+        public virtual CuentaCognos CuentaCognos3 { get; set; }
         public virtual ICollection<CuentaSAP> CuentaSAP { get; set; }
-        public virtual ICollection<CuentaSAP> CuentaSAP1 { get; set; }
-        public virtual ICollection<CuentaSAP> CuentaSAP2 { get; set; }
     }
 }

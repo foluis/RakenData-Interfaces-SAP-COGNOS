@@ -25,14 +25,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public int CuentaCognos { get; set; }
         public bool IsActive { get; set; }
         public int TipoCuentaSAP { get; set; }
-        public Nullable<bool> EsOpen { get; set; }
-        public Nullable<int> CuentaCargo { get; set; }
-        public Nullable<int> CuentaAbono { get; set; }
     
-        public virtual CuentaCognos CuentaCognos1 { get; set; }
-        public virtual CuentaCognos CuentaCognos2 { get; set; }
-        public virtual CuentaCognos CuentaCognos3 { get; set; }
         public virtual TipoCuentaSAP TipoCuentaSAP1 { get; set; }
         public virtual ICollection<SaldoInicial> SaldoInicial { get; set; }
+        public virtual CuentaCognos CuentaCognos1 { get; set; }
     }
 }

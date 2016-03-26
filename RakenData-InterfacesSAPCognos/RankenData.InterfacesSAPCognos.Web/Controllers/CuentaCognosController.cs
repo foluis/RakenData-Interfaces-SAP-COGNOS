@@ -21,6 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CuentaCognosController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
+        private bool insert = true;
 
         // GET: /CuentaCognos/file cargue masivo
         //[Authorize(Roles="1")]
@@ -62,37 +63,69 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             var records = result.Split('\n');
             DAT_Reader datReader = new DAT_Reader();
 
+            //List<CuentaCognos> cuentasCognos = db.CuentaCognos.ToList();
+            //List<Anexo> anexos = db.Anexo.ToList();
+
+            string claveAnexo = string.Empty;
+            bool oEsOpen = false;
+            string esOpen = string.Empty;
+            string cuentaCargo = string.Empty;
+            string cuentaAbono = string.Empty;
+
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
-                if (dato.Length != 3)
+                if (dato.Length != 6)
                 {
                     errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
                     //continue;
                 }
                 else
                 {
-                    string claveAnexo = dato[2].Replace("\r", string.Empty);
+                    claveAnexo = dato[2].Replace("\r", string.Empty);
+                    esOpen = dato[3].ToString();
+                    cuentaCargo = dato[4].Replace("\r", string.Empty);
+                    cuentaAbono = dato[5].Replace("\r", string.Empty);
 
                     Anexo anexoExiste = db.Anexo.FirstOrDefault(cc => cc.Clave == claveAnexo);
+                    CuentaCognos oCuentaCargo = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentaCargo);
+                    CuentaCognos oCuentaAbono = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentaAbono);
 
                     if (anexoExiste == null)
                     {
                         errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DEL ANEXO NO EXISTE. ");
-                        //continue;
+                        insert = false;
                     }
+                    else if(esOpen != "NULL")
+                    {
+                        
+                        if (esOpen == "TRUE")
+                        {
+                            oEsOpen = true;
+                            if (oCuentaCargo == null)
+                            {
+                                errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CUENTA CARGO NO EXISTE. ");
+                                insert = false;
+                            }
 
-                    //if (int.TryParse(dato[2], out anexoid) == false)
-                    //{
-                    //    errores.AppendLine("No. Registro " + i + " ERROR: EL ID DEL ANEXO NO ES NUMERICO");
-                    //}
+                            if (oCuentaAbono == null)
+                            {
+                                errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CUENTA ABONO NO EXISTE. ");
+                                insert = false;
+                            }
+                        }                        
+                    }
+                   
 
-                    else
+                    if (insert)
                     {
                         cuentaCognos = new CuentaCognos()
                         {
                             Numero = dato[0],
                             Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper() : dato[1].Substring(0, 35).ToUpper(),
+                            EsOpen = oEsOpen,
+                            CuentaCargo = oCuentaCargo.Id,
+                            CuentaAbono = oCuentaAbono.Id,
                             AnexoId = anexoExiste.id,
                             IsActive = true
                         };
@@ -107,6 +140,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         else
                         {
                             cuentaExiste.Descripcion = cuentaCognos.Descripcion;
+                            cuentaExiste.EsOpen = cuentaCognos.EsOpen;
+                            cuentaExiste.CuentaCargo = cuentaCognos.CuentaCargo;
+                            cuentaExiste.CuentaAbono = cuentaCognos.CuentaAbono;
                             cuentaExiste.AnexoId = cuentaCognos.AnexoId;
                             cuentaExiste.IsActive = true;
                             db.Entry(cuentaExiste).State = EntityState.Modified;
@@ -299,7 +335,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing) 
+            if (disposing)
             {
                 db.Dispose();
             }

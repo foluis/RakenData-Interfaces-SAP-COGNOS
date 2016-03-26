@@ -52,10 +52,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public string CargeMasivoCuentaSAP(HttpPostedFileBase file)
         {
             CuentaSAP cuentasap = null;            
-            int tipoCuentaSAP = 0;
-            int? cuentaCargo = null;
-            int? cuentaAbono = null;
-            bool? esOpen = null;
+            int tipoCuentaSAP = 0;          
             StringBuilder errores = new StringBuilder();
 
             string extension = Path.GetExtension(file.FileName);
@@ -74,7 +71,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
-                if (dato.Length != 7)
+                if (dato.Length != 4)
                 {
                     errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: numero,descripcion,cuentaCognos,TipoCuentaSAP,esOpen,CuentaCargo,CuentaAbono");
                 }
@@ -209,9 +206,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         CuentaCognos = cuentaCognosExiste.Id,
                         IsActive = true,
                         TipoCuentaSAP = tipoCuentaSAP,
-                        EsOpen = esOpen,
-                        CuentaCargo = cuentaCargo,
-                        CuentaAbono = cuentaAbono
+                        //EsOpen = esOpen,
+                        //CuentaCargo = cuentaCargo,
+                        //CuentaAbono = cuentaAbono
                     };
 
                     CuentaSAP cuentaSapExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == cuentasap.Numero);
@@ -225,9 +222,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         cuentaSapExiste.Descripcion = cuentasap.Descripcion;
                         cuentaSapExiste.CuentaCognos = cuentasap.CuentaCognos;
                         cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;
-                        cuentaSapExiste.EsOpen = cuentasap.EsOpen;
-                        cuentaSapExiste.CuentaCargo = cuentasap.CuentaCargo;
-                        cuentaSapExiste.CuentaAbono = cuentasap.CuentaAbono;
+                        //cuentaSapExiste.EsOpen = cuentasap.EsOpen;
+                        //cuentaSapExiste.CuentaCargo = cuentasap.CuentaCargo;
+                        //cuentaSapExiste.CuentaAbono = cuentasap.CuentaAbono;
                         cuentaSapExiste.IsActive = true;
                         db.Entry(cuentaSapExiste).State = EntityState.Modified;
                     }
@@ -284,9 +281,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // GET: /CuentaSAP/Create
         public ActionResult Create()
         {
-            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero");
-            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero");
-            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero");
+            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero");         
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre");
             return View();
         }
@@ -296,11 +291,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
+        public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP")] CuentaSAP cuentasap)
         {
-            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
-            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
-            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
+            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);           
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
 
             if (ModelState.IsValid)
@@ -315,10 +308,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 {
                     cuentaSapExiste.Descripcion = cuentasap.Descripcion;
                     cuentaSapExiste.CuentaCognos = cuentasap.CuentaCognos;
-                    cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;
-                    cuentaSapExiste.EsOpen = cuentasap.EsOpen;
-                    cuentaSapExiste.CuentaCargo = cuentasap.CuentaCargo;
-                    cuentaSapExiste.CuentaAbono = cuentasap.CuentaAbono;
+                    cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;                
                     cuentaSapExiste.IsActive = true;
                     db.Entry(cuentaSapExiste).State = EntityState.Modified;
                 }
@@ -347,8 +337,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 return RedirectToAction("Index");
             }
-
-
             return View(cuentasap);
         }
 
@@ -366,8 +354,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
-            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
-            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
+            //ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
+            //ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
 
             return View(cuentasap);
         }
@@ -382,28 +370,28 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             StringBuilder errores = new StringBuilder();
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
-            ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
-            ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
+            //ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
+            //ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
 
             if (ModelState.IsValid)
             {
-                if (cuentasap.TipoCuentaSAP == 1)
-                {
-                    cuentasap.EsOpen = null;
-                    cuentasap.CuentaCargo = null;
-                    cuentasap.CuentaAbono = null;
-                }
+                //if (cuentasap.TipoCuentaSAP == 1)
+                //{
+                //    cuentasap.EsOpen = null;
+                //    cuentasap.CuentaCargo = null;
+                //    cuentasap.CuentaAbono = null;
+                //}
 
-                if (cuentasap.EsOpen == null || !cuentasap.EsOpen.Value)
-                {
-                    cuentasap.CuentaCargo = null;
-                    cuentasap.CuentaAbono = null;
-                }
-                else if (cuentasap.CuentaCargo == null || cuentasap.CuentaAbono == null)//cuentasap.EsOpen = true
-                {
-                    ModelState.AddModelError("Error", "Por favor ingrese una cuenta cognos");
-                    return View();
-                }
+                //if (cuentasap.EsOpen == null || !cuentasap.EsOpen.Value)
+                //{
+                //    cuentasap.CuentaCargo = null;
+                //    cuentasap.CuentaAbono = null;
+                //}
+                //else if (cuentasap.CuentaCargo == null || cuentasap.CuentaAbono == null)//cuentasap.EsOpen = true
+                //{
+                //    ModelState.AddModelError("Error", "Por favor ingrese una cuenta cognos");
+                //    return View();
+                //}
                 cuentasap.IsActive = true;
                 db.Entry(cuentasap).State = EntityState.Modified;
                 try

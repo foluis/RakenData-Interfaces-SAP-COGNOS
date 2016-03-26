@@ -14,8 +14,6 @@
         <EntityTypeShape EntityType="ModelRankenData.ArchivoProcesadoDetalle" Width="1.5" PointX="5" PointY="5.875" />
         <EntityTypeShape EntityType="ModelRankenData.CompaniaCognos" Width="1.5" PointX="0.5" PointY="7.125" />
         <EntityTypeShape EntityType="ModelRankenData.CompaniaRFC" Width="1.5" PointX="2.75" PointY="4.125" />
-        <EntityTypeShape EntityType="ModelRankenData.CuentaCognos" Width="1.5" PointX="11.75" PointY="4.375" />
-        <EntityTypeShape EntityType="ModelRankenData.CuentaSAP" Width="1.5" PointX="14" PointY="4" />
         <EntityTypeShape EntityType="ModelRankenData.DatosCabecera" Width="1.5" PointX="2.5" PointY="0.75" />
         <EntityTypeShape EntityType="ModelRankenData.Grupo" Width="1.5" PointX="0.5" PointY="15.5" />
         <EntityTypeShape EntityType="ModelRankenData.GrupoUsuario" Width="1.5" PointX="2.75" PointY="12.375" />
@@ -25,7 +23,6 @@
         <EntityTypeShape EntityType="ModelRankenData.TipoCuentaSAP" Width="1.5" PointX="11.75" PointY="0.875" />
         <EntityTypeShape EntityType="ModelRankenData.TipoModificacion" Width="1.5" PointX="5" PointY="3.375" />
         <EntityTypeShape EntityType="ModelRankenData.User" Width="1.5" PointX="0.5" PointY="12.125" />
-        <AssociationConnector Association="ModelRankenData.FK_CuentaCognos_Anexo" />
         <AssociationConnector Association="ModelRankenData.FK_ArchivoCarga_TipoArchivoCarga" />
         <AssociationConnector Association="ModelRankenData.FK_ArchivoCarga_User" />
         <AssociationConnector Association="ModelRankenData.FK_ArchivoCargaDetalle_ArchivoCarga" />
@@ -35,10 +32,6 @@
         <AssociationConnector Association="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" />
         <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" />
         <AssociationConnector Association="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" />
-        <AssociationConnector Association="ModelRankenData.FK_CuentaSAP_CuentaCognos" />
-        <AssociationConnector Association="ModelRankenData.FK_CuentaSAP_CuentaCognos1" />
-        <AssociationConnector Association="ModelRankenData.FK_CuentaSAP_CuentaCognos2" />
-        <AssociationConnector Association="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP" />
         <AssociationConnector Association="ModelRankenData.FK_GrupoUsuario_Grupo" />
         <AssociationConnector Association="ModelRankenData.FK_GrupoUsuario_User" />
         <AssociationConnector Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_TipoModificacion" />
@@ -48,7 +41,14 @@
         <EntityTypeShape EntityType="ModelRankenData.SaldoInicial" Width="1.5" PointX="9.375" PointY="8.75" />
         <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_AnioFiscal" />
         <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_CompaniaRFC" />
+        <EntityTypeShape EntityType="ModelRankenData.CuentaSAP" Width="1.5" PointX="14" PointY="2.75" />
+        <AssociationConnector Association="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP" />
         <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_CuentaSAP" />
+        <EntityTypeShape EntityType="ModelRankenData.CuentaCognos" Width="1.5" PointX="11.75" PointY="3.875" />
+        <AssociationConnector Association="ModelRankenData.FK_CuentaCognos_Anexo" />
+        <AssociationConnector Association="ModelRankenData.FK_CuentaCognos_CuentaCognos" />
+        <AssociationConnector Association="ModelRankenData.FK_CuentaCognos_CuentaCognos1" />
+        <AssociationConnector Association="ModelRankenData.FK_CuentaSAP_CuentaCognos" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
