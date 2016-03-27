@@ -180,6 +180,7 @@
     <Compile Include="Controllers\CargaAutomaticaController.cs" />
     <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CargaIntercompaniasController.cs" />
+    <Compile Include="Controllers\ElSaldoInicialController.cs" />
     <Compile Include="Controllers\SaldoInicialController.cs" />
     <Compile Include="Controllers\Utilidades\AdmMail.cs" />
     <Compile Include="Controllers\Utilidades\CargarArchivo.cs" />
@@ -449,6 +450,11 @@
     <Content Include="Views\SaldoInicial\Details.cshtml" />
     <Content Include="Views\SaldoInicial\Edit.cshtml" />
     <Content Include="Views\SaldoInicial\Index.cshtml" />
+    <Content Include="Views\ElSaldoInicial\Create.cshtml" />
+    <Content Include="Views\ElSaldoInicial\Delete.cshtml" />
+    <Content Include="Views\ElSaldoInicial\Details.cshtml" />
+    <Content Include="Views\ElSaldoInicial\Edit.cshtml" />
+    <Content Include="Views\ElSaldoInicial\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

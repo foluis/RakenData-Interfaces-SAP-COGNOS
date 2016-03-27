@@ -1,0 +1,50 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.SaldoInicial
+
+@{
+    ViewBag.Title = "Detalle";
+}
+
+<h2>Detalle</h2>
+
+<div>
+    <h4>Saldo Inicial</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CuentaCognosValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaCognosValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompaniaCognosValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaCognosValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnioFiscalValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnioFiscalValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Saldo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Saldo)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Regresar a la lista ", "Index")
+</p>

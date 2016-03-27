@@ -12,35 +12,37 @@ using System.IO;
 using Ranken.ISC.FileManager.ReadFiles;
 using System.Data.Entity.Validation;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
-using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Core.Objects;
+using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
-    public class SaldoInicialController : Controller
+    public class ElSaldoInicialController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // GET: SaldoInicial
+        // GET: ElSaldoInicial
         public ActionResult Index(HttpPostedFileBase file, string error = null)
         {
-            if (error != null)
-            {
-                ModelState.AddModelError("Error", error);
-            }
+            //var saldoInicial = db.SaldoInicial.Include(s => s.AnioFiscal).Include(s => s.CompaniaCognos).Include(s => s.CuentaCognos);
+            //return View(saldoInicial.ToList());
 
-            if (file != null && file.ContentLength > 0)
-            {
-                string errores = CargarSaldoInicial(file);
-                if (errores.Length > 0)
-                {
-                    ModelState.AddModelError("Error", errores);
-                }
-            }
+            //if (error != null)
+            //{
+            //    ModelState.AddModelError("Error", error);
+            //}
 
-            var saldoInicial = db.SaldoInicial.Include(s => s.AnioFiscal).Include(s => s.CompaniaCognos).Include(s => s.CuentaCognos);
-            return View(saldoInicial.ToList());
+            //if (file != null && file.ContentLength > 0)
+            //{
+            //    string errores = CargarSaldoInicial(file);
+            //    if (errores.Length > 0)
+            //    {
+            //        ModelState.AddModelError("Error", errores);
+            //    }
+            //}
+
+            var saldoInicial = db.SaldoInicial.Include(s => s.AnioFiscal).Include(s => s.CompaniaCognos).Include(s => s.CuentaCognos).ToList();
+            return View(saldoInicial);
         }
 
         public string CargarSaldoInicial(HttpPostedFileBase file)
@@ -149,7 +151,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-        // GET: SaldoInicial/Details/5
+        // GET: ElSaldoInicial/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -164,21 +166,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // GET: SaldoInicial/Create
+        // GET: ElSaldoInicial/Create
         public ActionResult Create()
         {
             ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id");
-            ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Clave");
+            ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
             ViewBag.CuentaCognosId = new SelectList(db.CuentaCognos, "Id", "Numero");
             return View();
         }
 
-        // POST: SaldoInicial/Create
+        // POST: ElSaldoInicial/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,CuentaCognosId,CompaniaCognosId,AnioFiscalId,Saldo,CuentaCognosValue,CompaniaCognosValue,AnioFiscalValue")] SaldoInicial saldoInicial)
+        public ActionResult Create([Bind(Include = "id,CuentaCognosId,CuentaCognosValue,CompaniaCognosId,CompaniaCognosValue,AnioFiscalId,AnioFiscalValue,Saldo,EsCargaMasiva")] SaldoInicial saldoInicial)
         {
             if (ModelState.IsValid)
             {
@@ -188,12 +190,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
 
             ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id", saldoInicial.AnioFiscalId);
-            ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Clave", saldoInicial.CompaniaCognosId);
+            ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Descripcion", saldoInicial.CompaniaCognosId);
             ViewBag.CuentaCognosId = new SelectList(db.CuentaCognos, "Id", "Numero", saldoInicial.CuentaCognosId);
             return View(saldoInicial);
         }
 
-        // GET: SaldoInicial/Edit/5
+        // GET: ElSaldoInicial/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -211,16 +213,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // POST: SaldoInicial/Edit/5
+        // POST: ElSaldoInicial/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "id,CuentaCognosId,CuentaCognosValue,CompaniaCognosId,CompaniaCognosValue,AnioFiscalId,AnioFiscalValue,Saldo,EsCargaMasiva")] SaldoInicial saldoInicial)
-        {     
+        {
             if (ModelState.IsValid)
             {
-                saldoInicial.EsCargaMasiva = false;
                 db.Entry(saldoInicial).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -231,7 +232,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // GET: SaldoInicial/Delete/5
+        // GET: ElSaldoInicial/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -246,7 +247,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // POST: SaldoInicial/Delete/5
+        // POST: ElSaldoInicial/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -255,31 +256,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             db.SaldoInicial.Remove(saldoInicial);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        public ActionResult ActualizarSaldoInicial(string anioFiscal)
-        {
-            int añoFiscal = Convert.ToInt32(anioFiscal);
-            var oAnioFiscal = db.AnioFiscal.FirstOrDefault(a => a.AnioInicio == añoFiscal);
-
-            if (oAnioFiscal == null)
-            {
-                return RedirectToAction("Index", new { error = "El año fiscal seleccionado no existe" });
-            }
-            else
-            {
-                List<int?> result;
-                result = db.ActualizarSaldosIniciales(añoFiscal).ToList();
-
-                if (result != null && result.Count() > 0 && result.First().Value == 1)
-                {
-                    return RedirectToAction("Index", new { error = "No hay datos para crear saldo inicial automatico " + anioFiscal });
-                }
-                else
-                {
-                    return RedirectToAction("Index", new { error = "Se calculó exitosamente el saldo inicial para el año " + anioFiscal });
-                }
-            }
         }
 
         protected override void Dispose(bool disposing)
