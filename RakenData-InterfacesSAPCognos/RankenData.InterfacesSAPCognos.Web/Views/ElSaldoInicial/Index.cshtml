@@ -33,10 +33,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Saldo)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.EsCargaMasiva)
-        </th>
-        <th>
+        </th>*@
+        @*<th>
             @Html.DisplayNameFor(model => model.AnioFiscal.Id)
         </th>
         <th>
@@ -44,7 +44,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CuentaCognos.Numero)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -62,18 +62,18 @@
         <td>
             @Html.DisplayFor(modelItem => item.Saldo)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.EsCargaMasiva)
-        </td>
-        <td>
+        </td>*@
+        @*<td>
             @Html.DisplayFor(modelItem => item.AnioFiscal.Id)
-        </td>
-        <td>
+        </td>*@
+        @*<td>
             @Html.DisplayFor(modelItem => item.CompaniaCognos.Descripcion)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CuentaCognos.Numero)
-        </td>
+        </td>*@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
             @Html.ActionLink("Details", "Details", new { id=item.id }) |
