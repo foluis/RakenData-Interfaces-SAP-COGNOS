@@ -50,32 +50,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<CuentaCognos> CuentaCognos { get; set; }
         public virtual DbSet<SaldoInicial> SaldoInicial { get; set; }
     
-        public virtual ObjectResult<ValidateFileLoaded_Result> ValidateFileLoaded(Nullable<int> fileLoadedId)
-        {
-            var fileLoadedIdParameter = fileLoadedId.HasValue ?
-                new ObjectParameter("fileLoadedId", fileLoadedId) :
-                new ObjectParameter("fileLoadedId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileLoaded_Result>("ValidateFileLoaded", fileLoadedIdParameter);
-        }
-    
-        public virtual ObjectResult<ValidateFileToLoad_Result> ValidateFileToLoad(Nullable<int> anio, Nullable<int> mes, Nullable<int> tipoArchivoCargaId)
-        {
-            var anioParameter = anio.HasValue ?
-                new ObjectParameter("Anio", anio) :
-                new ObjectParameter("Anio", typeof(int));
-    
-            var mesParameter = mes.HasValue ?
-                new ObjectParameter("Mes", mes) :
-                new ObjectParameter("Mes", typeof(int));
-    
-            var tipoArchivoCargaIdParameter = tipoArchivoCargaId.HasValue ?
-                new ObjectParameter("TipoArchivoCargaId", tipoArchivoCargaId) :
-                new ObjectParameter("TipoArchivoCargaId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileToLoad_Result>("ValidateFileToLoad", anioParameter, mesParameter, tipoArchivoCargaIdParameter);
-        }
-    
         public virtual ObjectResult<Nullable<int>> CreateArchivoBalance(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)
         {
             var sociedadesCognosParameter = sociedadesCognos != null ?
@@ -103,35 +77,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
                 new ObjectParameter("tipoRedondeo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoBalance", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter, tipoRedondeoParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> CreateArchivoResultados(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)
-        {
-            var sociedadesCognosParameter = sociedadesCognos != null ?
-                new ObjectParameter("SociedadesCognos", sociedadesCognos) :
-                new ObjectParameter("SociedadesCognos", typeof(string));
-    
-            var periodoParameter = periodo.HasValue ?
-                new ObjectParameter("Periodo", periodo) :
-                new ObjectParameter("Periodo", typeof(int));
-    
-            var anioParameter = anio.HasValue ?
-                new ObjectParameter("Anio", anio) :
-                new ObjectParameter("Anio", typeof(int));
-    
-            var tiposArchivoCreacionIdParameter = tiposArchivoCreacionId != null ?
-                new ObjectParameter("TiposArchivoCreacionId", tiposArchivoCreacionId) :
-                new ObjectParameter("TiposArchivoCreacionId", typeof(string));
-    
-            var usuarioParameter = usuario.HasValue ?
-                new ObjectParameter("Usuario", usuario) :
-                new ObjectParameter("Usuario", typeof(int));
-    
-            var tipoRedondeoParameter = tipoRedondeo.HasValue ?
-                new ObjectParameter("tipoRedondeo", tipoRedondeo) :
-                new ObjectParameter("tipoRedondeo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoResultados", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter, tipoRedondeoParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> CreateArchivoIntercompanias(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)
@@ -163,6 +108,35 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoIntercompanias", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter, tipoRedondeoParameter);
         }
     
+        public virtual ObjectResult<Nullable<int>> CreateArchivoResultados(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)
+        {
+            var sociedadesCognosParameter = sociedadesCognos != null ?
+                new ObjectParameter("SociedadesCognos", sociedadesCognos) :
+                new ObjectParameter("SociedadesCognos", typeof(string));
+    
+            var periodoParameter = periodo.HasValue ?
+                new ObjectParameter("Periodo", periodo) :
+                new ObjectParameter("Periodo", typeof(int));
+    
+            var anioParameter = anio.HasValue ?
+                new ObjectParameter("Anio", anio) :
+                new ObjectParameter("Anio", typeof(int));
+    
+            var tiposArchivoCreacionIdParameter = tiposArchivoCreacionId != null ?
+                new ObjectParameter("TiposArchivoCreacionId", tiposArchivoCreacionId) :
+                new ObjectParameter("TiposArchivoCreacionId", typeof(string));
+    
+            var usuarioParameter = usuario.HasValue ?
+                new ObjectParameter("Usuario", usuario) :
+                new ObjectParameter("Usuario", typeof(int));
+    
+            var tipoRedondeoParameter = tipoRedondeo.HasValue ?
+                new ObjectParameter("tipoRedondeo", tipoRedondeo) :
+                new ObjectParameter("tipoRedondeo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoResultados", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter, tipoRedondeoParameter);
+        }
+    
         public virtual int EliminarArchivoCarga(Nullable<int> archivoCargaId)
         {
             var archivoCargaIdParameter = archivoCargaId.HasValue ?
@@ -181,13 +155,30 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("EliminarArchivoProcesado", archivoProcesadoIdParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> ActualizarSaldosIniciales(Nullable<int> anio)
+        public virtual ObjectResult<ValidateFileLoaded_Result> ValidateFileLoaded(Nullable<int> fileLoadedId)
+        {
+            var fileLoadedIdParameter = fileLoadedId.HasValue ?
+                new ObjectParameter("fileLoadedId", fileLoadedId) :
+                new ObjectParameter("fileLoadedId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileLoaded_Result>("ValidateFileLoaded", fileLoadedIdParameter);
+        }
+    
+        public virtual ObjectResult<ValidateFileToLoad_Result> ValidateFileToLoad(Nullable<int> anio, Nullable<int> mes, Nullable<int> tipoArchivoCargaId)
         {
             var anioParameter = anio.HasValue ?
                 new ObjectParameter("Anio", anio) :
                 new ObjectParameter("Anio", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("ActualizarSaldosIniciales", anioParameter);
+            var mesParameter = mes.HasValue ?
+                new ObjectParameter("Mes", mes) :
+                new ObjectParameter("Mes", typeof(int));
+    
+            var tipoArchivoCargaIdParameter = tipoArchivoCargaId.HasValue ?
+                new ObjectParameter("TipoArchivoCargaId", tipoArchivoCargaId) :
+                new ObjectParameter("TipoArchivoCargaId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ValidateFileToLoad_Result>("ValidateFileToLoad", anioParameter, mesParameter, tipoArchivoCargaIdParameter);
         }
     }
 }

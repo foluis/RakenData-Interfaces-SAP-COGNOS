@@ -257,30 +257,30 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ActualizarSaldoInicial(string anioFiscal)
-        {
-            int añoFiscal = Convert.ToInt32(anioFiscal);
-            var oAnioFiscal = db.AnioFiscal.FirstOrDefault(a => a.AnioInicio == añoFiscal);
+        //public ActionResult ActualizarSaldoInicial(string anioFiscal)
+        //{
+        //    int añoFiscal = Convert.ToInt32(anioFiscal);
+        //    var oAnioFiscal = db.AnioFiscal.FirstOrDefault(a => a.AnioInicio == añoFiscal);
 
-            if (oAnioFiscal == null)
-            {
-                return RedirectToAction("Index", new { error = "El año fiscal seleccionado no existe" });
-            }
-            else
-            {
-                List<int?> result;
-                result = db.ActualizarSaldosIniciales(añoFiscal).ToList();
+        //    if (oAnioFiscal == null)
+        //    {
+        //        return RedirectToAction("Index", new { error = "El año fiscal seleccionado no existe" });
+        //    }
+        //    else
+        //    {
+        //        List<int?> result;
+        //        result = db.ActualizarSaldosIniciales(añoFiscal).ToList();
 
-                if (result != null && result.Count() > 0 && result.First().Value == 1)
-                {
-                    return RedirectToAction("Index", new { error = "No hay datos para crear saldo inicial automatico " + anioFiscal });
-                }
-                else
-                {
-                    return RedirectToAction("Index", new { error = "Se calculó exitosamente el saldo inicial para el año " + anioFiscal });
-                }
-            }
-        }
+        //        if (result != null && result.Count() > 0 && result.First().Value == 1)
+        //        {
+        //            return RedirectToAction("Index", new { error = "No hay datos para crear saldo inicial automatico " + anioFiscal });
+        //        }
+        //        else
+        //        {
+        //            return RedirectToAction("Index", new { error = "Se calculó exitosamente el saldo inicial para el año " + anioFiscal });
+        //        }
+        //    }
+        //}
 
         protected override void Dispose(bool disposing)
         {

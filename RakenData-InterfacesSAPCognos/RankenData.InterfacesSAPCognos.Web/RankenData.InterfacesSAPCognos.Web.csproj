@@ -296,7 +296,13 @@
     <Compile Include="Models\ValidateFileLoaded_Result.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ValidateFileLoaded_Result1.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ValidateFileToLoad_Result.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ValidateFileToLoad_Result1.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

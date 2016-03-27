@@ -524,6 +524,44 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CreateArchivoBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
+          <Parameter Name="Periodo" Type="int" Mode="In" />
+          <Parameter Name="Anio" Type="int" Mode="In" />
+          <Parameter Name="TiposArchivoCreacionId" Type="varchar" Mode="In" />
+          <Parameter Name="Usuario" Type="int" Mode="In" />
+          <Parameter Name="tipoRedondeo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CreateArchivoIntercompanias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
+          <Parameter Name="Periodo" Type="int" Mode="In" />
+          <Parameter Name="Anio" Type="int" Mode="In" />
+          <Parameter Name="TiposArchivoCreacionId" Type="varchar" Mode="In" />
+          <Parameter Name="Usuario" Type="int" Mode="In" />
+          <Parameter Name="tipoRedondeo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CreateArchivoResultados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
+          <Parameter Name="Periodo" Type="int" Mode="In" />
+          <Parameter Name="Anio" Type="int" Mode="In" />
+          <Parameter Name="TiposArchivoCreacionId" Type="varchar" Mode="In" />
+          <Parameter Name="Usuario" Type="int" Mode="In" />
+          <Parameter Name="tipoRedondeo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="EliminarArchivoCarga" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ArchivoCargaId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="EliminarArchivoProcesado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ArchivoProcesadoId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ValidateFileLoaded" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fileLoadedId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ValidateFileToLoad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Anio" Type="int" Mode="In" />
+          <Parameter Name="Mes" Type="int" Mode="In" />
+          <Parameter Name="TipoArchivoCargaId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelRankenDataStoreContainer">
           <EntitySet Name="AdministracionAplicacion" EntityType="Self.AdministracionAplicacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Anexo" EntityType="Self.Anexo" Schema="dbo" store:Type="Tables" />
@@ -641,31 +679,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
     <edmx:ConceptualModels>
       <Schema Namespace="ModelRankenData" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="EntitiesRakenData" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="ValidateFileLoaded" ReturnType="Collection(ModelRankenData.ValidateFileLoaded_Result)">
-          <Parameter Name="fileLoadedId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="ValidateFileToLoad" ReturnType="Collection(ModelRankenData.ValidateFileToLoad_Result)">
-            <Parameter Name="Anio" Mode="In" Type="Int32" />
-            <Parameter Name="Mes" Mode="In" Type="Int32" />
-            <Parameter Name="TipoArchivoCargaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="CreateArchivoBalance" ReturnType="Collection(Int32)">
-            <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
-            <Parameter Name="Periodo" Mode="In" Type="Int32" />
-            <Parameter Name="Anio" Mode="In" Type="Int32" />
-            <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
-            <Parameter Name="Usuario" Mode="In" Type="Int32" />
-            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="AnioFiscal" EntityType="ModelRankenData.AnioFiscal" />
-          <FunctionImport Name="CreateArchivoResultados" ReturnType="Collection(Int32)">
-            <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
-            <Parameter Name="Periodo" Mode="In" Type="Int32" />
-            <Parameter Name="Anio" Mode="In" Type="Int32" />
-            <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
-            <Parameter Name="Usuario" Mode="In" Type="Int32" />
-            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="AdministracionAplicacion" EntityType="ModelRankenData.AdministracionAplicacion" />
           <EntitySet Name="Anexo" EntityType="ModelRankenData.Anexo" />
           <EntitySet Name="ArchivoCarga" EntityType="ModelRankenData.ArchivoCarga" />
@@ -735,28 +749,11 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="User" EntitySet="User" />
             <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
           </AssociationSet>
-          <FunctionImport Name="CreateArchivoIntercompanias" ReturnType="Collection(Int32)">
-            <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
-            <Parameter Name="Periodo" Mode="In" Type="Int32" />
-            <Parameter Name="Anio" Mode="In" Type="Int32" />
-            <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
-            <Parameter Name="Usuario" Mode="In" Type="Int32" />
-            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="EliminarArchivoCarga">
-          <Parameter Name="ArchivoCargaId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="CargaAutomatica" EntityType="ModelRankenData.CargaAutomatica" />
           <AssociationSet Name="FK_CargaAutomatica_TipoArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga">
             <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
             <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
           </AssociationSet>
-          <FunctionImport Name="EliminarArchivoProcesado">
-          <Parameter Name="ArchivoProcesadoId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="ActualizarSaldosIniciales" ReturnType="Collection(Int32)">
-          <Parameter Name="Anio" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="CuentaSAP" EntityType="ModelRankenData.CuentaSAP" />
           <AssociationSet Name="FK_CuentaSAP_TipoCuentaSAP" Association="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP">
             <End Role="TipoCuentaSAP" EntitySet="TipoCuentaSAP" />
@@ -792,6 +789,44 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="CuentaCognos" EntitySet="CuentaCognos" />
             <End Role="SaldoInicial" EntitySet="SaldoInicial" />
           </AssociationSet>
+          <FunctionImport Name="CreateArchivoBalance" ReturnType="Collection(Int32)">
+            <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
+            <Parameter Name="Periodo" Mode="In" Type="Int32" />
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+            <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
+            <Parameter Name="Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CreateArchivoIntercompanias" ReturnType="Collection(Int32)">
+            <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
+            <Parameter Name="Periodo" Mode="In" Type="Int32" />
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+            <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
+            <Parameter Name="Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CreateArchivoResultados" ReturnType="Collection(Int32)">
+            <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
+            <Parameter Name="Periodo" Mode="In" Type="Int32" />
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+            <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />
+            <Parameter Name="Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EliminarArchivoCarga">
+            <Parameter Name="ArchivoCargaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EliminarArchivoProcesado">
+            <Parameter Name="ArchivoProcesadoId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ValidateFileLoaded" ReturnType="Collection(ModelRankenData.ValidateFileLoaded_Result)">
+            <Parameter Name="fileLoadedId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ValidateFileToLoad" ReturnType="Collection(ModelRankenData.ValidateFileToLoad_Result)">
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+            <Parameter Name="Mes" Mode="In" Type="Int32" />
+            <Parameter Name="TipoArchivoCargaId" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="ValidateFileLoaded_Result">
           <Property Type="Int32" Name="IdTipo" Nullable="false" />
@@ -1368,6 +1403,16 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="ValidateFileLoaded_Result1">
+          <Property Type="Int32" Name="IdTipo" Nullable="false" />
+          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="22" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Description_Value" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="ValidateFileToLoad_Result1">
+          <Property Type="Int32" Name="IdTipo" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="40" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1648,6 +1693,29 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CreateArchivoBalance" FunctionName="ModelRankenData.Store.CreateArchivoBalance" />
+          <FunctionImportMapping FunctionImportName="CreateArchivoIntercompanias" FunctionName="ModelRankenData.Store.CreateArchivoIntercompanias" />
+          <FunctionImportMapping FunctionImportName="CreateArchivoResultados" FunctionName="ModelRankenData.Store.CreateArchivoResultados" />
+          <FunctionImportMapping FunctionImportName="EliminarArchivoCarga" FunctionName="ModelRankenData.Store.EliminarArchivoCarga" />
+          <FunctionImportMapping FunctionImportName="EliminarArchivoProcesado" FunctionName="ModelRankenData.Store.EliminarArchivoProcesado" />
+          <FunctionImportMapping FunctionImportName="ValidateFileLoaded" FunctionName="ModelRankenData.Store.ValidateFileLoaded">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="ModelRankenData.ValidateFileLoaded_Result">
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Description_Value" ColumnName="Description_Value" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ValidateFileToLoad" FunctionName="ModelRankenData.Store.ValidateFileToLoad">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="ModelRankenData.ValidateFileToLoad_Result">
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
