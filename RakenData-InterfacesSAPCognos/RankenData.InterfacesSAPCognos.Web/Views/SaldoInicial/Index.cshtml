@@ -14,33 +14,26 @@
     </div>
 
 }
-<h2>Saldos iniciales ESTE NO ES</h2>
+<h2>Saldos iniciales</h2>
 
 <p>Administración de saldos iniciales</p>
 
 
 <table class="table">
     <tr>
-        <th>
-            @Html.Label("Id Cuenta Cognos")
-        </th>
+       
 
         <th>           
             @Html.Label("Cuenta Cognos")
         </th>
 
-        <th>
-            @Html.Label("Id Compañia Cognos")
-        </th>
+      
 
         <th>          
             @Html.Label("Compañia Cognos")
         </th>
 
-        <th>
-            @Html.Label("Id Año Fiscal")
-        </th>
-
+      
         <th>        
             @Html.Label("Año Fiscal")
         </th>
@@ -54,21 +47,15 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CuentaCognosId)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.CuentaCognosValue)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompaniaCognosId)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.CompaniaCognosValue)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnioFiscalId)
-            </td>
+          
             <td>
                 @Html.DisplayFor(modelItem => item.AnioFiscalValue)
             </td>

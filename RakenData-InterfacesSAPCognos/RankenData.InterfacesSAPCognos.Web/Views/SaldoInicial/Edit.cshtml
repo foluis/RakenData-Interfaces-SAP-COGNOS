@@ -1,10 +1,10 @@
 ﻿@model RankenData.InterfacesSAPCognos.Web.Models.SaldoInicial
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar";
 }
 
-<h2>Edit ESTE NO ES</h2>
+<h2>Editar</h2>
 
 
 @using (Html.BeginForm())
@@ -12,56 +12,68 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>SaldoInicial</h4>
+        <h4>Saldo Inicial</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.CuentaCognosId)
+        @Html.HiddenFor(model => model.CuentaCognosValue)
+        @Html.HiddenFor(model => model.CompaniaCognosId)
+        @Html.HiddenFor(model => model.CompaniaCognosValue)
+        @Html.HiddenFor(model => model.AnioFiscalId)
+        @Html.HiddenFor(model => model.AnioFiscalValue)
+        @*model => model.Saldo*@
+        @Html.HiddenFor(model => model.EsCargaMasiva)
+
+
+
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.CuentaCognosId, "CuentaCognosId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CuentaCognosId", String.Empty)
-                @Html.ValidationMessageFor(model => model.CuentaCognosId)
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.CuentaSAPId, "CuentaSAPId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CuentaSAPId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.CuentaSAPId)
+                </div>
+            </div>*@
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.CompaniaRFCId, "CompaniaRFCId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CompaniaRFCId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.CompaniaRFCId)
+                </div>
+            </div>*@
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.AnioFiscalId, "AnioFiscalId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("AnioFiscalId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.AnioFiscalId)
+                </div>
+            </div>*@
+
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CuentaCognosValue, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Cuenta Cognos", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CuentaCognosValue)
-                @Html.ValidationMessageFor(model => model.CuentaCognosValue)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CompaniaCognosId, "CompaniaCognosId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CompaniaCognosId", String.Empty)
-                @Html.ValidationMessageFor(model => model.CompaniaCognosId)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CompaniaCognosValue, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CompaniaCognosValue)
-                @Html.ValidationMessageFor(model => model.CompaniaCognosValue)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AnioFiscalId, "AnioFiscalId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("AnioFiscalId", String.Empty)
-                @Html.ValidationMessageFor(model => model.AnioFiscalId)
+                @Html.HiddenFor(model => model.CuentaCognosId)
+                @Html.DisplayFor(model => model.CuentaCognosValue)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AnioFiscalValue, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Compañia Cognos", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AnioFiscalValue)
-                @Html.ValidationMessageFor(model => model.AnioFiscalValue)
+                @Html.HiddenFor(model => model.CompaniaCognosId)
+                @Html.DisplayFor(model => model.CompaniaCognosValue)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Año Fiscal", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.AnioFiscalId)
+                @Html.DisplayFor(model => model.AnioFiscalValue)
             </div>
         </div>
 
@@ -74,23 +86,15 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EsCargaMasiva, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EsCargaMasiva)
-                @Html.ValidationMessageFor(model => model.EsCargaMasiva)
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Guardar" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar a la lista ", "Index")
 </div>
 
 @section Scripts {
