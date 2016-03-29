@@ -86,18 +86,31 @@
 
 <script>
     $(document).ready(function (e) {
-        //$('#divCuentaCargo').hide();
-        //$('#divCuentaAbono').hide();
+        $('#divCuentaCargo').hide();
+        $('#divCuentaAbono').hide();
       
-        //if ($('#EsOpen').val() == "true") {
-        //    $('#divCuentaCargo').show();
-        //    $('#divCuentaAbono').show();
-        //}
-        //else {
-        //    $('#divCuentaCargo').hide();
-        //    $('#divCuentaAbono').hide();
-        //    $('#CuentaCargo').val('')
-        //    $('#CuentaAbono').val('');
-        //}
+        if ($('#EsOpen').val() == "true") {
+            $('#divCuentaCargo').show();
+            $('#divCuentaAbono').show();
+        }
+        else {
+            $('#divCuentaCargo').hide();
+            $('#divCuentaAbono').hide();
+            $('#CuentaCargo').val('')
+            $('#CuentaAbono').val('');
+        }
+
+        $('#EsOpen').change(function () {
+            if ($('#EsOpen').val() == "true") {
+                $('#divCuentaCargo').show();
+                $('#divCuentaAbono').show();
+            }
+            else {
+                $('#divCuentaCargo').hide();
+                $('#divCuentaAbono').hide();
+                $('#CuentaCargo').val('')
+                $('#CuentaAbono').val('');
+            }
+        });
     });
 </script>
