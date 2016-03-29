@@ -173,6 +173,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     }
                 }
 
+                insert = true;
+
             }
             return errores.ToString();
         }
