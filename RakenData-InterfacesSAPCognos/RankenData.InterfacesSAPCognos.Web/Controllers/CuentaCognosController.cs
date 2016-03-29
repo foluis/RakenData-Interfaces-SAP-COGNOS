@@ -21,7 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CuentaCognosController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-        private bool insert = true;
+       
 
         // GET: /CuentaCognos/file cargue masivo
         //[Authorize(Roles="1")]
@@ -68,14 +68,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             //List<CuentaCognos> cuentasCognos = db.CuentaCognos.ToList();
             //List<Anexo> anexos = db.Anexo.ToList();
 
-            string claveAnexo = string.Empty;
-            bool oEsOpen = false;
+            string claveAnexo = string.Empty;           
             string esOpen = string.Empty;
             string cuentaCargo = string.Empty;
             string cuentaAbono = string.Empty;
 
             for (int i = 1; i < records.Count(); i++)
             {
+                bool insert = true;
+                bool oEsOpen = false;
                 var dato = records[i].Split(',');
                 if (dato.Length != 6)
                 {
@@ -172,9 +173,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         }
                     }
                 }
-
-                insert = true;
-
             }
             return errores.ToString();
         }
