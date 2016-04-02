@@ -161,7 +161,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 else
                 {
-                    anexoExiste.Descripcion = anexo.Descripcion;
+                    anexoExiste.Descripcion = anexo.Descripcion.ToUpper();
                     anexoExiste.Modificable = anexo.Modificable;
                     anexoExiste.IsActive = true;
                     db.Entry(anexoExiste).State = EntityState.Modified;
