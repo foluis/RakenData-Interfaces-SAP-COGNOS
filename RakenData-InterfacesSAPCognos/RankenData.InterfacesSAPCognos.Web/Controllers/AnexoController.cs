@@ -154,13 +154,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             if (ModelState.IsValid)
             {
                 Anexo anexoExiste = db.Anexo.FirstOrDefault(cc => cc.Clave == anexo.Clave);
+
                 if (anexoExiste == null)
-                {
+                {                    
+                    anexo.Clave = anexo.Clave.ToUpper();
+                    anexo.Descripcion = anexo.Descripcion.ToUpper();
                     anexo.IsActive = true;
                     db.Anexo.Add(anexo);
                 }
                 else
                 {
+                    anexoExiste.Clave = anexo.Clave.ToUpper();
                     anexoExiste.Descripcion = anexo.Descripcion.ToUpper();
                     anexoExiste.Modificable = anexo.Modificable;
                     anexoExiste.IsActive = true;
@@ -219,6 +223,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                anexo.Clave = anexo.Clave.ToUpper();
+                anexo.Descripcion = anexo.Descripcion.ToUpper();
                 db.Entry(anexo).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
