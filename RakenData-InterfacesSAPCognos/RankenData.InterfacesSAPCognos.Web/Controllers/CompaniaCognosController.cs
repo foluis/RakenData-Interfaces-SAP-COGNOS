@@ -153,6 +153,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                companiacognos.Descripcion = companiacognos.Descripcion.ToUpper();
                 db.CompaniaCognos.Add(companiacognos);
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -28,22 +28,23 @@
 
         <dt>
             @Html.DisplayNameFor(model => model.Fecha)
+            
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Fecha)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Anio_Col3)
+        <dt>            
+            @Html.Label("Año")            
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Anio_Col3)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Mes_Col4)
+        <dt>            
+            @Html.Label("Período")
         </dt>
 
         <dd>
@@ -59,7 +60,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.User.Username)
+            @Html.Label("Usuario")
         </dt>
 
         <dd>
@@ -68,7 +69,6 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+<p>    
     @Html.ActionLink("Regresar a la lista", "Index")
 </p>
