@@ -220,12 +220,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 CuentaCognos cuentaExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentacognos.Numero);
                 if (cuentaExiste == null)
                 {
+                    cuentacognos.Descripcion = cuentacognos.Descripcion.ToUpper();
                     cuentacognos.IsActive = true;
                     db.CuentaCognos.Add(cuentacognos);
                 }
                 else
                 {
-                    cuentaExiste.Descripcion = cuentacognos.Descripcion;
+                    cuentaExiste.Descripcion = cuentacognos.Descripcion.ToUpper();
                     cuentaExiste.AnexoId = cuentacognos.AnexoId;
                     cuentaExiste.EsOpen = cuentacognos.EsOpen;
                     cuentaExiste.CuentaCargo = cuentacognos.CuentaCargo;
@@ -293,6 +294,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                cuentacognos.Descripcion = cuentacognos.Descripcion.ToUpper();
                 db.Entry(cuentacognos).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

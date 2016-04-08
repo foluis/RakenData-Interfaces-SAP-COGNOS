@@ -185,6 +185,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     return View(companiarfc);
                 }
 
+                companiarfc.Descripcion = companiarfc.Descripcion.ToUpper();
                 db.CompaniaRFC.Add(companiarfc);
                 try
                 {
@@ -239,6 +240,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                companiarfc.Descripcion = companiarfc.Descripcion.ToUpper();
                 db.Entry(companiarfc).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

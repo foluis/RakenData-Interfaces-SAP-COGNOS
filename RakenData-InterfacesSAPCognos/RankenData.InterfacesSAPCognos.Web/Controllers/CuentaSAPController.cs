@@ -302,12 +302,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 CuentaSAP cuentaSapExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == cuentasap.Numero);
                 if (cuentaSapExiste == null)
                 {
+                    cuentasap.Descripcion = cuentasap.Descripcion.ToUpper();                    
                     cuentasap.IsActive = true;
                     db.CuentaSAP.Add(cuentasap);
                 }
                 else
                 {
-                    cuentaSapExiste.Descripcion = cuentasap.Descripcion;
+                    cuentaSapExiste.Descripcion = cuentasap.Descripcion.ToUpper();
                     cuentaSapExiste.CuentaCognos = cuentasap.CuentaCognos;
                     cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;                
                     cuentaSapExiste.IsActive = true;
@@ -370,29 +371,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             StringBuilder errores = new StringBuilder();
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
-            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
-            //ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
-            //ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
+            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);           
 
             if (ModelState.IsValid)
             {
-                //if (cuentasap.TipoCuentaSAP == 1)
-                //{
-                //    cuentasap.EsOpen = null;
-                //    cuentasap.CuentaCargo = null;
-                //    cuentasap.CuentaAbono = null;
-                //}
-
-                //if (cuentasap.EsOpen == null || !cuentasap.EsOpen.Value)
-                //{
-                //    cuentasap.CuentaCargo = null;
-                //    cuentasap.CuentaAbono = null;
-                //}
-                //else if (cuentasap.CuentaCargo == null || cuentasap.CuentaAbono == null)//cuentasap.EsOpen = true
-                //{
-                //    ModelState.AddModelError("Error", "Por favor ingrese una cuenta cognos");
-                //    return View();
-                //}
+                cuentasap.Descripcion = cuentasap.Descripcion.ToUpper();   
                 cuentasap.IsActive = true;
                 db.Entry(cuentasap).State = EntityState.Modified;
                 try
