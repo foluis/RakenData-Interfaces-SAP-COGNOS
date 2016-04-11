@@ -75,130 +75,25 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 if (dato.Length != 4)
                 {
                     errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: numero,descripcion,cuentaCognos,TipoCuentaSAP,esOpen,CuentaCargo,CuentaAbono");
+                    continue;
                 }
                 else
                 {
-                    //if (int.TryParse(dato[2], out cuentaCognos) == false)
-                    //{
-                    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA COGNOS NO ES NUMERICO");
-                    //}
-
                     string cuentaCognos = dato[2].Replace("\r", string.Empty);
 
                     CuentaCognos cuentaCognosExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == cuentaCognos);
 
                     if (cuentaCognosExiste == null)
-                    {
-                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA CUENTA COGNOS NO EXISTE. ");
-                        //continue;
+                    {                        
+                        errores.AppendLine($"No. Registro {i + 1} ERROR: LA CLAVE DE LA CUENTA COGNOS ({dato[2]}) NO EXISTE. ");
+                        continue;
                     }
-
 
                     if (int.TryParse(dato[3], out tipoCuentaSAP) == false)
                     {
                         errores.AppendLine("No. Registro: " + (i + 1) + " ERROR: EL TIPO DE CUENTA SAP NO ES NUMERICO");
-                    }
-
-
-                    //if (dato[4] == "NULL")
-                    //{
-                    //    esOpen = null;
-                    //}
-                    //else if (string.IsNullOrWhiteSpace(dato[4]))
-                    //{
-                    //    esOpen = null;
-                    //}
-                    //else
-                    //{
-                    //    if (dato[4] == "TRUE" || dato[4] == "1")
-                    //    {
-                    //        esOpen = true;
-                    //    }
-                    //    else if (dato[4] == "FALSE" || dato[4] == "0")
-                    //    {
-                    //        esOpen = false;
-                    //    }
-                    //    else
-                    //    {
-                    //        errores.AppendLine("No. Registro: " + (i + 1) + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
-                    //    }
-
-                    //    //if (bool.TryParse(dato[4], out esOpen) == false)
-                    //    //{
-                    //    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL CAMPO OPEN NO ES BOOL (TRUE FALSE)");
-                    //    //}
-                    //}
-
-                    //string dato5 = dato[5];
-                    //if (dato5 == "NULL")
-                    //{
-                    //    cuentaCargo = null;
-                    //}
-                    //else if (string.IsNullOrWhiteSpace(dato5))
-                    //{
-                    //    cuentaCargo = null;
-                    //}
-                    //else
-                    //{
-                    //    //cuentaCargo = dato[5].Replace("\r", string.Empty);
-
-                    //    CuentaCognos cuentaCargoExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == dato5);
-
-                    //    if (cuentaCargoExiste == null)
-                    //    {
-                    //        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA CUENTA COGNOS (CUENTA CARGO) NO EXISTE. ");
-                    //        //continue;
-                    //    }
-                    //    else
-                    //    {
-                    //        cuentaCargo = cuentaCargoExiste.Id;
-                    //    }
-                    //}
-
-                    //else if (NullableInt.TryParse(dato[5], out cuentaCargo) == false)
-                    //{
-                    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
-                    //}
-
-
-                    //if (int.TryParse(dato[5], out cuentaCargo) == false)
-                    //{
-                    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA CARGO NO ES NUMERICO");
-                    //}
-
-                    //string dato6 = dato[6].Replace("\r", "");
-                    //if (dato6 == "NULL")
-                    //{
-                    //    cuentaAbono = null;
-                    //}
-                    //else if (string.IsNullOrWhiteSpace(dato6))
-                    //{
-                    //    cuentaAbono = null;
-                    //}
-                    //else
-                    //{
-                    //    //else if (NullableInt.TryParse(dato[6].Replace("\r", ""), out cuentaAbono) == false)
-                    //    //{cuentaAbono
-                    //    //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA CUENTA ABONO NO ES NUMERICO");
-                    //    //}
-
-                    //    CuentaCognos cuentaAbonoExiste = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == dato6);
-
-                    //    if (cuentaAbonoExiste == null)
-                    //    {
-                    //        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA CUENTA COGNOS (CUENTA CARGO) NO EXISTE. ");
-                    //        //continue;
-                    //    }
-                    //    else
-                    //    {
-                    //        cuentaAbono = cuentaAbonoExiste.Id;
-                    //    }
-                    //}
-
-                    if (errores.Length > 0)
-                    {
-                        return errores.ToString();
-                    }
+                        continue;
+                    }                  
 
                     cuentasap = new CuentaSAP()
                     {
@@ -206,10 +101,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper() : dato[1].Substring(0, 35).ToUpper(),
                         CuentaCognos = cuentaCognosExiste.Id,
                         IsActive = true,
-                        TipoCuentaSAP = tipoCuentaSAP,
-                        //EsOpen = esOpen,
-                        //CuentaCargo = cuentaCargo,
-                        //CuentaAbono = cuentaAbono
+                        TipoCuentaSAP = tipoCuentaSAP
                     };
 
                     CuentaSAP cuentaSapExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == cuentasap.Numero);
@@ -222,10 +114,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     {
                         cuentaSapExiste.Descripcion = cuentasap.Descripcion;
                         cuentaSapExiste.CuentaCognos = cuentasap.CuentaCognos;
-                        cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;
-                        //cuentaSapExiste.EsOpen = cuentasap.EsOpen;
-                        //cuentaSapExiste.CuentaCargo = cuentasap.CuentaCargo;
-                        //cuentaSapExiste.CuentaAbono = cuentasap.CuentaAbono;
+                        cuentaSapExiste.TipoCuentaSAP = cuentasap.TipoCuentaSAP;                     
                         cuentaSapExiste.IsActive = true;
                         db.Entry(cuentaSapExiste).State = EntityState.Modified;
                     }

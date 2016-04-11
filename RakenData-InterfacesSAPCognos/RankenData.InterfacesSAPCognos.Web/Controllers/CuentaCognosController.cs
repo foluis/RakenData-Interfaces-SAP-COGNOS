@@ -81,7 +81,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 if (dato.Length != 6)
                 {
                     errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: NUMERO, DESCRIPCION, ANEXO ID");
-                    //continue;
+                    continue;
                 }
                 else
                 {
@@ -96,12 +96,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                     if (anexoExiste == null)
                     {
-                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DEL ANEXO NO EXISTE. ");
+                        errores.AppendLine($"No. Registro {i + 1} ERROR: LA CLAVE DEL ANEXO ({claveAnexo}) NO EXISTE. ");
                         insert = false;
                     }
                     else if(esOpen != "NULL")
-                    {
-                        
+                    {                        
                         if (esOpen == "TRUE")
                         {
                             oEsOpen = true;
@@ -117,9 +116,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                                 insert = false;
                             }
                         }                        
-                    }
-
-                   
+                    }                   
 
                     if (insert)
                     {
