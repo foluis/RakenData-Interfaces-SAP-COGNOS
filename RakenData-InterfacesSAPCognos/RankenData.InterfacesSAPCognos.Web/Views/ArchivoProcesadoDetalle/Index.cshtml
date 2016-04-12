@@ -6,87 +6,88 @@
 
 @if (!ViewData.ModelState.IsValid)
 {
-    <div>Mensaje:</div> 
+    <div>Mensaje:</div>
     @Html.ValidationMessage("Error")
 }
 
 <h2>Generar Archivos</h2>
 
 <p>Generar Archivos de Balance</p>
-@if(Model != null)
-{ 
+@if (Model != null)
+{
 
     using (Html.BeginForm("GenerarArchivo", "ArchivoProcesadoDetalle"))
     {
-    <p>
-        @Html.ActionLink("Crear Nuevo", "Create")
-    </p>
-    <table class="table">
-        <tr>       
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Period)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Actuality)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account)
-            </th>  
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>       
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Form)
-            </th>      
-            <th>
-                @Html.DisplayNameFor(model => model.ArchivoProcesado.Id)
-            </th>
-            <th></th>
-        </tr>
+        <p>
+            @Html.ActionLink("Crear Nuevo", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Company)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Period)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Actuality)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Account)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Form)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArchivoProcesado.Id)
+                </th>
+                <th></th>
+            </tr>
 
-    @foreach (var item in Model) {
-        <tr>      
-            <td>
-                @Html.DisplayFor(modelItem => item.Company)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Period)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Actuality)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Account)
-            </td>      
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>       
-            <td>
-                @Html.DisplayFor(modelItem => item.TransactionAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Form)
-            </td>        
-            <td>
-                @Html.DisplayFor(modelItem => item.ArchivoProcesadoId)
-            </td>
-            @if(item.EsModificable)
-            { 
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id=item.Id })          
-            </td>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Period)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Actuality)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Account)
+                    </td>
+                    <td >                        
+                        @string.Format("{0:C}", item.Amount)
+                    </td>
+                    <td >                        
+                        @string.Format("{0:C}", item.TransactionAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Form)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArchivoProcesadoId)
+                    </td>
+                    @if (item.EsModificable)
+                    {
+                        <td>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.Id })
+                        </td>
+                    }
+                </tr>
             }
-        </tr>
-    }
 
-    </table>
-    
+        </table>
+
         <input type="submit" name="Submit" id="Submit" value="Generar Archivo" />
-}
+    }
 }
