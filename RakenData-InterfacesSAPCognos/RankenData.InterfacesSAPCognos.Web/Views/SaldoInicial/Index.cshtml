@@ -60,8 +60,8 @@
                 @Html.DisplayFor(modelItem => item.AnioFiscalValue)
             </td>
          
-            <td>
-                @Html.DisplayFor(modelItem => item.Saldo)
+            <td width="90px" align="right">                
+                @string.Format("{0:n0}", item.Saldo)
             </td>
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id = item.id }) |

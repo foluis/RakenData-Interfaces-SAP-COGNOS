@@ -185,6 +185,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     return View(companiarfc);
                 }
 
+                companiarfc.RFC = companiarfc.RFC.ToUpper();
                 companiarfc.Descripcion = companiarfc.Descripcion.ToUpper();
                 db.CompaniaRFC.Add(companiarfc);
                 try

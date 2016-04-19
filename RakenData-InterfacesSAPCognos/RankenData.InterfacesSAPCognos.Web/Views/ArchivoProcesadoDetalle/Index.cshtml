@@ -44,9 +44,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Form)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.ArchivoProcesado.Id)
-                </th>
+                </th>*@
                 <th></th>
             </tr>
 
@@ -65,18 +65,18 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Account)
                     </td>
-                    <td >                        
-                        @string.Format("{0:C}", item.Amount)
+                    <td width="80px" align="right">                       
+                        @string.Format("{0:n0}", item.Amount)
                     </td>
-                    <td >                        
-                        @string.Format("{0:C}", item.TransactionAmount)
+                    <td width="150px" align="right">                     
+                        @string.Format("{0:n0}", item.TransactionAmount)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Form)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.ArchivoProcesadoId)
-                    </td>
+                    </td>*@
                     @if (item.EsModificable)
                     {
                         <td>
