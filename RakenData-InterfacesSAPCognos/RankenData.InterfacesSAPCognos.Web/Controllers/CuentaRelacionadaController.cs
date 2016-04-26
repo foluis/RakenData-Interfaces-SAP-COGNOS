@@ -65,7 +65,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length != 3)
                 {
-                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: Cuenta SAP,Cta. Relacionada,Sociedad Cognos");
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: Cuenta SAP,Cta. Relacionada,Sociedad Cognos<br>");
                     continue;
                 }
                 else
@@ -78,7 +78,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                     if (!conversion)
                     {
-                        errores.AppendLine($"No. Registro {i + 1} ERROR: EL NUMERO ({dato[2]}) DE LA SOCIEDAD COGNOS NO ES NUMERICO.");
+                        errores.AppendLine($"No. Registro {i + 1} ERROR: EL NUMERO ({dato[2]}) DE LA SOCIEDAD COGNOS NO ES NUMERICO.<br>");
                         continue;
                     }
 
@@ -90,7 +90,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if(cuentaSAPExiste == null)
                         {
-                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NUMERO ({dato[2]}) NO EXISTE. ");
+                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
                             continue;
                         }
 
@@ -98,7 +98,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if (companiaCognosExistente == null)
                         {
-                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON EL NUMERO ({dato[2]}) NO EXISTE. ");
+                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
                             continue;
                         }
 
@@ -118,7 +118,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if (cuentaSAPExiste == null)
                         {
-                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NUMERO ({dato[2]}) NO EXISTE. ");
+                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
                             continue;
                         }
 
@@ -126,7 +126,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if (companiaCognosExistente == null)
                         {
-                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON EL NUMERO ({dato[2]}) NO EXISTE. ");
+                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
                             continue;
                         }
 
@@ -158,6 +158,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     }
                 }
             }
+            ViewBag.Error = errores.ToString();
             return errores.ToString();
         }
 
