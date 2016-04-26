@@ -52,7 +52,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             if (extension != ".txt")
             {
-                errores.AppendLine("El Archivo debe ser un archivo plano de texto con extencion .txt");
+                errores.AppendLine("El Archivo debe ser un archivo plano de texto con extención .txt");
                 return errores.ToString();
             }
 

@@ -1,0 +1,48 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.CuentaRelacionada
+
+@{
+    ViewBag.Title = "Borrar";
+}
+
+<h2>Borrar</h2>
+
+<h3>Esta seguro de eliminar esto?</h3>
+<div>
+    <h4>Cuenta relacionada</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>            
+            @Html.Label("Cuenta relacionada")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumeroCuentaRelacionada)
+        </dd>      
+
+        <dt>            
+            @Html.Label("Compañia Cognos")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaCognos.Descripcion)
+        </dd>
+
+        <dt>            
+            @Html.Label("Cuenta SAP")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaSAP.Numero)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Regresar a la lista", "Index")
+        </div>
+    }
+</div>

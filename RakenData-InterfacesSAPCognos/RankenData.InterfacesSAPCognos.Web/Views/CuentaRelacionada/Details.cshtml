@@ -1,0 +1,45 @@
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.CuentaRelacionada
+
+@{
+    ViewBag.Title = "Detalle";
+}
+
+<h2>Detalle</h2>
+
+<div>
+    <h4>Cuenta Relacionada</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @*@Html.DisplayNameFor(model => model.NumeroCuentaRelacionada)*@
+            @Html.Label("Cuenta relacionada")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumeroCuentaRelacionada)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompaniaCognos.Descripcion)
+            @Html.Label("Compañia Cognos")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompaniaCognos.Descripcion)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.CuentaSAP.Numero)*@
+            @Html.Label("Cuenta SAP")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CuentaSAP.Numero)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Regresar a la lista", "Index")
+</p>

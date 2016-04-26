@@ -49,6 +49,9 @@
         <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_AnioFiscal" />
         <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_CompaniaCognos" />
         <AssociationConnector Association="ModelRankenData.FK_SaldoInicial_CuentaCognos" />
+        <EntityTypeShape EntityType="ModelRankenData.CuentaRelacionada" Width="1.5" PointX="17.25" PointY="5" />
+        <AssociationConnector Association="ModelRankenData.FK_CuentaRelacionada_CompaniaCognos" />
+        <AssociationConnector Association="ModelRankenData.FK_CuentaRelacionada_CuentaSAP" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

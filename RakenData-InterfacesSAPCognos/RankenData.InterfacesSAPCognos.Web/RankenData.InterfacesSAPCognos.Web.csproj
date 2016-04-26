@@ -180,6 +180,7 @@
     <Compile Include="Controllers\CargaAutomaticaController.cs" />
     <Compile Include="Controllers\CargaBalanceController.cs" />
     <Compile Include="Controllers\CargaIntercompaniasController.cs" />
+    <Compile Include="Controllers\CuentaRelacionadaController.cs" />
     <Compile Include="Controllers\SaldoInicialController.cs" />
     <Compile Include="Controllers\Utilidades\AdmMail.cs" />
     <Compile Include="Controllers\Utilidades\CargarArchivo.cs" />
@@ -235,6 +236,9 @@
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CuentaCognos.cs">
+      <DependentUpon>ModelRakenData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CuentaRelacionada.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CuentaSAP.cs">
@@ -455,6 +459,11 @@
     <Content Include="Views\SaldoInicial\Details.cshtml" />
     <Content Include="Views\SaldoInicial\Edit.cshtml" />
     <Content Include="Views\SaldoInicial\Index.cshtml" />
+    <Content Include="Views\CuentaRelacionada\Create.cshtml" />
+    <Content Include="Views\CuentaRelacionada\Delete.cshtml" />
+    <Content Include="Views\CuentaRelacionada\Details.cshtml" />
+    <Content Include="Views\CuentaRelacionada\Edit.cshtml" />
+    <Content Include="Views\CuentaRelacionada\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
