@@ -567,7 +567,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Parameter Name="tipoRedondeo" Type="int" Mode="In" />
         </Function>
         <Function Name="CreateArchivoIntercompanias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="SociedadesCognos" Type="varchar" Mode="In" />
+          <Parameter Name="SociedadCognos" Type="varchar" Mode="In" />
           <Parameter Name="Periodo" Type="int" Mode="In" />
           <Parameter Name="Anio" Type="int" Mode="In" />
           <Parameter Name="TiposArchivoCreacionId" Type="varchar" Mode="In" />
@@ -841,7 +841,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <Parameter Name="tipoRedondeo" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CreateArchivoIntercompanias" ReturnType="Collection(Int32)">
-            <Parameter Name="SociedadesCognos" Mode="In" Type="String" />
+            <Parameter Name="SociedadCognos" Mode="In" Type="String" />
             <Parameter Name="Periodo" Mode="In" Type="Int32" />
             <Parameter Name="Anio" Mode="In" Type="Int32" />
             <Parameter Name="TiposArchivoCreacionId" Mode="In" Type="String" />

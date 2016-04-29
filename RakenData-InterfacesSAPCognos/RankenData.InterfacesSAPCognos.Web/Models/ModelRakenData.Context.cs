@@ -80,11 +80,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoBalance", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter, tipoRedondeoParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> CreateArchivoIntercompanias(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)
+        public virtual ObjectResult<Nullable<int>> CreateArchivoIntercompanias(string sociedadCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)
         {
-            var sociedadesCognosParameter = sociedadesCognos != null ?
-                new ObjectParameter("SociedadesCognos", sociedadesCognos) :
-                new ObjectParameter("SociedadesCognos", typeof(string));
+            var sociedadCognosParameter = sociedadCognos != null ?
+                new ObjectParameter("SociedadCognos", sociedadCognos) :
+                new ObjectParameter("SociedadCognos", typeof(string));
     
             var periodoParameter = periodo.HasValue ?
                 new ObjectParameter("Periodo", periodo) :
@@ -106,7 +106,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
                 new ObjectParameter("tipoRedondeo", tipoRedondeo) :
                 new ObjectParameter("tipoRedondeo", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoIntercompanias", sociedadesCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter, tipoRedondeoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateArchivoIntercompanias", sociedadCognosParameter, periodoParameter, anioParameter, tiposArchivoCreacionIdParameter, usuarioParameter, tipoRedondeoParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> CreateArchivoResultados(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.ArchivoProcesadoDetalle>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Indice";
 }
 
 @if (!ViewData.ModelState.IsValid)
@@ -36,17 +36,14 @@
                     @Html.DisplayNameFor(model => model.Account)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.CounterCompany)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Amount)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.TransactionAmount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Form)
-                </th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model.ArchivoProcesado.Id)
-                </th>*@
+                </th>             
                 <th></th>
             </tr>
 
@@ -65,18 +62,15 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Account)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CounterCompany)
+                    </td>
                     <td width="80px" align="right">                       
                         @string.Format("{0:n0}", item.Amount)
                     </td>
                     <td width="150px" align="right">                     
                         @string.Format("{0:n0}", item.TransactionAmount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Form)
-                    </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.ArchivoProcesadoId)
-                    </td>*@
+                    </td>                  
                     @if (item.EsModificable)
                     {
                         <td>

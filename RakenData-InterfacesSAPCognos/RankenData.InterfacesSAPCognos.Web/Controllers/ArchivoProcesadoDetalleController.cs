@@ -29,14 +29,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             if (!int.TryParse(id, out idArchivo))
             {
                 ModelState.AddModelError("Error", "El id de la tabla no es numerico");
-                return View();              
+                return View();
             }
             if (idArchivo == -1)
             {
                 ModelState.AddModelError("Error", "No existen datos actualmente.");
-                return View();  
+                return View();
             }
-          
+
             ////Habilita el boton editar si el archivo no se ha generado nunca
             archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Include(a => a.ArchivoProcesado).Where(ap => ap.ArchivoProcesadoId == idArchivo).ToList();
             if (db.ArchivoProcesado.Find(idArchivo).ArchivoGenerado)
@@ -65,7 +65,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             if (error != null)
             {
-                ModelState.AddModelError("Error", error); 
+                ModelState.AddModelError("Error", error);
             }
             TempData["id"] = id;
             TempData["tipoArchivo"] = tipoArchivo;
@@ -77,13 +77,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public ActionResult GenerarArchivo()
         {
-            string id = TempData["id"].ToString();  
-            int tipoArchivo = (int)TempData["tipoArchivo"];  
+            string id = TempData["id"].ToString();
+            int tipoArchivo = (int)TempData["tipoArchivo"];
 
             List<ArchivoProcesadoDetalle> archivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
             if (archivoprocesadodetalle.Count == 0)
             {
-                  return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "No hay información para generar el archivo" });    
+                return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "No hay información para generar el archivo" });
             }
 
             //string ruta = HttpContext.Current.Server.MapPath(@"\Log");
@@ -92,15 +92,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             CSV_Writer csvWriter = new CSV_Writer();
 
-            ArchivoProcesado archivoProcesado= db.ArchivoProcesado.Find(archivoprocesadodetalle.First().ArchivoProcesadoId);
+            ArchivoProcesado archivoProcesado = db.ArchivoProcesado.Find(archivoprocesadodetalle.First().ArchivoProcesadoId);
             List<ArchivoResultado> lstArchivoResultado = archivoprocesadodetalle.ConvertAll(
                 ap => new ArchivoResultado()
                 {
                     Account = ap.Account,
                     AccountName = ap.AccountName,
-                    Actuality = ap.Actuality,
-                    Amount = ap.Amount.ToString(),
-                    //Company = ap.Company,
+                    Actuality = ap.Actuality,                               
+                    Amount = string.Format("{0:n0}", ap.Amount),
                     Company = archivoProcesado.CompaniaCognos.Clave.ToString(),
                     CounterCompany = ap.CounterCompany,
                     Dim1 = ap.Dim1,
@@ -109,8 +108,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     Form = ap.Form,
                     ITOpex = ap.ITOpex,
                     Period = ap.Period,
-                    Retrieve = ap.Retrieve,
-                    TransactionAmount = ap.TransactionAmount.ToString(),
+                    Retrieve = ap.Retrieve,                    
+                    TransactionAmount = string.Format("{0:n0}", ap.TransactionAmount),
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
@@ -125,9 +124,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             else // Archivo con errore
             {
                 ModelState.AddModelError("Error", "El archivo no se pudo crear");
-                return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo no se pudo crear" });   
+                return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo no se pudo crear" });
             }
-            return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo se creo satisfactoriamente !!" });      
+            return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo se creo satisfactoriamente !!" });
         }
 
         // GET: /ArchivoProcesadoDetalle/Details/5
@@ -147,8 +146,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         // GET: /ArchivoProcesadoDetalle/Create
         public ActionResult Create()
-        {          
-              return View();
+        {
+            return View();
 
         }
 
@@ -159,21 +158,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Account,Amount,TransactionAmount")] ArchivoProcesadoDetalle archivoprocesadodetalle)
         {
-            int tipoArchivo = (int)TempData["tipoArchivo"];  
+            int tipoArchivo = (int)TempData["tipoArchivo"];
             List<ArchivoProcesadoDetalle> lstArchivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
 
             ArchivoProcesadoDetalle archivoprocesadodetalleTemplate = lstArchivoprocesadodetalle.First();
             //Mapeo
-            archivoprocesadodetalle.ArchivoProcesadoId = archivoprocesadodetalleTemplate.ArchivoProcesadoId;           
+            archivoprocesadodetalle.ArchivoProcesadoId = archivoprocesadodetalleTemplate.ArchivoProcesadoId;
             archivoprocesadodetalle.Company = archivoprocesadodetalleTemplate.Company;
             archivoprocesadodetalle.Period = archivoprocesadodetalleTemplate.Period;
-            archivoprocesadodetalle.Actuality = archivoprocesadodetalleTemplate.Actuality;          
+            archivoprocesadodetalle.Actuality = archivoprocesadodetalleTemplate.Actuality;
             archivoprocesadodetalle.CounterCompany = archivoprocesadodetalleTemplate.CounterCompany;
             archivoprocesadodetalle.Dim1 = archivoprocesadodetalleTemplate.Dim1;
             archivoprocesadodetalle.Dim2 = archivoprocesadodetalleTemplate.Dim2;
             archivoprocesadodetalle.Dim3 = archivoprocesadodetalleTemplate.Dim3;
-            archivoprocesadodetalle.ITOpex = archivoprocesadodetalleTemplate.ITOpex;           
-            archivoprocesadodetalle.TransactionCurrency = archivoprocesadodetalleTemplate.TransactionCurrency;           
+            archivoprocesadodetalle.ITOpex = archivoprocesadodetalleTemplate.ITOpex;
+            archivoprocesadodetalle.TransactionCurrency = archivoprocesadodetalleTemplate.TransactionCurrency;
             archivoprocesadodetalle.Form = archivoprocesadodetalleTemplate.Form;
             archivoprocesadodetalle.AccountName = archivoprocesadodetalleTemplate.AccountName;
             archivoprocesadodetalle.Retrieve = archivoprocesadodetalleTemplate.Retrieve;
@@ -219,7 +218,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             ArchivoProcesadoDetalle archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Find(id);
 
-            CuentaCognos cuentaCognos = db.CuentaCognos.FirstOrDefault(cc=> cc.Numero == archivoprocesadodetalle.Account);
+            CuentaCognos cuentaCognos = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == archivoprocesadodetalle.Account);
 
             if (cuentaCognos != null && cuentaCognos.Anexo.Modificable == false)
             {
@@ -242,7 +241,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Edit([Bind(Include = "Id,ArchivoProcesadoId,TipoArchivoCreacionId,Company,Period,Actuality,Account,CounterCompany,Dim1,Dim2,Dim3,ITOpex,Amount,TransactionCurrency,TransactionAmount,Form,AccountName,Retrieve,Variance")] ArchivoProcesadoDetalle archivoprocesadodetalle)
         {
             StringBuilder errores = new StringBuilder();
-            int tipoArchivo = (int)TempData["tipoArchivo"];  
+            int tipoArchivo = (int)TempData["tipoArchivo"];
             HistorialArchivoProcesadoDetalle historial = new HistorialArchivoProcesadoDetalle();
             if (ModelState.IsValid)
             {
@@ -277,7 +276,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ModelState.AddModelError("Error", errores.ToString());
                     return View();
                 }
-                return RedirectToAction("Index",new { id = archivoprocesadodetalle.ArchivoProcesadoId, tipoArchivo = tipoArchivo });
+                return RedirectToAction("Index", new { id = archivoprocesadodetalle.ArchivoProcesadoId, tipoArchivo = tipoArchivo });
             }
             ViewBag.ArchivoProcesadoId = new SelectList(db.ArchivoProcesado, "Id", "Id", archivoprocesadodetalle.ArchivoProcesadoId);
             return View(archivoprocesadodetalle);

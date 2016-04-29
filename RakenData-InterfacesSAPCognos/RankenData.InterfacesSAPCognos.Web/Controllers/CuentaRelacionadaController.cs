@@ -20,6 +20,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CuentaRelacionadaController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
+        
 
         // GET: CuentaRelacionada
         public ActionResult Index(HttpPostedFileBase file)
@@ -60,13 +61,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             var records = result.Split('\n');
             DAT_Reader datReader = new DAT_Reader();
 
+            bool updateSaveFile = true;
+
             for (int i = 1; i < records.Count(); i++)
             {
                 var dato = records[i].Split(',');
                 if (dato.Length != 3)
                 {
-                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: Cuenta SAP,Cta. Relacionada,Sociedad Cognos<br>");
-                    continue;
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL REGISTRO (FILA) NO ES: Cuenta SAP,Cta. Relacionada,Sociedad Cognos<br>");
+                    updateSaveFile = false;
                 }
                 else
                 {
@@ -78,11 +81,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                     if (!conversion)
                     {
-                        errores.AppendLine($"No. Registro {i + 1} ERROR: EL NUMERO ({dato[2]}) DE LA SOCIEDAD COGNOS NO ES NUMERICO.<br>");
-                        continue;
+                        errores.AppendLine($"No. Registro {i + 1} ERROR: EL NÚMERO ({numeroSociedadCognos}) DE LA SOCIEDAD COGNOS NO ES NUMERICO.<br>");
+                        updateSaveFile = false;
                     }
 
-                    CuentaRelacionada cuentaRelacionadaExistente = db.CuentaRelacionada.FirstOrDefault(cc => cc.NumeroCuentaRelacionada == numeroCuentaRelacionada);
+                    CuentaRelacionada cuentaRelacionadaExistente = db.CuentaRelacionada.FirstOrDefault(cc => cc.NumeroCuentaRelacionada == numeroCuentaRelacionada && cc.CuentaSAP.Numero == numeroCuentaSAP);
 
                     if (cuentaRelacionadaExistente == null)
                     {
@@ -90,27 +93,30 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         if(cuentaSAPExiste == null)
                         {
-                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
-                            continue;
+                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NÚMERO ({numeroCuentaSAP}) NO EXISTE.<br>");
+                            updateSaveFile = false;
                         }
 
                         companiaCognosExistente = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveSociedadCognos);
 
                         if (companiaCognosExistente == null)
                         {
-                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
-                            continue;
+                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON LA CLAVE ({claveSociedadCognos}) NO EXISTE.<br>");
+                            updateSaveFile = false;
                         }
 
-                        cuentaR = new CuentaRelacionada()
+                        if (updateSaveFile)
                         {
-                            CompaniaCognos = companiaCognosExistente,
-                            CuentaSAP = cuentaSAPExiste,
-                            NumeroCuentaRelacionada = numeroCuentaRelacionada,
-                            IsActive = true,
-                        };
+                            cuentaR = new CuentaRelacionada()
+                            {
+                                CompaniaCognos = companiaCognosExistente,
+                                CuentaSAP = cuentaSAPExiste,
+                                NumeroCuentaRelacionada = numeroCuentaRelacionada,
+                                IsActive = true,
+                            };
 
-                        db.CuentaRelacionada.Add(cuentaR);
+                            db.CuentaRelacionada.Add(cuentaR);
+                        }
                     }
                     else
                     {
@@ -119,7 +125,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         if (cuentaSAPExiste == null)
                         {
                             errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
-                            continue;
+                            updateSaveFile = false;
                         }
 
                         companiaCognosExistente = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveSociedadCognos);
@@ -127,19 +133,25 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         if (companiaCognosExistente == null)
                         {
                             errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON EL NUMERO ({dato[2]}) NO EXISTE.<br>");
-                            continue;
+                            updateSaveFile = false;
                         }
 
-                        cuentaRelacionadaExistente.CompaniaCognos = companiaCognosExistente;
-                        cuentaRelacionadaExistente.CuentaSAP = cuentaSAPExiste;
-                        cuentaRelacionadaExistente.NumeroCuentaRelacionada = numeroCuentaRelacionada;
-                        cuentaRelacionadaExistente.IsActive = true;
-                        db.Entry(cuentaRelacionadaExistente).State = EntityState.Modified;
+                        if(updateSaveFile)
+                        {
+                            cuentaRelacionadaExistente.CompaniaCognos = companiaCognosExistente;
+                            cuentaRelacionadaExistente.CuentaSAP = cuentaSAPExiste;
+                            cuentaRelacionadaExistente.NumeroCuentaRelacionada = numeroCuentaRelacionada;
+                            cuentaRelacionadaExistente.IsActive = true;
+                            db.Entry(cuentaRelacionadaExistente).State = EntityState.Modified;
+                        }                        
                     }
 
                     try
                     {
-                        db.SaveChanges();
+                        if (updateSaveFile)
+                        {
+                            db.SaveChanges();
+                        }
                     }
                     catch (DbEntityValidationException e)
                     {
@@ -157,6 +169,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         return "No se pudo cargar el archivo";
                     }
                 }
+                updateSaveFile = true;
             }
             ViewBag.Error = errores.ToString();
             return errores.ToString();
