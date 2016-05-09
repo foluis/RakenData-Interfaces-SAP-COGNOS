@@ -99,7 +99,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     Account = ap.Account,
                     AccountName = ap.AccountName,
                     Actuality = ap.Actuality,                               
-                    Amount = string.Format("{0:n0}", ap.Amount),
+                    Amount = string.Format("{0:n0}", ap.Amount).Replace(",",""),
                     Company = archivoProcesado.CompaniaCognos.Clave.ToString(),
                     CounterCompany = ap.CounterCompany,
                     Dim1 = ap.Dim1,
@@ -109,7 +109,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ITOpex = ap.ITOpex,
                     Period = ap.Period,
                     Retrieve = ap.Retrieve,                    
-                    TransactionAmount = string.Format("{0:n0}", ap.TransactionAmount),
+                    TransactionAmount = string.Format("{0:n0}", ap.TransactionAmount).Replace(",", ""),
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
@@ -127,7 +127,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 else // Archivo con errore
                 {
                     ModelState.AddModelError("Error", "El archivo no se pudo crear.");
-                    Log.WriteLog(archivoCreado.Exception.ToString(), EnumTypeLog.Error, true);
+                    Log.WriteLog("Valide los permisos de la carpeta", EnumTypeLog.Error, true);
                     return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo no se pudo crear." });
                 }
             }
