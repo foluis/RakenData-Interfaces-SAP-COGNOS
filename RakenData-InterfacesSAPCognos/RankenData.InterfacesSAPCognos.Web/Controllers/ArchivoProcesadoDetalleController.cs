@@ -113,20 +113,30 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     TransactionCurrency = ap.TransactionCurrency,
                     Variance = ap.Variance
                 });
-            OperationResult archivoCreado = csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Clave.ToString(), archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
-            if (archivoCreado.IdError == 0)//Archivo Creado
+
+            try
             {
-                archivoProcesado.ArchivoGenerado = true;
-                archivoProcesado.FechaArchivoGenerado = DateTime.Now;
-                db.Entry(archivoProcesado).State = EntityState.Modified;
-                db.SaveChanges();
+                OperationResult archivoCreado = csvWriter.StartWritingArchivoBalance(archivoProcesado.CompaniaCognos.Clave.ToString(), archivoProcesado.Anio.ToString(), archivoProcesado.Periodo.ToString(), tipoArchivo, ruta, lstArchivoResultado);
+                if (archivoCreado.IdError == 0)//Archivo Creado
+                {
+                    archivoProcesado.ArchivoGenerado = true;
+                    archivoProcesado.FechaArchivoGenerado = DateTime.Now;
+                    db.Entry(archivoProcesado).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else // Archivo con errore
+                {
+                    ModelState.AddModelError("Error", "El archivo no se pudo crear.");
+                    Log.WriteLog(archivoCreado.Exception.ToString(), EnumTypeLog.Error, true);
+                    return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo no se pudo crear." });
+                }
             }
-            else // Archivo con errore
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Error", "El archivo no se pudo crear");
-                return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo no se pudo crear" });
-            }
-            return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo se creo satisfactoriamente !!" });
+                Log.WriteLog(ex.ToString(), EnumTypeLog.Error, true);                
+            }            
+           
+            return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo se creó satisfactoriamente." });
         }
 
         // GET: /ArchivoProcesadoDetalle/Details/5
