@@ -16,14 +16,14 @@ using System.Collections.Generic;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "1")]
     public class CompaniaRFCController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // GET: /CompaniaRFC/
-        //[Authorize(Roles = "1")]
+        // GET: /CompaniaRFC/        
         public ActionResult Index(HttpPostedFileBase file)
-        {
+        {   
             var companiarfc = db.CompaniaRFC.Include(c => c.CompaniaCognos1);
             if (file != null && file.ContentLength > 0)
             {

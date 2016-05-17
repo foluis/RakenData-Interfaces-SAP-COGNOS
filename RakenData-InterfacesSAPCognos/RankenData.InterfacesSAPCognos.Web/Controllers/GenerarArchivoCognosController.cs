@@ -12,9 +12,9 @@ using System.Web.Mvc;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "3")]
     public class GenerarArchivoCognosController : Controller
     {
-
         private EntitiesRakenData db = new EntitiesRakenData();
         //
         // GET: /GenerarArchivoCognos/

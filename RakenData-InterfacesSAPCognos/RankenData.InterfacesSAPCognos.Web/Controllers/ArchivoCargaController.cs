@@ -11,6 +11,7 @@ using System.Data.Entity.Core.Objects;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "2")]
     public class ArchivoCargaController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();

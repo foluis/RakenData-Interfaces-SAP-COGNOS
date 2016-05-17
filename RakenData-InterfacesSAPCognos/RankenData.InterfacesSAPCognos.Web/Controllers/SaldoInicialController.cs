@@ -18,6 +18,7 @@ using System.Data.Entity.Core.Objects;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "1")]
     public class SaldoInicialController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();

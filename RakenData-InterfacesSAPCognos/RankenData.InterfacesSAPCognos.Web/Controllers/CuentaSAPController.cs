@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "1")]
     public class CuentaSAPController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();

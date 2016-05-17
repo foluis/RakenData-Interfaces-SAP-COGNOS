@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "2")]
     public class CargaIntercompaniasController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();

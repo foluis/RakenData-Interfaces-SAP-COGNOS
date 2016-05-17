@@ -82,11 +82,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     {
                         db.User.Add(new User() { Username = model.UserName, IsActive = true });
                         db.SaveChanges();
-                        ModelState.AddModelError("", "El usuario no se encontraba en el sistema, se adiciono pero se requiere configurar sus grupos de seguridad");
+                        ModelState.AddModelError("", "El usuario se creó en la aplicación, el administrador debe otorgarle permisos para poder ingresar");
                         return View(model);
                     }
                 }
             }
+
+            ModelState.AddModelError("", "Asegurece que el usuario tenga permisos y no este bloqueado");
 
             // If we got this far, something failed, redisplay form
             return View(model);

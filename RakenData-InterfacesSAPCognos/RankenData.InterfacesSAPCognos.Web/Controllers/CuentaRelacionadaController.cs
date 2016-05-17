@@ -17,6 +17,7 @@ using Ranken.ISC.FileManager.ReadFiles;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "1")]
     public class CuentaRelacionadaController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();

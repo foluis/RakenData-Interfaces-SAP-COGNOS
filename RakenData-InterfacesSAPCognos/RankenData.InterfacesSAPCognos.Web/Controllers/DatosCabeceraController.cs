@@ -10,6 +10,7 @@ using RankenData.InterfacesSAPCognos.Web.Models;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "1")]
     public class DatosCabeceraController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();

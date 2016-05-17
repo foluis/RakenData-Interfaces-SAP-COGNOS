@@ -10,6 +10,7 @@ using RankenData.InterfacesSAPCognos.Web.Models;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "5")]
     public class GrupoUsuarioController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
@@ -122,6 +123,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             GrupoUsuario grupousuario = db.GrupoUsuario.Find(id);
             db.GrupoUsuario.Remove(grupousuario);
             db.SaveChanges();
+
+            User user = db.User.Find(grupousuario.IdUsuario);
+            System.Web.Security.Roles.RemoveUserFromRole(user.Username, grupousuario.IdGrupo.ToString());
+            
             return RedirectToAction("Index");
         }
 

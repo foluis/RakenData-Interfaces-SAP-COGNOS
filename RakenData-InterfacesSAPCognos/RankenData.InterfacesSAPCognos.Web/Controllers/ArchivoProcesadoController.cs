@@ -14,6 +14,7 @@ using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
+    [Authorize(Roles = "4")]
     public class ArchivoProcesadoController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();

@@ -23,8 +23,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
         /// <returns></returns>
         public static bool ValidarUsuario(string usuario, string clave)
         {
-                //TODO: quitar el return cuando se desarrolle la parte de LDAP
-            return true;
             string servidorLDAP = ConfigurationManager.AppSettings["servidorLDAP"];
             string usuarioLDAP = ConfigurationManager.AppSettings["usuarioLDAP"];
             string claveLDAP = ConfigurationManager.AppSettings["claveLDAP"];
@@ -45,8 +43,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                 return true;
             }
 
-            catch
+            catch (Exception ex)
             {
+                string sEx = ex.ToString();
                 return false;
             }
         }
