@@ -41,8 +41,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         // return: errores y si no hay devuelve el objeto vacio        
         public string CargeCompaniaCognos(HttpPostedFileBase file)
         {
-            CompaniaCognos companiaCognos = null;
-            int clave;
+            CompaniaCognos companiaCognos = null;            
             StringBuilder errores = new StringBuilder();
 
             string extension = Path.GetExtension(file.FileName);
@@ -63,29 +62,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length != 2)
                 {
-                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");
-                    //Log.WriteLog("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION", EnumTypeLog.Error, true);                    
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: CLAVE, DESCRIPCION");                    
                 }
                 else
                 {
-
-                    if (int.TryParse(dato[0], out clave) == false)
-                    {
-                        errores.AppendLine("No. Registro: " + (i + 1) + " ERROR: LA CLAVE NO ES NUMERICO");
-                    }
-
-                    //if (errores.Length > 0)
-                    //{
-                    //    return errores.ToString();
-
-                    //}
-
                     string descripcion = dato[1].Replace("\r", string.Empty).ToUpper();
                     descripcion = dato[1].Length <= 35 ? descripcion : descripcion.Substring(0, 35);
 
                     companiaCognos = new CompaniaCognos()
                     {
-                        Clave = clave,
+                        Clave =  dato[0].Length <= 13 ? dato[0].ToUpper() : dato[0].Substring(0, 13).ToUpper(),
                         Descripcion = descripcion
                     };
 

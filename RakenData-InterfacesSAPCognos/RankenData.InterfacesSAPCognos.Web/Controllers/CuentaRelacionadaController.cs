@@ -77,14 +77,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     string numeroCuentaSAP = dato[0].Replace("\r", string.Empty).Trim();
                     string numeroCuentaRelacionada = dato[1].Replace("\r", string.Empty).Trim();
                     string numeroSociedadCognos = dato[2].Replace("\r", string.Empty).Trim();
-                    int claveSociedadCognos;
-                    bool conversion = int.TryParse(numeroSociedadCognos, out claveSociedadCognos);
+                    //int claveSociedadCognos;
+                    //bool conversion = int.TryParse(numeroSociedadCognos, out claveSociedadCognos);
 
-                    if (!conversion)
-                    {
-                        errores.AppendLine($"No. Registro {i + 1} ERROR: EL NÚMERO ({numeroSociedadCognos}) DE LA SOCIEDAD COGNOS NO ES NUMERICO.<br>");
-                        updateSaveFile = false;
-                    }
+                    //if (!conversion)
+                    //{
+                    //    errores.AppendLine($"No. Registro {i + 1} ERROR: EL NÚMERO ({numeroSociedadCognos}) DE LA SOCIEDAD COGNOS NO ES NUMERICO.<br>");
+                    //    updateSaveFile = false;
+                    //}
 
                     CuentaRelacionada cuentaRelacionadaExistente = db.CuentaRelacionada.FirstOrDefault(cc => cc.NumeroCuentaRelacionada == numeroCuentaRelacionada && cc.CuentaSAP.Numero == numeroCuentaSAP);
 
@@ -98,11 +98,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             updateSaveFile = false;
                         }
 
-                        companiaCognosExistente = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveSociedadCognos);
+                        companiaCognosExistente = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == numeroSociedadCognos);
 
                         if (companiaCognosExistente == null)
                         {
-                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON LA CLAVE ({claveSociedadCognos}) NO EXISTE.<br>");
+                            errores.AppendLine($"No. Registro {i + 1} ERROR: LA COMPAÑIA COGNOS CON LA CLAVE ({numeroSociedadCognos}) NO EXISTE.<br>");
                             updateSaveFile = false;
                         }
 
@@ -129,7 +129,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             updateSaveFile = false;
                         }
 
-                        companiaCognosExistente = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveSociedadCognos);
+                        companiaCognosExistente = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == numeroSociedadCognos);
 
                         if (companiaCognosExistente == null)
                         {

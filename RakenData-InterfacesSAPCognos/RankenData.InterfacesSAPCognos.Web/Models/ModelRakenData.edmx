@@ -130,7 +130,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Clave" Type="int" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="CompaniaRFC">
@@ -729,7 +729,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <EntitySet Name="ArchivoCargaDetalle" EntityType="ModelRankenData.ArchivoCargaDetalle" />
           <EntitySet Name="ArchivoProcesado" EntityType="ModelRankenData.ArchivoProcesado" />
           <EntitySet Name="ArchivoProcesadoDetalle" EntityType="ModelRankenData.ArchivoProcesadoDetalle" />
-          <EntitySet Name="CompaniaCognos" EntityType="ModelRankenData.CompaniaCognos" />
           <EntitySet Name="CompaniaRFC" EntityType="ModelRankenData.CompaniaRFC" />
           <EntitySet Name="DatosCabecera" EntityType="ModelRankenData.DatosCabecera" />
           <EntitySet Name="Grupo" EntityType="ModelRankenData.Grupo" />
@@ -752,10 +751,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="ArchivoCarga" EntitySet="ArchivoCarga" />
             <End Role="ArchivoCargaDetalle" EntitySet="ArchivoCargaDetalle" />
           </AssociationSet>
-          <AssociationSet Name="FK_ArchivoProcesado_CompaniaCognos" Association="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos">
-            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
-            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
-          </AssociationSet>
           <AssociationSet Name="FK_ArchivoProcesado_TipoArchivoCreacion" Association="ModelRankenData.FK_ArchivoProcesado_TipoArchivoCreacion">
             <End Role="TipoArchivoCreacion" EntitySet="TipoArchivoCreacion" />
             <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
@@ -771,10 +766,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <AssociationSet Name="FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" Association="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle">
             <End Role="ArchivoProcesadoDetalle" EntitySet="ArchivoProcesadoDetalle" />
             <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompaniaRFC_CompaniaCognos" Association="ModelRankenData.FK_CompaniaRFC_CompaniaCognos">
-            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
-            <End Role="CompaniaRFC" EntitySet="CompaniaRFC" />
           </AssociationSet>
           <AssociationSet Name="FK_GrupoUsuario_Grupo" Association="ModelRankenData.FK_GrupoUsuario_Grupo">
             <End Role="Grupo" EntitySet="Grupo" />
@@ -824,10 +815,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="AnioFiscal" EntitySet="AnioFiscal" />
             <End Role="SaldoInicial" EntitySet="SaldoInicial" />
           </AssociationSet>
-          <AssociationSet Name="FK_SaldoInicial_CompaniaCognos" Association="ModelRankenData.FK_SaldoInicial_CompaniaCognos">
-            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
-            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
-          </AssociationSet>
           <AssociationSet Name="FK_SaldoInicial_CuentaCognos" Association="ModelRankenData.FK_SaldoInicial_CuentaCognos">
             <End Role="CuentaCognos" EntitySet="CuentaCognos" />
             <End Role="SaldoInicial" EntitySet="SaldoInicial" />
@@ -871,13 +858,26 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <Parameter Name="TipoArchivoCargaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="CuentaRelacionada" EntityType="ModelRankenData.CuentaRelacionada" />
+          <AssociationSet Name="FK_CuentaRelacionada_CuentaSAP" Association="ModelRankenData.FK_CuentaRelacionada_CuentaSAP">
+            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
+            <End Role="CuentaRelacionada" EntitySet="CuentaRelacionada" />
+          </AssociationSet>
+          <EntitySet Name="CompaniaCognos" EntityType="ModelRankenData.CompaniaCognos" />
+          <AssociationSet Name="FK_ArchivoProcesado_CompaniaCognos" Association="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos">
+            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
+            <End Role="ArchivoProcesado" EntitySet="ArchivoProcesado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompaniaRFC_CompaniaCognos" Association="ModelRankenData.FK_CompaniaRFC_CompaniaCognos">
+            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
+            <End Role="CompaniaRFC" EntitySet="CompaniaRFC" />
+          </AssociationSet>
           <AssociationSet Name="FK_CuentaRelacionada_CompaniaCognos" Association="ModelRankenData.FK_CuentaRelacionada_CompaniaCognos">
             <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
             <End Role="CuentaRelacionada" EntitySet="CuentaRelacionada" />
           </AssociationSet>
-          <AssociationSet Name="FK_CuentaRelacionada_CuentaSAP" Association="ModelRankenData.FK_CuentaRelacionada_CuentaSAP">
-            <End Role="CuentaSAP" EntitySet="CuentaSAP" />
-            <End Role="CuentaRelacionada" EntitySet="CuentaRelacionada" />
+          <AssociationSet Name="FK_SaldoInicial_CompaniaCognos" Association="ModelRankenData.FK_SaldoInicial_CompaniaCognos">
+            <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
+            <End Role="SaldoInicial" EntitySet="SaldoInicial" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="ValidateFileLoaded_Result">
@@ -980,10 +980,10 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="FechaArchivoGenerado" Type="DateTime" Precision="3" />
           <Property Name="FechaProcesoArchivo" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UsuarioId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CompaniaCognos" Relationship="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" FromRole="ArchivoProcesado" ToRole="CompaniaCognos" />
           <NavigationProperty Name="TipoArchivoCreacion" Relationship="ModelRankenData.FK_ArchivoProcesado_TipoArchivoCreacion" FromRole="ArchivoProcesado" ToRole="TipoArchivoCreacion" />
           <NavigationProperty Name="User" Relationship="ModelRankenData.FK_ArchivoProcesado_User" FromRole="ArchivoProcesado" ToRole="User" />
           <NavigationProperty Name="ArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" FromRole="ArchivoProcesado" ToRole="ArchivoProcesadoDetalle" />
+          <NavigationProperty Name="CompaniaCognos" Relationship="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" FromRole="ArchivoProcesado" ToRole="CompaniaCognos" />
         </EntityType>
         <EntityType Name="ArchivoProcesadoDetalle">
           <Key>
@@ -1009,18 +1009,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="Variance" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesadoDetalle_ArchivoProcesado" FromRole="ArchivoProcesadoDetalle" ToRole="ArchivoProcesado" />
           <NavigationProperty Name="HistorialArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_ArchivoProcesadoDetalle" FromRole="ArchivoProcesadoDetalle" ToRole="HistorialArchivoProcesadoDetalle" />
-        </EntityType>
-        <EntityType Name="CompaniaCognos">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Clave" Type="Int32" Nullable="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" FromRole="CompaniaCognos" ToRole="ArchivoProcesado" />
-          <NavigationProperty Name="CompaniaRFC" Relationship="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaCognos" ToRole="CompaniaRFC" />
-          <NavigationProperty Name="SaldoInicial" Relationship="ModelRankenData.FK_SaldoInicial_CompaniaCognos" FromRole="CompaniaCognos" ToRole="SaldoInicial" />
-          <NavigationProperty Name="CuentaRelacionada" Relationship="ModelRankenData.FK_CuentaRelacionada_CompaniaCognos" FromRole="CompaniaCognos" ToRole="CuentaRelacionada" />
         </EntityType>
         <EntityType Name="CompaniaRFC">
           <Key>
@@ -1160,18 +1148,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ArchivoProcesado_CompaniaCognos">
-          <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
-          <End Type="ModelRankenData.ArchivoProcesado" Role="ArchivoProcesado" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompaniaCognos">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ArchivoProcesado">
-              <PropertyRef Name="CompaniaCognosId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ArchivoProcesado_TipoArchivoCreacion">
           <End Type="ModelRankenData.TipoArchivoCreacion" Role="TipoArchivoCreacion" Multiplicity="1" />
           <End Type="ModelRankenData.ArchivoProcesado" Role="ArchivoProcesado" Multiplicity="*" />
@@ -1217,18 +1193,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Principal>
             <Dependent Role="HistorialArchivoProcesadoDetalle">
               <PropertyRef Name="ArchivoProcesadoDetalleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompaniaRFC_CompaniaCognos">
-          <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
-          <End Type="ModelRankenData.CompaniaRFC" Role="CompaniaRFC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompaniaCognos">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CompaniaRFC">
-              <PropertyRef Name="CompaniaCognos" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1418,8 +1382,8 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="Saldo" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="EsCargaMasiva" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AnioFiscal" Relationship="ModelRankenData.FK_SaldoInicial_AnioFiscal" FromRole="SaldoInicial" ToRole="AnioFiscal" />
-          <NavigationProperty Name="CompaniaCognos" Relationship="ModelRankenData.FK_SaldoInicial_CompaniaCognos" FromRole="SaldoInicial" ToRole="CompaniaCognos" />
           <NavigationProperty Name="CuentaCognos" Relationship="ModelRankenData.FK_SaldoInicial_CuentaCognos" FromRole="SaldoInicial" ToRole="CuentaCognos" />
+          <NavigationProperty Name="CompaniaCognos" Relationship="ModelRankenData.FK_SaldoInicial_CompaniaCognos" FromRole="SaldoInicial" ToRole="CompaniaCognos" />
         </EntityType>
         <Association Name="FK_SaldoInicial_AnioFiscal">
           <End Type="ModelRankenData.AnioFiscal" Role="AnioFiscal" Multiplicity="1" />
@@ -1430,18 +1394,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Principal>
             <Dependent Role="SaldoInicial">
               <PropertyRef Name="AnioFiscalId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SaldoInicial_CompaniaCognos">
-          <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
-          <End Type="ModelRankenData.SaldoInicial" Role="SaldoInicial" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompaniaCognos">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SaldoInicial">
-              <PropertyRef Name="CompaniaCognosId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1476,9 +1428,57 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Name="CuentaSAPId" Type="Int32" Nullable="false" />
           <Property Name="SociedadCognosId" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CompaniaCognos" Relationship="ModelRankenData.FK_CuentaRelacionada_CompaniaCognos" FromRole="CuentaRelacionada" ToRole="CompaniaCognos" />
           <NavigationProperty Name="CuentaSAP" Relationship="ModelRankenData.FK_CuentaRelacionada_CuentaSAP" FromRole="CuentaRelacionada" ToRole="CuentaSAP" />
+          <NavigationProperty Name="CompaniaCognos" Relationship="ModelRankenData.FK_CuentaRelacionada_CompaniaCognos" FromRole="CuentaRelacionada" ToRole="CompaniaCognos" />
         </EntityType>
+        <Association Name="FK_CuentaRelacionada_CuentaSAP">
+          <End Type="ModelRankenData.CuentaSAP" Role="CuentaSAP" Multiplicity="1" />
+          <End Type="ModelRankenData.CuentaRelacionada" Role="CuentaRelacionada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaSAP">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaRelacionada">
+              <PropertyRef Name="CuentaSAPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CompaniaCognos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Clave" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesado_CompaniaCognos" FromRole="CompaniaCognos" ToRole="ArchivoProcesado" />
+          <NavigationProperty Name="CompaniaRFC" Relationship="ModelRankenData.FK_CompaniaRFC_CompaniaCognos" FromRole="CompaniaCognos" ToRole="CompaniaRFC" />
+          <NavigationProperty Name="CuentaRelacionada" Relationship="ModelRankenData.FK_CuentaRelacionada_CompaniaCognos" FromRole="CompaniaCognos" ToRole="CuentaRelacionada" />
+          <NavigationProperty Name="SaldoInicial" Relationship="ModelRankenData.FK_SaldoInicial_CompaniaCognos" FromRole="CompaniaCognos" ToRole="SaldoInicial" />
+        </EntityType>
+        <Association Name="FK_ArchivoProcesado_CompaniaCognos">
+          <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
+          <End Type="ModelRankenData.ArchivoProcesado" Role="ArchivoProcesado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArchivoProcesado">
+              <PropertyRef Name="CompaniaCognosId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompaniaRFC_CompaniaCognos">
+          <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
+          <End Type="ModelRankenData.CompaniaRFC" Role="CompaniaRFC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompaniaCognos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompaniaRFC">
+              <PropertyRef Name="CompaniaCognos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CuentaRelacionada_CompaniaCognos">
           <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
           <End Type="ModelRankenData.CuentaRelacionada" Role="CuentaRelacionada" Multiplicity="*" />
@@ -1491,15 +1491,15 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CuentaRelacionada_CuentaSAP">
-          <End Type="ModelRankenData.CuentaSAP" Role="CuentaSAP" Multiplicity="1" />
-          <End Type="ModelRankenData.CuentaRelacionada" Role="CuentaRelacionada" Multiplicity="*" />
+        <Association Name="FK_SaldoInicial_CompaniaCognos">
+          <End Type="ModelRankenData.CompaniaCognos" Role="CompaniaCognos" Multiplicity="1" />
+          <End Type="ModelRankenData.SaldoInicial" Role="SaldoInicial" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CuentaSAP">
+            <Principal Role="CompaniaCognos">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CuentaRelacionada">
-              <PropertyRef Name="CuentaSAPId" />
+            <Dependent Role="SaldoInicial">
+              <PropertyRef Name="CompaniaCognosId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1620,15 +1620,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
                 <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="Company" ColumnName="Company" />
                 <ScalarProperty Name="ArchivoProcesadoId" ColumnName="ArchivoProcesadoId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CompaniaCognos">
-            <EntityTypeMapping TypeName="ModelRankenData.CompaniaCognos">
-              <MappingFragment StoreEntitySet="CompaniaCognos">
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="Clave" ColumnName="Clave" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1813,6 +1804,15 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
                 <ScalarProperty Name="SociedadCognosId" ColumnName="SociedadCognosId" />
                 <ScalarProperty Name="CuentaSAPId" ColumnName="CuentaSAPId" />
                 <ScalarProperty Name="NumeroCuentaRelacionada" ColumnName="NumeroCuentaRelacionada" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompaniaCognos">
+            <EntityTypeMapping TypeName="ModelRankenData.CompaniaCognos">
+              <MappingFragment StoreEntitySet="CompaniaCognos">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

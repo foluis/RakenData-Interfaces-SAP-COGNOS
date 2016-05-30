@@ -20,7 +20,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public int SociedadCognosId { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual CompaniaCognos CompaniaCognos { get; set; }
         public virtual CuentaSAP CuentaSAP { get; set; }
+        public virtual CompaniaCognos CompaniaCognos { get; set; }
     }
 }

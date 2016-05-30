@@ -72,7 +72,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     return errores.ToString();
                 }
 
-                int clave = Convert.ToInt32(dato[1]);
+                string clave = dato[1].Length <= 13 ? dato[1].ToUpper() : dato[1].Substring(0, 13).ToUpper();
 
                 var cuentaCognos = db.CuentaCognos.ToList().FirstOrDefault(a => a.IsActive == true && a.Numero == dato[0]);
                 var companiaCognos = db.CompaniaCognos.ToList().FirstOrDefault(a => a.Clave == clave);

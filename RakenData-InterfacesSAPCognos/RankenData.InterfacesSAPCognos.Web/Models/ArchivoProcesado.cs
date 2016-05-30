@@ -29,9 +29,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public System.DateTime FechaProcesoArchivo { get; set; }
         public int UsuarioId { get; set; }
     
-        public virtual CompaniaCognos CompaniaCognos { get; set; }
         public virtual TipoArchivoCreacion TipoArchivoCreacion { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<ArchivoProcesadoDetalle> ArchivoProcesadoDetalle { get; set; }
+        public virtual CompaniaCognos CompaniaCognos { get; set; }
     }
 }

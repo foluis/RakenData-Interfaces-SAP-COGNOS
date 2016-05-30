@@ -62,40 +62,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length != 3)
                 {
-                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");
-                    //Log.WriteLog("No. Registro" +  (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos", EnumTypeLog.Error, true);
-                    //continue;
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");                  
                 }
                 else
                 {
-                    string claveCompaniaCognos = dato[2].Replace("\r", string.Empty);
-                    int claveCompaniaCognosId= 0;
+                    string claveCompaniaCognos = dato[2].Replace("\r", string.Empty);                
 
-                    if (int.TryParse(claveCompaniaCognos, out companiaCognos))
-                    {
-                        claveCompaniaCognosId = companiaCognos;
-                    }
-
-                    CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveCompaniaCognosId);
+                    CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveCompaniaCognos);
 
                     if (companiaCognosExiste == null)
                     {
-                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA COMPANIA COGNOS NO EXISTE. ");
-                        //continue;
+                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA COMPANIA COGNOS NO EXISTE. ");                        
                     }
                     else
-                    {
-                        //if (int.TryParse(companiaCognosExiste.id, out companiaCognos) == false)
-                        //{
-                        //    errores.AppendLine("No. Registro: " + i + " ERROR: EL ID DE LA COMPANIA COGNOS NO ES NUMERICO");
-                        //}
-
-                        //if (errores.Length > 0)
-                        //{
-                        //    return errores.ToString();
-
-                        //}
-
+                    {      
                         string descripcion = dato[1].Replace("\r", string.Empty).ToUpper();
                         descripcion = dato[1].Length <= 35 ? descripcion : descripcion.Substring(0, 35);
 
