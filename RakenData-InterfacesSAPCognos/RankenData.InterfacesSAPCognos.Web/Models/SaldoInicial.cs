@@ -25,7 +25,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public bool EsCargaMasiva { get; set; }
     
         public virtual AnioFiscal AnioFiscal { get; set; }
-        public virtual CuentaCognos CuentaCognos { get; set; }
         public virtual CompaniaCognos CompaniaCognos { get; set; }
+        public virtual CuentaCognos CuentaCognos { get; set; }
     }
 }
