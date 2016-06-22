@@ -82,6 +82,34 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             return "ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message + " Exepción: " + inner; 
         }
 
+        public static string ErrorExepcion(string info,Exception e)
+        {
+            string inner = string.Empty;
+
+            if (e.InnerException != null)
+            {
+                if (e.InnerException.InnerException != null)
+                {
+                    if (e.InnerException.InnerException.InnerException != null)
+                    {
+                        inner = e.InnerException.InnerException.InnerException.Message;
+                    }
+                    else
+                    {
+                        inner = e.InnerException.InnerException.Message;
+                    }
+                }
+                else
+                {
+                    inner = e.InnerException.Message;
+                }
+            }
+            return "ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + Environment.NewLine + 
+                info + Environment.NewLine +
+                " Mensaje: " + e.Message + Environment.NewLine +
+                " Exepción: " + inner;
+        }
+
 
     }
 }
