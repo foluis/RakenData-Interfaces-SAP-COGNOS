@@ -7,15 +7,29 @@
 <h2>Monitor de Carga</h2>
 
 @*<p>
-    @Html.ActionLink("Crear Nuevo", "Create")
-</p>*@
+        @Html.ActionLink("Crear Nuevo", "Create")
+    </p>*@
 @using (Html.BeginForm())
 {
-    <p>            
-        Fecha Inicio: @Html.TextBox("startDate","", new { type = "date", placeholder = "dd/mm/aaaa" })
-        Fecha Fin: @Html.TextBox("endDate", "", new { type = "date", placeholder = "dd/mm/aaaa" })
-        <input type="submit" value="Buscar" class="btn btn-default"/>
-    </p>
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.Label("Fecha Inicio", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("startDate", "", new { @class = "form-control", type = "datetime", placeholder = "dd/mm/aaaa" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Fecha Fin", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("endDate", "", new { @class = "form-control", type = "datetime", placeholder = "dd/mm/aaaa" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Buscar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
 }
 <table class="table">
     <tr>
@@ -28,55 +42,70 @@
         <th>
             @Html.DisplayNameFor(model => model.Fecha)
         </th>
-        <th>            
+        <th>
             @Html.Label("Año")
         </th>
-        <th>            
+        <th>
             @Html.Label("Período")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TipoArchivoCarga1.Nombre)
         </th>
-        <th>            
+        <th>
             @Html.Label("Usuario")
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Identificador)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fecha)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Anio_Col3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Mes_Col4)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TipoArchivoCarga1.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.Username)
-        </td>
-        <td>           
-            @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identificador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anio_Col3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mes_Col4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoArchivoCarga1.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Username)
+            </td>
+            <td>
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
 
-@*<script type='text/javascript'>
-    $(function(){        
-        $("input[type='date']").datepicker().attr('type','text');
-    });
-</script>*@
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+
+     $(document).ready(function () {
+         $('input[type=datetime]').datepicker({
+             dateFormat: "dd/M/yy",
+             changeMonth: true,
+             changeYear: true,
+             yearRange: "-60:+0"
+         });
+
+     });
+    </script>
+
+}

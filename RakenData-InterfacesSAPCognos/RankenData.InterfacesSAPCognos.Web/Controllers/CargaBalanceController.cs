@@ -20,8 +20,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CargaBalanceController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-
-        // Cargue balance / resultados
+       
         //[Authorize(Roles = "2")]
         [HttpPost]
         public string CargarBalance()

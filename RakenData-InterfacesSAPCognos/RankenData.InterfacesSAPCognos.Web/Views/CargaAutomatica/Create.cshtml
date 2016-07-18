@@ -23,7 +23,7 @@
             @*@Html.LabelFor(model => model.FechaProgramada, new { @class = "control-label col-md-2" })*@
             @Html.Label("Fecha programada", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.FechaProgramada, new { type = "date", placeholder = "dd/mm/aaaa" })
+                @Html.TextBoxFor(model => model.FechaProgramada, new { @class = "form-control", type = "datetime", placeholder = "dd/mm/aaaa" })
                 @Html.ValidationMessageFor(model => model.FechaProgramada)
             </div>
         </div>
@@ -68,12 +68,25 @@
     @Html.ActionLink("Regresar a la lista", "Index")
 </div>
 
-@*<script>
-        $(document).ready(function (e) {
+@section Scripts {
 
-            $('#FechaProgramada').datepicker();
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
 
+    <script type="text/javascript">
 
-        });
-    </script>*@
+     $(document).ready(function () {
+         $('input[type=datetime]').datepicker({
+             dateFormat: "dd/M/yy",
+             changeMonth: true,
+             changeYear: true,
+             yearRange: "-60:+0"
+         });
+
+     });
+    </script>
+
+}
+
+  
 

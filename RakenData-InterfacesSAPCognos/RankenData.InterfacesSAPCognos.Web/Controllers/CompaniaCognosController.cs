@@ -21,8 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CompaniaCognosController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-
-        // GET: /CompaniaCognos/
+     
         //[Authorize(Roles = "1")]
         public ActionResult Index(HttpPostedFileBase file)
         {     
@@ -36,16 +35,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(db.CompaniaCognos.ToList());
         }
-
-        // Carga masiva de cargue compania cognos
-        // return: errores y si no hay devuelve el objeto vacio        
+                   
         public string CargeCompaniaCognos(HttpPostedFileBase file)
         {
             CompaniaCognos companiaCognos = null;            
             StringBuilder errores = new StringBuilder();
 
             string extension = Path.GetExtension(file.FileName);
-            if (extension != ".txt")
+            if (extension.ToLower() != ".txt")
             {
                 errores.AppendLine("El Archivo debe ser un archivo plano de texto con extención .txt");
                 return errores.ToString();
@@ -110,7 +107,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-        // GET: /CompaniaCognos/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -125,15 +121,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiacognos);
         }
 
-        // GET: /CompaniaCognos/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: /CompaniaCognos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Clave,Descripcion")] CompaniaCognos companiacognos)
@@ -149,7 +141,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiacognos);
         }
 
-        // GET: /CompaniaCognos/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -164,9 +155,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiacognos);
         }
 
-        // POST: /CompaniaCognos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Clave,Descripcion")] CompaniaCognos companiacognos)
@@ -180,7 +168,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiacognos);
         }
 
-        // GET: /CompaniaCognos/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -195,36 +182,63 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiacognos);
         }
 
-        // POST: /CompaniaCognos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             StringBuilder errores = new StringBuilder();
             CompaniaCognos companiacognos = db.CompaniaCognos.Find(id);
-            db.CompaniaCognos.Remove(companiacognos);
-            try
+
+            List<ArchivoProcesado> archivosProcesados = db.ArchivoProcesado.Where(x => x.CompaniaCognosId == id).ToList();
+
+            if(archivosProcesados.Count > 0)
             {
-                db.SaveChanges();
-            }
-            catch (DbEntityValidationException e)
-            {
-                ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
-                return View();
-            }
-            catch (DbUpdateException e)
-            {
-                errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                errores.AppendLine("Ya existen archivos procesados con esta compañía. Por esta razón no se puede borrar.");
                 ModelState.AddModelError("Error", errores.ToString());
-                return View();
+                return View(companiacognos);
             }
-            catch (Exception e)
+            else
             {
-                errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
-                ModelState.AddModelError("Error", errores.ToString());
-                return View();
+                List<SaldoInicial> saldosIniciales = db.SaldoInicial.Where(x => x.CompaniaCognosId == id).ToList();
+
+                if (saldosIniciales.Count > 0)
+                {
+                    errores.AppendLine("Existen saldos iniciales con esta compañía. Por esta razón no se puede borrar.");
+                    ModelState.AddModelError("Error", errores.ToString());
+                    return View(companiacognos);
+                }
+                else
+                {
+                    db.CompaniaCognos.Remove(companiacognos);
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        ModelState.AddModelError("Error", ManejoErrores.ErrorValidacion(e));
+                        return View();
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        ModelState.AddModelError("Error", errores.ToString());
+                        return View();
+                    }
+                    catch (Exception e)
+                    {
+                        errores.AppendLine("ERROR AL ESCRIBIR EN LA BASE DE DATOS: " + e.Message);
+                        ModelState.AddModelError("Error", errores.ToString());
+                        return View();
+                    }
+                    return RedirectToAction("Index");
+                }
             }
-            return RedirectToAction("Index");
+
+
+            
+            
         }
 
         protected override void Dispose(bool disposing)

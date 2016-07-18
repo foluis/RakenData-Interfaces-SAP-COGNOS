@@ -27,9 +27,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesado.ToList());
         }
 
-
-
-        // GET: /ArchivoProcesado/ConsultarDetalle/5
         public ActionResult ConsultarDetalle(int? id)
         {
             if (id == null)
@@ -45,7 +42,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return RedirectToAction("Index", "ArchivoProcesadoDetalle", new { id = id, tipoArchivo = archivoprocesado.TipoArchivoCreacionId });           
         }
 
-        // GET: /ArchivoProcesado/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -60,7 +56,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesado);
         }
 
-        // GET: /ArchivoProcesado/Create
         public ActionResult Create()
         {
             ViewBag.CompaniaCognosId = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
@@ -69,9 +64,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View();
         }
 
-        // POST: /ArchivoProcesado/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="Id,CompaniaCognosId,Periodo,Anio,TipoArchivoCreacionId,ArchivoGenerado,FechaArchivoGenerado,FechaProcesoArchivo,UsuarioId")] ArchivoProcesado archivoprocesado)
@@ -89,7 +81,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesado);
         }
 
-        // GET: /ArchivoProcesado/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -107,9 +98,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesado);
         }
 
-        // POST: /ArchivoProcesado/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="Id,CompaniaCognosId,Periodo,Anio,TipoArchivoCreacionId,ArchivoGenerado,FechaArchivoGenerado,FechaProcesoArchivo,UsuarioId")] ArchivoProcesado archivoprocesado)
@@ -127,13 +115,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         }
 
         /*
-           EXEC aspnet_Roles_CreateRole 'MyApplication', '6'
+            EXEC aspnet_Roles_CreateRole 'MyApplication', '7'
 
-INSERT INTO [dbo].[Grupo] ([Id],[Nombre],[Descripcion])
-     VALUES (6 ,'Borrar archivos procesados' ,'Borrar archivos procesados')
-             */
+            INSERT INTO [dbo].[Grupo] ([Id],[Nombre],[Descripcion])
+            VALUES (7 ,'Borrar archivos procesados' ,'Borrar archivos procesados')
+        */
 
-        //[Authorize(Roles = "6")]
+        //[Authorize(Roles = "7")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

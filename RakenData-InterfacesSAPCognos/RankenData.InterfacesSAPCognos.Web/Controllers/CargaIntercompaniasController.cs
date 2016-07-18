@@ -19,16 +19,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CargaIntercompaniasController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-
-        //
-        // GET: /CargaIntercompanias/
+     
         //[Authorize(Roles = "2")]
         public ActionResult Index()
         {
             return View();
-        }
-
-        // Cargar Intercompania
+        }     
 
         //[Authorize(Roles = "2")]
         [HttpPost]

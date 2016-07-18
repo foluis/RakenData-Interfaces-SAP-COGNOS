@@ -22,8 +22,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
         
-
-        // GET: CuentaRelacionada
         public ActionResult Index(HttpPostedFileBase file)
         {
             var cuentaRelacionada = db.CuentaRelacionada
@@ -50,7 +48,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             StringBuilder errores = new StringBuilder();
 
             string extension = Path.GetExtension(file.FileName);
-            if (extension != ".txt")
+            if (extension.ToLower() != ".txt")
             {
                 errores.AppendLine("El Archivo debe ser un archivo plano de texto con extención .txt");
                 return errores.ToString();

@@ -18,16 +18,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CargaAutomaticaController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-
-        // GET: /CargaAutomatica/
-          //[Authorize(Roles = "2")]
+      
         public ActionResult Index()
         {
             var cargaautomatica = db.CargaAutomatica.Include(c => c.TipoArchivoCarga);
             return View(cargaautomatica.ToList());
         }
 
-        // GET: /CargaAutomatica/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -42,16 +39,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cargaautomatica);
         }
 
-        // GET: /CargaAutomatica/Create
         public ActionResult Create()
         {
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre");
             return View();
         }
 
-        // POST: /CargaAutomatica/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="Id,FechaProgramada,RutaArchivo,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
@@ -59,7 +52,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
             if (ModelState.IsValid)
             {
-                cargaautomatica.Usuario = 1; //todo: usuario quemado
+                string currentUser = User.Identity.Name;
+                int currentUserId = 1;
+                if (!string.IsNullOrEmpty(currentUser))
+                {
+                    User user = db.User.FirstOrDefault(a => a.Username == currentUser);
+                    if (user != null)
+                    {
+                        currentUserId = user.Id;
+                    }
+                }
+
+                cargaautomatica.Usuario = currentUserId; 
                 db.CargaAutomatica.Add(cargaautomatica);
                 try
                 {
@@ -89,25 +93,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cargaautomatica);
         }
 
-        // GET: /CargaAutomatica/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CargaAutomatica cargaautomatica = db.CargaAutomatica.Find(id);
-            if (cargaautomatica == null)
+            CargaAutomatica cargaAutomatica = db.CargaAutomatica.Find(id);
+            if (cargaAutomatica == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
-            return View(cargaautomatica);
+            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaAutomatica.TipoArchivo);
+            return View(cargaAutomatica);
         }
 
-        // POST: /CargaAutomatica/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="Id,FechaProgramada,RutaArchivo,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
@@ -121,8 +121,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
             return View(cargaautomatica);
         }
-
-        // GET: /CargaAutomatica/Delete/5
+                
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -137,7 +136,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cargaautomatica);
         }
 
-        // POST: /CargaAutomatica/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

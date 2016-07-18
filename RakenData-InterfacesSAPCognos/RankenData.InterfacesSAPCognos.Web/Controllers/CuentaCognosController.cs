@@ -22,10 +22,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CuentaCognosController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-       
 
-        // GET: /CuentaCognos/file cargue masivo
-        //[Authorize(Roles="1")]
         public ActionResult Index(HttpPostedFileBase file)
         {         
             var cuentacognos = db.CuentaCognos.
@@ -41,9 +38,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(cuentacognos.ToList());
         }
-
-        // Carga masiva de cuentas cognos
-        // return: errores y si no hay devuelve el objeto vacio        
+          
         [HttpPost]
         public string CargeMasivoCuentaCognos(HttpPostedFileBase file)
         {
@@ -51,7 +46,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             StringBuilder errores = new StringBuilder();
 
-            if (extension != ".txt")
+            if (extension.ToLower() != ".txt")
             {
                 errores.AppendLine("El Archivo debe ser un archivo plano de texto con extención .txt");
                 return errores.ToString();
@@ -175,8 +170,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-
-        // GET: /CuentaCognos/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -191,7 +184,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentacognos);
         }
 
-        // GET: /CuentaCognos/Create
         public ActionResult Create()
         {
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave");
@@ -201,9 +193,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View();
         }
 
-        // POST: /CuentaCognos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive,EsOpen,CuentaCargo,CuentaAbono")] CuentaCognos cuentacognos)
@@ -263,7 +252,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentacognos);
         }
 
-        // GET: /CuentaCognos/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -283,9 +271,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentacognos);
         }
 
-        // POST: /CuentaCognos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive,EsOpen,CuentaCargo,CuentaAbono")] CuentaCognos cuentacognos)
@@ -301,7 +286,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentacognos);
         }
 
-        // GET: /CuentaCognos/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -317,7 +301,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentacognos);
         }
 
-        // POST: /CuentaCognos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -325,7 +308,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             CuentaCognos cuentacognos = db.CuentaCognos.Find(id);
             var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).FirstOrDefault();
             if (cuentaSAP)
-            {
+            {                
                 ModelState.AddModelError("Error", "Primero debe desasignar las cuentas SAP asociadas a esta cuenta");
                 return View(cuentacognos);
             }

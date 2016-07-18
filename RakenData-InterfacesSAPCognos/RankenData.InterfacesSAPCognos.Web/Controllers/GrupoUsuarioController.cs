@@ -13,17 +13,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     [Authorize(Roles = "5")]
     public class GrupoUsuarioController : Controller
     {
-        private EntitiesRakenData db = new EntitiesRakenData();
-
-        // GET: /GrupoUsuario/
-         //[Authorize(Roles = "4")]
+        private EntitiesRakenData db = new EntitiesRakenData();      
+      
         public ActionResult Index()
         {
             var grupousuario = db.GrupoUsuario.Include(g => g.Grupo).Include(g => g.User);
             return View(grupousuario.ToList());
         }
-
-        // GET: /GrupoUsuario/Details/5
+               
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,18 +34,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(grupousuario);
         }
-
-        // GET: /GrupoUsuario/Create
+     
         public ActionResult Create()
         {
             ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre");
             ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username");
             return View();
         }
-
-        // POST: /GrupoUsuario/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="Id,IdUsuario,IdGrupo")] GrupoUsuario grupousuario)
@@ -64,8 +57,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
             return View(grupousuario);
         }
-
-        // GET: /GrupoUsuario/Edit/5
+                
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -81,10 +73,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
             return View(grupousuario);
         }
-
-        // POST: /GrupoUsuario/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="Id,IdUsuario,IdGrupo")] GrupoUsuario grupousuario)
@@ -99,8 +88,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
             return View(grupousuario);
         }
-
-        // GET: /GrupoUsuario/Delete/5
+       
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -114,8 +102,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(grupousuario);
         }
-
-        // POST: /GrupoUsuario/Delete/5
+       
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

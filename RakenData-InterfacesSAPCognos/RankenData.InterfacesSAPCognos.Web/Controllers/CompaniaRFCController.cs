@@ -35,9 +35,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(companiarfc.ToList());
         }
-
-        // Carga masiva de cargue compania RFC
-        // return: errores y si no hay devuelve el objeto vacio        
+       
         public string CargeCompaniaRFC(HttpPostedFileBase file)
         {
             CompaniaRFC companiaRFC = null;
@@ -45,7 +43,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             StringBuilder errores = new StringBuilder();
 
             string extension = Path.GetExtension(file.FileName);
-            if (extension != ".txt")
+            if (extension.ToLower() != ".txt")
             {
                 errores.AppendLine("El Archivo debe ser un archivo plano de texto con extención .txt");
                 return errores.ToString();

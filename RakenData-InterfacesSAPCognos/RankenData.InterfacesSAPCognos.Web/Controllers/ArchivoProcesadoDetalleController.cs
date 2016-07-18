@@ -21,8 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class ArchivoProcesadoDetalleController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-
-        // GET: /ArchivoProcesadoDetalle/
+       
         public ActionResult Index(string id, int? tipoArchivo, string error = null)
         {
             int idArchivo;
@@ -72,9 +71,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             TempData["tipoArchivo"] = tipoArchivo;
             TempData["archivoprocesadodetalle"] = archivoprocesadodetalle;
             return View(archivoprocesadodetalle);
-        }
-
-        // GET: /Generar archivo CSV/
+        }    
 
         public ActionResult GenerarArchivo()
         {
@@ -139,8 +136,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
            
             return RedirectToAction("Index", new { id = id, tipoArchivo = tipoArchivo, error = "El archivo se creó satisfactoriamente." });
         }
-
-        // GET: /ArchivoProcesadoDetalle/Details/5
+     
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -155,16 +151,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesadodetalle);
         }
 
-        // GET: /ArchivoProcesadoDetalle/Create
         public ActionResult Create()
         {
             return View();
 
         }
-
-        // POST: /ArchivoProcesadoDetalle/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Account,Amount,TransactionAmount")] ArchivoProcesadoDetalle archivoprocesadodetalle)
@@ -173,7 +165,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             List<ArchivoProcesadoDetalle> lstArchivoprocesadodetalle = (List<ArchivoProcesadoDetalle>)TempData["archivoprocesadodetalle"];
 
             ArchivoProcesadoDetalle archivoprocesadodetalleTemplate = lstArchivoprocesadodetalle.First();
-            //Mapeo
+           
             archivoprocesadodetalle.ArchivoProcesadoId = archivoprocesadodetalleTemplate.ArchivoProcesadoId;
             archivoprocesadodetalle.Company = archivoprocesadodetalleTemplate.Company;
             archivoprocesadodetalle.Period = archivoprocesadodetalleTemplate.Period;
@@ -220,7 +212,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesadodetalle);
         }
 
-        // GET: /ArchivoProcesadoDetalle/Edit/5
+        [Authorize(Roles = "6")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -243,10 +235,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.ArchivoProcesadoId = new SelectList(db.ArchivoProcesado, "Id", "Id", archivoprocesadodetalle.ArchivoProcesadoId);
             return View(archivoprocesadodetalle);
         }
-
-        // POST: /ArchivoProcesadoDetalle/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ArchivoProcesadoId,TipoArchivoCreacionId,Company,Period,Actuality,Account,CounterCompany,Dim1,Dim2,Dim3,ITOpex,Amount,TransactionCurrency,TransactionAmount,Form,AccountName,Retrieve,Variance")] ArchivoProcesadoDetalle archivoprocesadodetalle)
@@ -256,15 +245,25 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             HistorialArchivoProcesadoDetalle historial = new HistorialArchivoProcesadoDetalle();
             if (ModelState.IsValid)
             {
+                string currentUser = User.Identity.Name;
+                int currentUserId = 1;
+                if (!string.IsNullOrEmpty(currentUser))
+                {
+                    User user = db.User.FirstOrDefault(a => a.Username == currentUser);
+                    if (user != null)
+                    {
+                        currentUserId = user.Id;
+                    }
+                }
+
                 db.Entry(archivoprocesadodetalle).State = EntityState.Modified;
                 try
                 {
                     historial.Account = archivoprocesadodetalle.Account;
                     historial.ArchivoProcesadoDetalleId = archivoprocesadodetalle.Id;
                     historial.Amount = archivoprocesadodetalle.Amount;
-                    historial.TransactionAmount = archivoprocesadodetalle.TransactionAmount;
-                    //TODO: implementar cuando se tengal el usuario
-                    historial.UsuarioId = 1;
+                    historial.TransactionAmount = archivoprocesadodetalle.TransactionAmount;                    
+                    historial.UsuarioId = currentUserId;
                     historial.FechaModificacion = DateTime.Now;
                     historial.TipoModificacionId = (int)EnumTipoModificacion.Actualización;
                     db.HistorialArchivoProcesadoDetalle.Add(historial);

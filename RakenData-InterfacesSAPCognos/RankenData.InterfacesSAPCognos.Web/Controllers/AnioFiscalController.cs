@@ -7,22 +7,20 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RankenData.InterfacesSAPCognos.Web.Models;
+using System.Text;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
     [Authorize(Roles = "1")]
     public class AnioFiscalController : Controller
     {
-        private EntitiesRakenData db = new EntitiesRakenData();
-
-        // GET: /AnioFiscal/
-         //[Authorize(Roles = "1")]
+        private EntitiesRakenData db = new EntitiesRakenData();    
+     
         public ActionResult Index()
-        {          
+        {           
             return View(db.AnioFiscal.ToList());
         }
 
-        // GET: /AnioFiscal/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,16 +34,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(aniofiscal);
         }
-
-        // GET: /AnioFiscal/Create
+        
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: /AnioFiscal/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="Id,Anio,AnioInicio,MesInicio,AnioFin,MesFin")] AnioFiscal aniofiscal)
@@ -68,8 +62,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             return View(aniofiscal);
         }
-
-        // GET: /AnioFiscal/Edit/5
+        
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -84,9 +77,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(aniofiscal);
         }
 
-        // POST: /AnioFiscal/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="Id,Anio,AnioInicio,MesInicio,AnioFin,MesFin")] AnioFiscal aniofiscal)
@@ -100,7 +90,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(aniofiscal);
         }
 
-        // GET: /AnioFiscal/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -115,13 +104,22 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(aniofiscal);
         }
 
-        // POST: /AnioFiscal/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
-        {
+        {            
             AnioFiscal aniofiscal = db.AnioFiscal.Find(id);
-            db.AnioFiscal.Remove(aniofiscal);
+            List<SaldoInicial> saldosIniciales = db.SaldoInicial.Where(x => x.AnioFiscalId == id).ToList();
+
+            if (saldosIniciales.Count > 0)
+            {               
+                ModelState.AddModelError("Error", "Existen saldos iniciales con este año fiscal. Por esta razón no se puede borrar.");
+                return View(aniofiscal);
+            }
+            else
+            {
+                db.AnioFiscal.Remove(aniofiscal);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }
