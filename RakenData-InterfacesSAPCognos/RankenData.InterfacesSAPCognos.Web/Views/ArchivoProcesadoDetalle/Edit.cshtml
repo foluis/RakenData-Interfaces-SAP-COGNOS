@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "Editar";
+    //ViewBag.URL = Request.Params["URL"];
+    //ViewBag.archivoId = Request.Params["URL"].Substring(Request.Params["URL"].LastIndexOf("/") + 1, Request.Params["URL"].Length - Request.Params["URL"].LastIndexOf("/") - 1);
+    ViewBag.archivoId = Request.Params["archivoId"];
+    ViewBag.tipoArchivo = Request.Params["tipoArchivo"];
 }
 @if (!ViewData.ModelState.IsValid)
 {
@@ -9,7 +13,7 @@
     @Html.ValidationMessage("Error")
     
      <div class="form-group">
-            @Html.LabelFor(model => model.Amount, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Amount,"Cantidad", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DisplayFor(model => model.Amount)
                
@@ -17,7 +21,7 @@
         </div>    
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TransactionAmount, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TransactionAmount, "Cantidad transacción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DisplayFor(model => model.TransactionAmount)               
             </div>
@@ -53,17 +57,17 @@ else
                 @Html.HiddenFor(model => model.ArchivoProcesadoId) 
        
             <div class="form-group">
-                @Html.LabelFor(model => model.Amount, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Amount,"Cantidad", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Amount)
+                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Amount)
                 </div>
             </div>    
 
             <div class="form-group">
-                @Html.LabelFor(model => model.TransactionAmount, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.TransactionAmount,"Cantidad transacción", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.TransactionAmount)
+                    @Html.TextBoxFor(model => model.TransactionAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.TransactionAmount)
                 </div>
             </div>        
@@ -80,5 +84,5 @@ else
 
 
 <div>
-    @Html.ActionLink("Regresar a la lista", "Index")
+    @Html.ActionLink("Regresar a la lista", "Index", new { Id = ViewBag.archivoId, tipoArchivo=ViewBag.tipoArchivo })
 </div>

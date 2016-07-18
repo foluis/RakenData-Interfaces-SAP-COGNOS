@@ -17,24 +17,29 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FechaProgramada, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.FechaProgramada, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Fecha programada", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FechaProgramada)
+                @*@Html.EditorFor(model => model.FechaProgramada)*@
+                @*@Html.EditorFor(model => model.FechaProgramada, new { htmlAttributes = new { @class = "datepicker" } })*@
+                @Html.EditorFor(model => model.FechaProgramada, new { type = "date" })
                 @Html.ValidationMessageFor(model => model.FechaProgramada)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RutaArchivo, new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.RutaArchivo, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Ruta archivo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RutaArchivo)
+                @Html.TextBoxFor(model => model.RutaArchivo, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RutaArchivo)
             </div>
         </div>
 
       
         <div class="form-group">
-            @Html.LabelFor(model => model.TipoArchivo, "TipoArchivo", new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.TipoArchivo, "TipoArchivo", new { @class = "control-label col-md-2" })*@
+            @Html.Label("Tipo archivo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("TipoArchivo", String.Empty)
                 @Html.ValidationMessageFor(model => model.TipoArchivo)
@@ -44,7 +49,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email)
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Email)
             </div>
         </div>

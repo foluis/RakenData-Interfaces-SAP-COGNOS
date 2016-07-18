@@ -20,7 +20,7 @@
         <div class="form-group">            
             @Html.Label("Cuenta relacionada", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NumeroCuentaRelacionada)
+                @Html.TextBoxFor(model => model.NumeroCuentaRelacionada, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.NumeroCuentaRelacionada)
             </div>
         </div>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="form-group">            
-            @Html.Label("Copañia Cognos", new { @class = "control-label col-md-2" })
+            @Html.Label("Copañía Cognos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("SociedadCognosId", String.Empty)
                 @Html.ValidationMessageFor(model => model.SociedadCognosId)
@@ -51,7 +51,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Guardar" class="btn btn-default" />
             </div>
         </div>
     </div>

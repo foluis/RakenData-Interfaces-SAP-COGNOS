@@ -30,7 +30,7 @@
             @Html.Label("Cuenta Relacionada")
         </th>
         <th>
-            @Html.Label("Compañia Cognos")
+            @Html.Label("Compañía Cognos")
         </th>
         <th>
             @Html.Label("Cuenta SAP")
@@ -59,7 +59,7 @@
     }
 
 </table>
-@using (Html.BeginForm("Index", "CuentaRelacionada", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@*@using (Html.BeginForm("Index", "CuentaRelacionada", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div style="position:relative;">
         <a class='btn btn-primary' href='javascript:;'>
@@ -71,4 +71,10 @@
     </div>
     <br>
     <input class="btn btn-primary" type="submit" name="Submit" id="Submit" value="Carga Masiva" />
+}*@
+
+@using (Html.BeginForm("Index", "CuentaRelacionada", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" id="file" /><br>
+    <input type="submit" name="Submit" id="Submit" value="Carga Masiva" class="btn btn-default" />
 }

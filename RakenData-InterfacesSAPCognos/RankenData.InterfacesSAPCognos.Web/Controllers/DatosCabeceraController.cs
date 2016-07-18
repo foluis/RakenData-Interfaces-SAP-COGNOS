@@ -84,8 +84,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                datoscabecera.Valor = datoscabecera.Valor.ToUpper();
                 db.Entry(datoscabecera).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    string exMessage = ex.ToString();
+                    throw;
+                }
+                
                 return RedirectToAction("Index");
             }
             return View(datoscabecera);

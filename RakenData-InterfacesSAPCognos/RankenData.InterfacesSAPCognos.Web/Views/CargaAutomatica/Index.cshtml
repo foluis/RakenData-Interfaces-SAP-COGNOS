@@ -34,7 +34,8 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.FechaProgramada)
+            @*@Html.DisplayFor(modelItem => item.FechaProgramada)*@
+            @item.FechaProgramada.ToString("dd/MM/yyyy")
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.RutaArchivo)

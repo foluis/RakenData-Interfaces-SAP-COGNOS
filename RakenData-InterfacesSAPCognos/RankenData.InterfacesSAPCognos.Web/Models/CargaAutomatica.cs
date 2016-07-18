@@ -11,10 +11,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class CargaAutomatica
     {
         public int Id { get; set; }
+
+        //[DataType(DataType.Date)]
         public System.DateTime FechaProgramada { get; set; }
         public string RutaArchivo { get; set; }
         public int Usuario { get; set; }

@@ -41,6 +41,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.Numero)
         </td>
@@ -71,6 +74,6 @@
 @using (Html.BeginForm("Index", "CuentaCognos", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
    <input type="file" name="file" /><br>
-    <input type="submit" name="Submit" id="Submit" value="Carga Masiva" />
+    <input type="submit" name="Submit" id="Submit" value="Carga Masiva"  class="btn btn-default"/>
 }
 

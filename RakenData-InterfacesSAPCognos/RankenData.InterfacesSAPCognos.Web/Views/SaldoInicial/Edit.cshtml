@@ -62,7 +62,7 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Compañia Cognos", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Compañía Cognos", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.CompaniaCognosId)
                 @Html.DisplayFor(model => model.CompaniaCognosValue)
@@ -80,7 +80,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Saldo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Saldo)
+                @Html.TextBoxFor(model => model.Saldo, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Saldo)
             </div>
         </div>

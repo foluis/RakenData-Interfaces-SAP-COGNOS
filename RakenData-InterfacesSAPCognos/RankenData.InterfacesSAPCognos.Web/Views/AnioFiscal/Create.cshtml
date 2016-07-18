@@ -4,6 +4,12 @@
     ViewBag.Title = "Crear";
 }
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Mensaje:</div>
+    @Html.ValidationMessage("Error")
+}
+
 <h2>Año Fiscal</h2>
 
 <p>Crear Año Fiscal</p>
@@ -13,7 +19,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>AnioFiscal</h4>
+        <h4>Año Fiscal</h4>
         <hr />
         @Html.ValidationSummary(true)
 
@@ -21,7 +27,7 @@
             @*@Html.LabelFor(model => model.Anio, new { @class = "control-label col-md-2" })*@
             @Html.Label("Año", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Anio)
+                @Html.TextBoxFor(model => model.Anio, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Anio)
             </div>
         </div>
@@ -30,7 +36,7 @@
             @*@Html.LabelFor(model => model.AnioInicio, new { @class = "control-label col-md-2" })*@
             @Html.Label("Año inicio", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AnioInicio)
+                @Html.TextBoxFor(model => model.AnioInicio, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AnioInicio)
             </div>
         </div>
@@ -39,7 +45,7 @@
             @*@Html.LabelFor(model => model.MesInicio, new { @class = "control-label col-md-2" })*@
             @Html.Label("Mes inicio", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.MesInicio)
+                @Html.TextBoxFor(model => model.MesInicio, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.MesInicio)
             </div>
         </div>
@@ -48,7 +54,7 @@
             @*@Html.LabelFor(model => model.AnioFin, new { @class = "control-label col-md-2" })*@
             @Html.Label("Año fin", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AnioFin)
+                @Html.TextBoxFor(model => model.AnioFin, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AnioFin)
             </div>
         </div>
@@ -57,7 +63,7 @@
             @*@Html.LabelFor(model => model.MesFin, new { @class = "control-label col-md-2" })*@
             @Html.Label("Mes fin", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.MesFin)
+                @Html.TextBoxFor(model => model.MesFin, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.MesFin)
             </div>
         </div>

@@ -279,6 +279,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelRakenData.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Partials\AnexoPartial.cs" />
+    <Compile Include="Models\Partials\DatosCabeceraPartial.cs" />
     <Compile Include="Models\SaldoInicial.cs">
       <DependentUpon>ModelRakenData.tt</DependentUpon>
     </Compile>

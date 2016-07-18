@@ -52,8 +52,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.AnioFiscal.Add(aniofiscal);
-                db.SaveChanges();
+                List<AnioFiscal> anniosFiscales = db.AnioFiscal.Where(x => x.Anio == aniofiscal.Anio).ToList();
+                if (anniosFiscales.Count > 0)
+                {
+                    ModelState.AddModelError("Error", "El año fiscal ya existe");
+                    return View();
+                }
+                else
+                {
+                    db.AnioFiscal.Add(aniofiscal);
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 

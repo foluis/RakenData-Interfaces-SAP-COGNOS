@@ -326,8 +326,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).FirstOrDefault();
             if (cuentaSAP)
             {
-                ModelState.AddModelError("Error: ", "Primero debe desasignar las cuentas SAP asociadas");
-                return View();
+                ModelState.AddModelError("Error", "Primero debe desasignar las cuentas SAP asociadas a esta cuenta");
+                return View(cuentacognos);
             }
 
             cuentacognos.IsActive = false;

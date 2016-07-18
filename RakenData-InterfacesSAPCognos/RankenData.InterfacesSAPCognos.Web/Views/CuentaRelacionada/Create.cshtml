@@ -4,7 +4,7 @@
     ViewBag.Title = "Crear";
 }
 
-<h2>Create</h2>
+<h2>Crear</h2>
 <p>Crear cuentas relacinadas</p>
 
 @if (!ViewData.ModelState.IsValid)
@@ -23,15 +23,17 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.NumeroCuentaRelacionada, htmlAttributes: new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.NumeroCuentaRelacionada, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            @Html.Label("Número cuenta", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NumeroCuentaRelacionada)
+                @Html.TextBoxFor(model => model.NumeroCuentaRelacionada, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.NumeroCuentaRelacionada)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CuentaSAPId, "CuentaSAPId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.CuentaSAPId, "CuentaSAPId", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            @Html.Label("Cuenta SAP", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CuentaSAPId", String.Empty)
                 @Html.ValidationMessageFor(model => model.CuentaSAPId)
@@ -39,7 +41,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SociedadCognosId, "SociedadCognosId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.SociedadCognosId, "SociedadCognosId", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            @Html.Label("Sociedad cognos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("SociedadCognosId", String.Empty)
                 @Html.ValidationMessageFor(model => model.SociedadCognosId)
@@ -56,7 +59,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Crear" class="btn btn-default" />
             </div>
         </div>
     </div>

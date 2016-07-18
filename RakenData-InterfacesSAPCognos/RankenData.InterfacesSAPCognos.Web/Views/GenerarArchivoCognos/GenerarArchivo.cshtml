@@ -32,20 +32,20 @@
         <div class="form-group">
             @Html.Label("Periodo", new { @class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Periodo)
+                @Html.TextBoxFor(model => model.Periodo, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Periodo)
             </div>
         </div>
         <div class="form-group">
             @Html.Label("Año", new { @class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Anio)
+                @Html.TextBoxFor(model => model.Anio, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Anio)
             </div>
         </div>    
 
         <div class="form-group">
-            @Html.Label("TipoArchivo", new { @class = "control-label col-md-2" })
+            @Html.Label("Tipo archivo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("TipoArchivo", (MultiSelectList)ViewBag.TipoArchivo, new { multiple = "multiple", size = 3 })               
                 @Html.ValidationMessageFor(model => model.TipoArchivo)

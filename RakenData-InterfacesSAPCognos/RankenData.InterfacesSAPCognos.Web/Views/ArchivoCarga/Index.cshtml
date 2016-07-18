@@ -6,15 +6,15 @@
 
 <h2>Monitor de Carga</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Crear Nuevo", "Create")
-</p>
+</p>*@
 @using (Html.BeginForm())
 {
     <p>            
         Fecha Inicio: @Html.TextBox("startDate","", new { type = "date", placeholder = "dd/mm/aaaa" })
         Fecha Fin: @Html.TextBox("endDate", "", new { type = "date", placeholder = "dd/mm/aaaa" })
-        <input type="submit" value="Buscar" />
+        <input type="submit" value="Buscar" class="btn btn-default"/>
     </p>
 }
 <table class="table">

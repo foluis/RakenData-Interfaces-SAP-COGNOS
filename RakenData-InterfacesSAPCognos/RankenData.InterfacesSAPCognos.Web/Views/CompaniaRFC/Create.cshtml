@@ -18,14 +18,14 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Compania RFC</h4>
+        <h4>Compañía RFC</h4>
         <hr />
         @Html.ValidationSummary(true)
 
         <div class="form-group">
             @Html.LabelFor(model => model.RFC, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RFC)
+                @Html.TextBoxFor(model => model.RFC, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RFC)
             </div>
         </div>
@@ -34,14 +34,14 @@
             @*@Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })*@
             @Html.Label("Descripción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Descripcion)
+                @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Descripcion)
             </div>
         </div>
 
         <div class="form-group">
             @*@Html.LabelFor(model => model.CompaniaCognos, "CompaniaCognos", new { @class = "control-label col-md-2" })*@
-            @Html.Label("Compania Cognos", new { @class = "control-label col-md-2" })
+            @Html.Label("Compañía Cognos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CompaniaCognos", String.Empty)
                 @Html.ValidationMessageFor(model => model.CompaniaCognos)

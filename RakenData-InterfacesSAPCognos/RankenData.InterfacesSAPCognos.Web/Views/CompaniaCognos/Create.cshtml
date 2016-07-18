@@ -14,14 +14,14 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Compania Cognos</h4>
+        <h4>Compañía Cognos</h4>
         <hr />
         @Html.ValidationSummary(true)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Clave, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Clave)
+                @Html.TextBoxFor(model => model.Clave, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Clave)
             </div>
         </div>
@@ -30,7 +30,7 @@
             @*@Html.LabelFor(model => model.Descripcion, new { @class = "control-label col-md-2" })*@
             @Html.Label("Descripción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Descripcion)
+                @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Descripcion)
             </div>
         </div>

@@ -11,15 +11,18 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FechaProgramada)
+            @*@Html.DisplayNameFor(model => model.FechaProgramada)*@
+            @Html.DisplayName("Fecha programada")
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FechaProgramada)
+        <dd>            
+            @*@Html.DisplayFor(model => model.FechaProgramada)*@
+            @Model.FechaProgramada.ToString("dd/MM/yyyy")
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.RutaArchivo)
+            @*@Html.DisplayNameFor(model => model.RutaArchivo)*@
+            @Html.DisplayName("Ruta archivo")
         </dt>
 
         <dd>
@@ -29,7 +32,7 @@
       
 
         <dt>
-            @Html.Label("Tipo Archivo Carga")
+            @Html.Label("Tipo archivo carga")
         </dt>
 
         <dd>
@@ -44,7 +47,8 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.WasLoaded)
+            @*@Html.DisplayNameFor(model => model.WasLoaded)*@
+            @Html.Label("Procesado")
         </dt>
 
         <dd>

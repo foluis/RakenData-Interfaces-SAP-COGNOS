@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.ArchivoProcesadoDetalle>
 
 @{
-    ViewBag.Title = "Indice";
+    ViewBag.Title = "Archivo procesado";
+    ViewBag.archivoId = Request.Params["URL"].Substring(Request.Params["URL"].LastIndexOf("/") + 1, Request.Params["URL"].Length - Request.Params["URL"].LastIndexOf("/") -1);
+    ViewBag.tipoArchivo = Request.Params["tipoArchivo"];
 }
 
 @if (!ViewData.ModelState.IsValid)
@@ -19,30 +21,37 @@
     using (Html.BeginForm("GenerarArchivo", "ArchivoProcesadoDetalle"))
     {
         <p>
-            @Html.ActionLink("Crear Nuevo", "Create")
+            @Html.ActionLink("Crear Nuevo", "Create", new { Id = ViewBag.archivoId })
         </p>
         <table class="table">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Company)
+                    @Html.DisplayName("Compañia")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Period)
+                    @*@Html.DisplayNameFor(model => model.Period)*@
+                    @Html.DisplayName("Periodo")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Actuality)
+                    @*@Html.DisplayNameFor(model => model.Actuality)*@
+                    @Html.DisplayName("Realidad")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Account)
+                    @*@Html.DisplayNameFor(model => model.Account)*@
+                    @Html.DisplayName("Cuenta")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CounterCompany)
+                    @*@Html.DisplayNameFor(model => model.CounterCompany)*@
+                    @Html.DisplayName("Contador")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Amount)
+                    @*@Html.DisplayNameFor(model => model.Amount)*@
+                    @Html.DisplayName("Cantidad")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TransactionAmount)
+                    @*@Html.DisplayNameFor(model => model.TransactionAmount)*@
+                    @Html.DisplayName("Cant transacción")
                 </th>             
                 <th></th>
             </tr>
@@ -74,7 +83,17 @@
                     @if (item.EsModificable)
                     {
                         <td>
-                            @Html.ActionLink("Editar", "Edit", new { id = item.Id })
+                            @Html.ActionLink("Editar", "Edit", new {
+                                                                   id = item.Id,
+                                                                   archivoId = ViewBag.archivoId,
+                                                                   tipoArchivo = ViewBag.tipoArchivo
+                                                               })
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            
                         </td>
                     }
                 </tr>
@@ -82,6 +101,7 @@
 
         </table>
 
-        <input type="submit" name="Submit" id="Submit" value="Generar Archivo" />
+        <input type="submit" name="Submit" id="Submit" value="Generar Archivo" class="btn btn-default" />
     }
 }
+
