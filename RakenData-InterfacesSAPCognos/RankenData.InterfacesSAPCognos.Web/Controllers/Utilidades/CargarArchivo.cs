@@ -25,7 +25,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
         /// <param name="datosCargar">Datos del archivo</param>
         /// <param name="tipoArchivo">tipo de archivo Balance  o  Intercompanias</param>
         /// <returns></returns>
-        public string CargarArchivoBD(string nombreArchivo, string datosCargar, EnumTipoArchivoCarga tipoArchivo)
+        public string CargarArchivoBD(string nombreArchivo, string datosCargar, EnumTipoArchivoCarga tipoArchivo, int UserId)
         {
             ArchivoCarga archivoCarga = new ArchivoCarga();
             List<ArchivoCargaDetalle> lstarchivoCargaDetalle = null;
@@ -65,7 +65,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                     return "El periodo que contiene el archivo ya existe";
                 }
                 if (anioMes_YaExistentes[0].IdTipo == 0)
-                {
+                {         
                     //Insert tabla archivocarga
                     archivoCarga.Nombre = nombreArchivo.Substring(nombreArchivo.LastIndexOf(@"\") + 1);
 
@@ -78,7 +78,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                     archivoCarga.TipoArchivoCarga = (int)tipoArchivo;
                     archivoCarga.Anio_Col3 = anio;
                     archivoCarga.Mes_Col4 = mes;
-                    archivoCarga.Usuario = 1; //TODO: id del usuario
+                    archivoCarga.Usuario = UserId; //TODO: id del usuario
                   
                     db.ArchivoCarga.Add(archivoCarga);                   
                    

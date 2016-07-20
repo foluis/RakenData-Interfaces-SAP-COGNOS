@@ -212,13 +212,23 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesadodetalle);
         }
 
-        [Authorize(Roles = "6")]
+        //[Authorize(Roles = "6")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            bool result = User.IsInRole("6");
+            if (!result)
+            {
+                ModelState.AddModelError("Error", "Tu usuario no cuenta con acceso a esta opción, Favor de solicitar a tu administrador");
+                var archivoProcesado = new ArchivoProcesadoDetalle();
+                return View(archivoProcesado);
+                //return RedirectToAction("Edit", "ArchivoProcesado");
+            }              
+
             ArchivoProcesadoDetalle archivoprocesadodetalle = db.ArchivoProcesadoDetalle.Find(id);
 
             CuentaCognos cuentaCognos = db.CuentaCognos.FirstOrDefault(cc => cc.Numero == archivoprocesadodetalle.Account);

@@ -11,7 +11,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class AnioFiscal
     {
         public AnioFiscal()
@@ -22,8 +23,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public int Id { get; set; }
         public short Anio { get; set; }
         public short AnioInicio { get; set; }
+
+        [Display(Name = "Mes inicio")]
+        [Range(1, 12, ErrorMessage = "El valor para el {0} debe ser entre {1} y {2}.")]
         public byte MesInicio { get; set; }
         public short AnioFin { get; set; }
+
+        [Display(Name = "Mes fin")]
+        [Range(1, 12, ErrorMessage = "El valor para el {0} debe ser entre {1} y {2}.")]
         public byte MesFin { get; set; }
     
         public virtual ICollection<SaldoInicial> SaldoInicial { get; set; }

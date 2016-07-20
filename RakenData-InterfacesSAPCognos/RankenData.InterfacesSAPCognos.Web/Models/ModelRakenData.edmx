@@ -120,7 +120,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FechaProgramada" Type="datetime" Nullable="false" />
           <Property Name="RutaArchivo" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="Usuario" Type="int" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
           <Property Name="TipoArchivo" Type="int" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="WasLoaded" Type="bit" Nullable="false" />
@@ -363,6 +363,18 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Principal>
             <Dependent Role="CargaAutomatica">
               <PropertyRef Name="TipoArchivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CargaAutomatica_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="CargaAutomatica" Type="Self.CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="UsuarioId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -652,6 +664,10 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
             <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
           </AssociationSet>
+          <AssociationSet Name="FK_CargaAutomatica_User" Association="Self.FK_CargaAutomatica_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
           <AssociationSet Name="FK_CompaniaRFC_CompaniaCognos" Association="Self.FK_CompaniaRFC_CompaniaCognos">
             <End Role="CompaniaCognos" EntitySet="CompaniaCognos" />
             <End Role="CompaniaRFC" EntitySet="CompaniaRFC" />
@@ -783,11 +799,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             <End Role="User" EntitySet="User" />
             <End Role="HistorialArchivoProcesadoDetalle" EntitySet="HistorialArchivoProcesadoDetalle" />
           </AssociationSet>
-          <EntitySet Name="CargaAutomatica" EntityType="ModelRankenData.CargaAutomatica" />
-          <AssociationSet Name="FK_CargaAutomatica_TipoArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga">
-            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
-            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
-          </AssociationSet>
           <EntitySet Name="CuentaSAP" EntityType="ModelRankenData.CuentaSAP" />
           <AssociationSet Name="FK_CuentaSAP_TipoCuentaSAP" Association="ModelRankenData.FK_CuentaSAP_TipoCuentaSAP">
             <End Role="TipoCuentaSAP" EntitySet="TipoCuentaSAP" />
@@ -878,6 +889,15 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <AssociationSet Name="FK_SaldoInicial_CuentaCognos" Association="ModelRankenData.FK_SaldoInicial_CuentaCognos">
             <End Role="CuentaCognos" EntitySet="CuentaCognos" />
             <End Role="SaldoInicial" EntitySet="SaldoInicial" />
+          </AssociationSet>
+          <EntitySet Name="CargaAutomatica" EntityType="ModelRankenData.CargaAutomatica" />
+          <AssociationSet Name="FK_CargaAutomatica_TipoArchivoCarga" Association="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga">
+            <End Role="TipoArchivoCarga" EntitySet="TipoArchivoCarga" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CargaAutomatica_User" Association="ModelRankenData.FK_CargaAutomatica_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="CargaAutomatica" EntitySet="CargaAutomatica" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="ValidateFileLoaded_Result">
@@ -1111,6 +1131,7 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <NavigationProperty Name="ArchivoProcesado" Relationship="ModelRankenData.FK_ArchivoProcesado_User" FromRole="User" ToRole="ArchivoProcesado" />
           <NavigationProperty Name="GrupoUsuario" Relationship="ModelRankenData.FK_GrupoUsuario_User" FromRole="User" ToRole="GrupoUsuario" />
           <NavigationProperty Name="HistorialArchivoProcesadoDetalle" Relationship="ModelRankenData.FK_HistorialArchivoProcesadoDetalle_User" FromRole="User" ToRole="HistorialArchivoProcesadoDetalle" />
+          <NavigationProperty Name="CargaAutomatica" Relationship="ModelRankenData.FK_CargaAutomatica_User" FromRole="User" ToRole="CargaAutomatica" />
         </EntityType>
         <Association Name="FK_ArchivoCarga_TipoArchivoCarga">
           <End Type="ModelRankenData.TipoArchivoCarga" Role="TipoArchivoCarga" Multiplicity="1" />
@@ -1249,31 +1270,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="CargaAutomatica">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FechaProgramada" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RutaArchivo" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Usuario" Type="Int32" Nullable="false" />
-          <Property Name="TipoArchivo" Type="Int32" Nullable="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="WasLoaded" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="TipoArchivoCarga" Relationship="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga" FromRole="CargaAutomatica" ToRole="TipoArchivoCarga" />
-        </EntityType>
-        <Association Name="FK_CargaAutomatica_TipoArchivoCarga">
-          <End Type="ModelRankenData.TipoArchivoCarga" Role="TipoArchivoCarga" Multiplicity="1" />
-          <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TipoArchivoCarga">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CargaAutomatica">
-              <PropertyRef Name="TipoArchivo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="CuentaSAP">
           <Key>
             <PropertyRef Name="Id" />
@@ -1503,6 +1499,44 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CargaAutomatica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaProgramada" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RutaArchivo" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <Property Name="TipoArchivo" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WasLoaded" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TipoArchivoCarga" Relationship="ModelRankenData.FK_CargaAutomatica_TipoArchivoCarga" FromRole="CargaAutomatica" ToRole="TipoArchivoCarga" />
+          <NavigationProperty Name="User" Relationship="ModelRankenData.FK_CargaAutomatica_User" FromRole="CargaAutomatica" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_CargaAutomatica_TipoArchivoCarga">
+          <End Type="ModelRankenData.TipoArchivoCarga" Role="TipoArchivoCarga" Multiplicity="1" />
+          <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArchivoCarga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="TipoArchivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CargaAutomatica_User">
+          <End Type="ModelRankenData.User" Role="User" Multiplicity="1" />
+          <End Type="ModelRankenData.CargaAutomatica" Role="CargaAutomatica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CargaAutomatica">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1720,19 +1754,6 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CargaAutomatica">
-            <EntityTypeMapping TypeName="ModelRankenData.CargaAutomatica">
-              <MappingFragment StoreEntitySet="CargaAutomatica">
-                <ScalarProperty Name="WasLoaded" ColumnName="WasLoaded" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="TipoArchivo" ColumnName="TipoArchivo" />
-                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
-                <ScalarProperty Name="RutaArchivo" ColumnName="RutaArchivo" />
-                <ScalarProperty Name="FechaProgramada" ColumnName="FechaProgramada" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CuentaSAP">
             <EntityTypeMapping TypeName="ModelRankenData.CuentaSAP">
               <MappingFragment StoreEntitySet="CuentaSAP">
@@ -1814,6 +1835,19 @@ warning 6035: The relationship 'FK_ArchivoProcesadoDetalle_CuentaCognos' has col
                 <ScalarProperty Name="CuentaCognosValue" ColumnName="CuentaCognosValue" />
                 <ScalarProperty Name="CuentaCognosId" ColumnName="CuentaCognosId" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CargaAutomatica">
+            <EntityTypeMapping TypeName="ModelRankenData.CargaAutomatica">
+              <MappingFragment StoreEntitySet="CargaAutomatica">
+                <ScalarProperty Name="WasLoaded" ColumnName="WasLoaded" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TipoArchivo" ColumnName="TipoArchivo" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="RutaArchivo" ColumnName="RutaArchivo" />
+                <ScalarProperty Name="FechaProgramada" ColumnName="FechaProgramada" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

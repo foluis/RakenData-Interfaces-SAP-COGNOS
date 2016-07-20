@@ -20,6 +20,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
             this.ArchivoProcesado = new HashSet<ArchivoProcesado>();
             this.GrupoUsuario = new HashSet<GrupoUsuario>();
             this.HistorialArchivoProcesadoDetalle = new HashSet<HistorialArchivoProcesadoDetalle>();
+            this.CargaAutomatica = new HashSet<CargaAutomatica>();
         }
     
         public int Id { get; set; }
@@ -30,5 +31,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual ICollection<ArchivoProcesado> ArchivoProcesado { get; set; }
         public virtual ICollection<GrupoUsuario> GrupoUsuario { get; set; }
         public virtual ICollection<HistorialArchivoProcesadoDetalle> HistorialArchivoProcesadoDetalle { get; set; }
+        public virtual ICollection<CargaAutomatica> CargaAutomatica { get; set; }
     }
 }

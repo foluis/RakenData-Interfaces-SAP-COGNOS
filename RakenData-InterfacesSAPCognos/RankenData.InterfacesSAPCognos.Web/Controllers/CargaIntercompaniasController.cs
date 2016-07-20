@@ -54,8 +54,19 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         try
                         {
+                            string currentUser = User.Identity.Name;
+                            int paramUser = 1;
+                            if (!string.IsNullOrEmpty(currentUser))
+                            {
+                                User user = db.User.FirstOrDefault(a => a.Username == currentUser);
+                                if (user != null)
+                                {
+                                    paramUser = user.Id;
+                                }
+                            }
+
                             CargarArchivo cargarArchivo = new CargarArchivo();
-                            string cargaArchivoResult = cargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Intercompanias);
+                            string cargaArchivoResult = cargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Intercompanias, paramUser);
                             if(!string.IsNullOrEmpty(cargaArchivoResult))
                             {
                                 errores.AppendLine(cargaArchivoResult);

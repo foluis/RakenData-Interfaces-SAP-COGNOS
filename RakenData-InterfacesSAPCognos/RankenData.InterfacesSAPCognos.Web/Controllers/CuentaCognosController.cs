@@ -15,6 +15,7 @@ using RankenData.InterfacesSAPCognos.Consola.FileMethods.ReadFiles;
 using System.Data.Entity.Validation;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
 using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
+using RankenData.InterfacesSAPCognos.Web.Models.ViewModels;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -24,10 +25,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         private EntitiesRakenData db = new EntitiesRakenData();
 
         public ActionResult Index(HttpPostedFileBase file)
-        {         
+        {
             var cuentacognos = db.CuentaCognos.
                 Include(c => c.Anexo).Where(cc => cc.IsActive == true);
-               
+
             if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeMasivoCuentaCognos(file);
@@ -38,7 +39,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(cuentacognos.ToList());
         }
-          
+
         [HttpPost]
         public string CargeMasivoCuentaCognos(HttpPostedFileBase file)
         {
@@ -64,7 +65,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             //List<CuentaCognos> cuentasCognos = db.CuentaCognos.ToList();
             //List<Anexo> anexos = db.Anexo.ToList();
 
-            string claveAnexo = string.Empty;           
+            string claveAnexo = string.Empty;
             string esOpen = string.Empty;
             string cuentaCargo = string.Empty;
             string cuentaAbono = string.Empty;
@@ -95,8 +96,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         errores.AppendLine($"No. Registro {i + 1} ERROR: LA CLAVE DEL ANEXO ({claveAnexo}) NO EXISTE. ");
                         insert = false;
                     }
-                    else if(esOpen != "NULL")
-                    {                        
+                    else if (esOpen != "NULL")
+                    {
                         if (esOpen == "TRUE")
                         {
                             oEsOpen = true;
@@ -111,8 +112,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                                 errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CUENTA ABONO NO EXISTE. ");
                                 insert = false;
                             }
-                        }                        
-                    }                   
+                        }
+                    }
 
                     if (insert)
                     {
@@ -122,7 +123,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper() : dato[1].Substring(0, 35).ToUpper(),
                             EsOpen = oEsOpen,
                             CuentaCargo = oCuentaCargo == null ? null : (int?)oCuentaCargo.Id,
-                            CuentaAbono = oCuentaAbono == null ? null : (int?)oCuentaAbono.Id,                            
+                            CuentaAbono = oCuentaAbono == null ? null : (int?)oCuentaAbono.Id,
                             AnexoId = anexoExiste.id,
                             IsActive = true
                         };
@@ -186,10 +187,21 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public ActionResult Create()
         {
+
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave");
-            var cuentasCognos = db.CuentaCognos;
+            var cuentasCognos = db.CuentaCognos.OrderBy(x => x.Numero);
             ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero");
             ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero");
+
+            var esOpen = new { True = true, False = false };
+            List<EsOpenViewModel> es = new List<EsOpenViewModel>()
+            {
+                new EsOpenViewModel() { Id=1,Clave=true},
+                new EsOpenViewModel() { Id=2,Clave=false}
+            };
+
+            ViewBag.EsOpen = new SelectList(es, "id", "Clave");
+
             return View();
         }
 
@@ -292,6 +304,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CuentaCognos cuentacognos = db.CuentaCognos.Find(id);
             if (cuentacognos == null)
             {
@@ -308,7 +321,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             CuentaCognos cuentacognos = db.CuentaCognos.Find(id);
             var cuentaSAP = db.CuentaSAP.Select(cf => cf.CuentaCognos == cuentacognos.Id).FirstOrDefault();
             if (cuentaSAP)
-            {                
+            {
                 ModelState.AddModelError("Error", "Primero debe desasignar las cuentas SAP asociadas a esta cuenta");
                 return View(cuentacognos);
             }
@@ -328,4 +341,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             base.Dispose(disposing);
         }
     }
+
+
+
 }

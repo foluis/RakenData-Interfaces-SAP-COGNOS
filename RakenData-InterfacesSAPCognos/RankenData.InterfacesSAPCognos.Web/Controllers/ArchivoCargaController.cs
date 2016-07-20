@@ -16,26 +16,23 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // GET: /ArchivoCarga/
-          //[Authorize(Roles = "2")]
         public ActionResult Index(DateTime? startDate, DateTime? endDate)
         {
             if (startDate != null && endDate == null)
             {
-                var archivocarga = db.ArchivoCarga.Where(s => EntityFunctions.TruncateTime(s.Fecha) == startDate.Value);
+                var archivocarga = db.ArchivoCarga.Where(s => DbFunctions.TruncateTime(s.Fecha) == startDate.Value);
                 return View(archivocarga.ToList());
             }
             if (startDate != null && endDate != null)
             {
-                var archivocarga = db.ArchivoCarga.Where(s => EntityFunctions.TruncateTime(s.Fecha) >= startDate.Value && EntityFunctions.TruncateTime(s.Fecha) <= endDate.Value);
+                var archivocarga = db.ArchivoCarga.Where(s => DbFunctions.TruncateTime(s.Fecha) >= startDate.Value && EntityFunctions.TruncateTime(s.Fecha) <= endDate.Value);
                 return View(archivocarga.ToList());
             }
           
              var archivocarga1 = db.ArchivoCarga.Include(a => a.TipoArchivoCarga1).Include(a => a.User);
              return View(archivocarga1.ToList());
         }
-
-        // GET: /ArchivoCarga/Details/5
+        
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -49,8 +46,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(archivocarga);
         }
-
-        // GET: /ArchivoCarga/Create
+        
         public ActionResult Create()
         {
             ViewBag.TipoArchivoCarga = new SelectList(db.TipoArchivoCarga, "Id", "Nombre");
@@ -58,9 +54,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View();
         }
 
-        // POST: /ArchivoCarga/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="Id,Nombre,Identificador,Fecha,TipoArchivoCarga,Anio_Col3,Mes_Col4,Usuario")] ArchivoCarga archivocarga)

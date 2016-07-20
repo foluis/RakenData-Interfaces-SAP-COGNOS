@@ -21,8 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CompaniaCognosController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-     
-        //[Authorize(Roles = "1")]
+             
         public ActionResult Index(HttpPostedFileBase file)
         {     
             if (file != null && file.ContentLength > 0)
@@ -161,6 +160,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                companiacognos.Descripcion = companiacognos.Descripcion.ToUpper();
                 db.Entry(companiacognos).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

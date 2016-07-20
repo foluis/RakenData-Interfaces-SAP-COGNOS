@@ -29,6 +29,15 @@
             @Html.DisplayFor(model => model.RutaArchivo)
         </dd>
 
+        <dt>
+            @*@Html.DisplayNameFor(model => model.RutaArchivo)*@
+            @Html.DisplayName("Usuario")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Username)
+        </dd>
+
       
 
         <dt>

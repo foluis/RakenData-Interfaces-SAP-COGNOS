@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.CargaAutomatica>
+@*@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.ViewModels.CargaArutomaticaViewModel>*@
+    
 
 @{
     ViewBag.Title = "Programar Carga";
@@ -20,7 +22,7 @@
             @Html.DisplayNameFor(model => model.RutaArchivo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Usuario)
+            @Html.DisplayName("Usuario")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TipoArchivoCarga.Nombre)
@@ -41,7 +43,7 @@
             @Html.DisplayFor(modelItem => item.RutaArchivo)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Usuario)
+            @Html.DisplayFor(modelItem => item.User.Username)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TipoArchivoCarga.Nombre)

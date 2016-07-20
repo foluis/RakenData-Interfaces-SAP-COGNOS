@@ -20,8 +20,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CargaBalanceController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-       
-        //[Authorize(Roles = "2")]
+        
         [HttpPost]
         public string CargarBalance()
         {
@@ -47,8 +46,19 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         string result = System.Text.Encoding.UTF8.GetString(binData);
                         try
                         {
+                            string currentUser = User.Identity.Name;
+                            int paramUser = 1;
+                            if (!string.IsNullOrEmpty(currentUser))
+                            {
+                                User user = db.User.FirstOrDefault(a => a.Username == currentUser);
+                                if (user != null)
+                                {
+                                    paramUser = user.Id;
+                                }
+                            }
+
                             CargarArchivo cargarArchivo = new CargarArchivo();
-                            string cargaArchivoResult = cargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Balance);
+                            string cargaArchivoResult = cargarArchivo.CargarArchivoBD(file.FileName, result, EnumTipoArchivoCarga.Balance, paramUser);
                             if (!string.IsNullOrEmpty(cargaArchivoResult))
                             {
                                 errores.AppendLine(cargaArchivoResult);
@@ -81,16 +91,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-        //
-        // GET: /CargaBalance/
-        //[Authorize(Roles = "2")]
         public ActionResult Index()
         {
             return View();
         }
 
-        //
-        // GET: /EliminarBalance/Default1
         public ActionResult EliminarBalance()
         {
             ViewBag.Identificador = new SelectList(db.ArchivoCarga.Where(aa => aa.TipoArchivoCarga == (int)EnumTipoArchivoCarga.Balance), "Id", "Identificador");

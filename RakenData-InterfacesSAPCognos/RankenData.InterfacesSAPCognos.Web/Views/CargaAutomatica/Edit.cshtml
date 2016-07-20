@@ -1,4 +1,5 @@
-﻿@model RankenData.InterfacesSAPCognos.Web.Models.CargaAutomatica
+﻿@model RankenData.InterfacesSAPCognos.Web.Models.ViewModels.CargaAutomaticaViewModel
+@*@model RankenData.InterfacesSAPCognos.Web.Models.CargaAutomatica*@
 
 @{
     ViewBag.Title = "Editar";
@@ -15,6 +16,7 @@
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.UsuarioId)
 
         <div class="form-group">
             @*@Html.LabelFor(model => model.FechaProgramada, new { @class = "control-label col-md-2" })*@
@@ -22,7 +24,7 @@
             <div class="col-md-10">
                 @*@Html.EditorFor(model => model.FechaProgramada)*@
                 @*@Html.EditorFor(model => model.FechaProgramada, new { htmlAttributes = new { @class = "datepicker" } })*@
-                @Html.TextBoxFor(model => model.FechaProgramada, new { @class = "form-control", type = "datetime", placeholder = "dd/mm/aaaa" })
+                @Html.TextBoxFor(model => model.FechaProgramadaFormateada, new { @class = "form-control", type = "datetime" })
                 @Html.ValidationMessageFor(model => model.FechaProgramada)
             </div>
         </div>
@@ -33,6 +35,16 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.RutaArchivo, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RutaArchivo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.RutaArchivo, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Usuario", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">                
+                <span >
+                    @Html.DisplayTextFor(model => model.User.Username)
+                </span>                
             </div>
         </div>
 
@@ -75,7 +87,7 @@
 
      $(document).ready(function () {
          $('input[type=datetime]').datepicker({
-             dateFormat: "dd/M/yy",
+             dateFormat: "dd/mm/yy",
              changeMonth: true,
              changeYear: true,
              yearRange: "-60:+0"

@@ -5,7 +5,8 @@ using System.Linq;
 using System.Web;
 
 namespace RankenData.InterfacesSAPCognos.Web.Models.Partials
-{     public partial class AnexoPartial
+{
+    public partial class AnexoPartial
     {
         public AnexoPartial()
         {

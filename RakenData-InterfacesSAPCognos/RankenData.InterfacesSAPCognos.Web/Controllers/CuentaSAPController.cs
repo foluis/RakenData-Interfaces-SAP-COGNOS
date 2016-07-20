@@ -20,9 +20,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CuentaSAPController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-
-        // GET: /CuentaSAP/
-        //[Authorize(Roles="1")]
+       
         public ActionResult Index(HttpPostedFileBase file)
         {
             try

@@ -87,7 +87,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             {
                                 result = System.IO.File.ReadAllText(ruta);
                                 CargarArchivo cargarArchivo = new CargarArchivo();
-                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance);
+                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance,1);
                                 hayArchivo = true;
                             }
                             else
@@ -103,7 +103,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             {
                                 result = System.IO.File.ReadAllText(ruta);
                                 CargarArchivo cargarArchivo = new CargarArchivo();
-                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias);
+                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias,1);
                                 hayArchivo = true;
                             }
                             else

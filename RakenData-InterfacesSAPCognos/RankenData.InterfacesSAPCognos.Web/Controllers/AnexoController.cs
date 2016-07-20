@@ -22,8 +22,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // GET: /Anexo/
-         //[Authorize(Roles = "1")]
         public ActionResult Index(HttpPostedFileBase file)
         {
             if (file != null && file.ContentLength > 0)
@@ -36,9 +34,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             return View(db.Anexo.ToList().Where(a=> a.IsActive == true));
         }
-
-        // Carga masiva de cargue compania RFC
-        // return: errores y si no hay devuelve el objeto vacio        
+      
         public string CargeAnexo(HttpPostedFileBase file)
         {
             Anexo anexo = null;
@@ -123,7 +119,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-        // GET: /Anexo/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -138,15 +133,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(anexo);
         }
 
-        // GET: /Anexo/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: /Anexo/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,Clave,Descripcion,IsActive,Modificable")] Anexo anexo)
@@ -200,7 +191,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(anexo);
         }
 
-        // GET: /Anexo/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -215,9 +205,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(anexo);
         }
 
-        // POST: /Anexo/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "id,Clave,Descripcion,IsActive,Modificable")] Anexo anexo)
@@ -233,7 +220,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(anexo);
         }
 
-        // GET: /Anexo/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -248,14 +234,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(anexo);
         }
 
-        // POST: /Anexo/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Anexo anexo = db.Anexo.Find(id);
+            var cuentaCognos = db.CuentaCognos.Where(cc => cc.AnexoId == id && cc.IsActive == true ).ToList();
+            if (cuentaCognos.Count > 0)
+            {
+                ModelState.AddModelError("Error", "Primero debe desasignar las cuentas cognos asociadas a este anexo");
+                return View(anexo);
+            }
+            
             db.Entry(anexo).State = EntityState.Modified;
-            anexo.IsActive = false;           
+            anexo.IsActive = false;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
