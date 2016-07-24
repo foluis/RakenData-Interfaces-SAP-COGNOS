@@ -21,21 +21,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        // GET: /CompaniaRFC/        
         public ActionResult Index(HttpPostedFileBase file)
-        {   
+        {
             var companiarfc = db.CompaniaRFC.Include(c => c.CompaniaCognos1);
             if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeCompaniaRFC(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores);                
+                    ModelState.AddModelError("Error", errores);
                 }
             }
             return View(companiarfc.ToList());
         }
-       
+
         public string CargeCompaniaRFC(HttpPostedFileBase file)
         {
             CompaniaRFC companiaRFC = null;
@@ -60,20 +59,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 var dato = records[i].Split(',');
                 if (dato.Length != 3)
                 {
-                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");                  
+                    errores.AppendLine("No. Registro" + (i + 1) + " ERROR: LA ESTRUCTURA DEL ARCHIVO NO ES: RFC,Descripcion,IdCompaniaCognos");
                 }
                 else
                 {
-                    string claveCompaniaCognos = dato[2].Replace("\r", string.Empty);                
+                    string claveCompaniaCognos = dato[2].Replace("\r", string.Empty);
 
                     CompaniaCognos companiaCognosExiste = db.CompaniaCognos.FirstOrDefault(cc => cc.Clave == claveCompaniaCognos);
 
                     if (companiaCognosExiste == null)
                     {
-                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA COMPANIA COGNOS NO EXISTE. ");                        
+                        errores.AppendLine("No. Registro " + (i + 1) + " ERROR: LA CLAVE DE LA COMPANIA COGNOS NO EXISTE. ");
                     }
                     else
-                    {      
+                    {
                         string descripcion = dato[1].Replace("\r", string.Empty).ToUpper();
                         descripcion = dato[1].Length <= 35 ? descripcion : descripcion.Substring(0, 35);
 
@@ -123,7 +122,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-        // GET: /CompaniaRFC/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -138,16 +136,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiarfc);
         }
 
-        // GET: /CompaniaRFC/Create
         public ActionResult Create()
         {
-            ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
+            ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion");
             return View();
         }
 
-        // POST: /CompaniaRFC/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,RFC,Descripcion,CompaniaCognos")] CompaniaRFC companiarfc)
@@ -155,10 +149,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion", companiarfc.CompaniaCognos);
             if (ModelState.IsValid)
             {
-                var existCompania = db.CompaniaRFC.Select(crfc => crfc.CompaniaCognos == companiarfc.CompaniaCognos).FirstOrDefault();
-                if (existCompania)
+                var existCompania = db.CompaniaRFC.Where(crfc => crfc.CompaniaCognos == companiarfc.CompaniaCognos).ToList();
+                if (existCompania.Count > 0)
                 {
-                    ModelState.AddModelError("Error", "Ex: La compañia Cognos, ya se encuentra asociada a otra vuenta RFC");
+                    ModelState.AddModelError("Error", "La compañia Cognos, ya se encuentra asociada a otra cuenta RFC");
                     ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion", companiarfc.CompaniaCognos);
                     return View(companiarfc);
                 }
@@ -190,11 +184,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 };
                 return RedirectToAction("Index");
             }
-    
+
             return View(companiarfc);
         }
 
-        // GET: /CompaniaRFC/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -206,17 +199,22 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion", companiarfc.CompaniaCognos);
+            ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion", companiarfc.CompaniaCognos);
             return View(companiarfc);
         }
 
-        // POST: /CompaniaRFC/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,RFC,Descripcion,CompaniaCognos")] CompaniaRFC companiarfc)
         {
+            var existCompania = db.CompaniaRFC.Where(crfc => crfc.CompaniaCognos == companiarfc.CompaniaCognos).ToList();
+            if (existCompania.Count > 0)
+            {
+                ModelState.AddModelError("Error", "La compañia Cognos, ya se encuentra asociada a otra cuenta RFC");
+                ViewBag.CompaniaCognos = new SelectList(db.CompaniaCognos, "Id", "Descripcion", companiarfc.CompaniaCognos);
+                return View(companiarfc);
+            }
+
             if (ModelState.IsValid)
             {
                 companiarfc.Descripcion = companiarfc.Descripcion.ToUpper();
@@ -228,7 +226,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiarfc);
         }
 
-        // GET: /CompaniaRFC/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -243,7 +240,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(companiarfc);
         }
 
-        // POST: /CompaniaRFC/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

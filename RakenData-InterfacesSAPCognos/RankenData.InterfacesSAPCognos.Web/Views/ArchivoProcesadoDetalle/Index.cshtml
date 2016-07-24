@@ -26,8 +26,8 @@
         <table class="table">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Company)
-                    @Html.DisplayName("Compañia")
+                    @*@Html.DisplayNameFor(model => model.Company)*@
+                    @Html.DisplayName("Compañía")
                 </th>
                 <th>
                     @*@Html.DisplayNameFor(model => model.Period)*@
@@ -41,10 +41,10 @@
                     @*@Html.DisplayNameFor(model => model.Account)*@
                     @Html.DisplayName("Cuenta")
                 </th>
-                <th>
+                @*<th>*@
                     @*@Html.DisplayNameFor(model => model.CounterCompany)*@
-                    @Html.DisplayName("Contador")
-                </th>
+                    @*@Html.DisplayName("Contador")*@
+                @*</th>*@
                 <th>
                     @*@Html.DisplayNameFor(model => model.Amount)*@
                     @Html.DisplayName("Cantidad")
@@ -60,7 +60,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Company)
+                        @Html.DisplayFor(modelItem => item.ArchivoProcesado.CompaniaCognos.Descripcion)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Period)
@@ -71,9 +71,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Account)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CounterCompany)
-                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.CounterCompany) 
+                    </td>*@
                     <td width="80px" align="right">                       
                         @string.Format("{0:n0}", item.Amount)
                     </td>

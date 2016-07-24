@@ -6,6 +6,12 @@
 
 <h2>Editar</h2>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>Mensaje:</div>
+    @Html.ValidationMessage("Error")
+}
+
 
 @using (Html.BeginForm())
 {
@@ -37,8 +43,8 @@
         <div class="form-group">
             @*@Html.LabelFor(model => model.CompaniaCognos, "CompaniaCognos", new { @class = "control-label col-md-2" })*@
             @Html.Label("Compania Cognos", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CompaniaCognos", String.Empty)
+            <div class="col-md-10">                
+                @Html.DropDownList("CompaniaCognos", ViewBag.CuentaCargo as SelectList, "Seleccione...", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CompaniaCognos)
             </div>
         </div>

@@ -17,16 +17,16 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.IdUsuario, "Usuario", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IdUsuario", String.Empty)
+            <div class="col-md-10">                
+                @Html.DropDownList("IdUsuario", ViewBag.CuentaCargo as SelectList, "Seleccione...", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IdUsuario)
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.IdGrupo, "Grupo", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IdGrupo", String.Empty)
+            <div class="col-md-10">                
+                @Html.DropDownList("IdGrupo", ViewBag.CuentaCargo as SelectList, "Seleccione...", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IdGrupo)
             </div>
         </div>

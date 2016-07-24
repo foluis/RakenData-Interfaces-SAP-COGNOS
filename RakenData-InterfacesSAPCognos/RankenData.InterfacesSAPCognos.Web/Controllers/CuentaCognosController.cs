@@ -193,15 +193,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero");
             ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero");
 
-            var esOpen = new { True = true, False = false };
-            List<EsOpenViewModel> es = new List<EsOpenViewModel>()
-            {
-                new EsOpenViewModel() { Id=1,Clave=true},
-                new EsOpenViewModel() { Id=2,Clave=false}
-            };
-
-            ViewBag.EsOpen = new SelectList(es, "id", "Clave");
-
             return View();
         }
 
@@ -276,7 +267,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-            var cuentasCognos = db.CuentaCognos;
+            var cuentasCognos = db.CuentaCognos.OrderBy(x => x.Numero);            
             ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero", cuentacognos.CuentaCargo);
             ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero", cuentacognos.CuentaAbono);
             ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);

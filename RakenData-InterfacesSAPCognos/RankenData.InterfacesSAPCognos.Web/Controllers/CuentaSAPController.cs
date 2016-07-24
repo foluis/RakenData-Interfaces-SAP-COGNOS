@@ -24,8 +24,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Index(HttpPostedFileBase file)
         {
             try
-            {
-                //var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Include(c => c.TipoCuentaSAP1).Where(cc => cc.IsActive == true);
+            {                
                 var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Where(cc => cc.IsActive == true);
 
                 if (file != null && file.ContentLength > 0)
@@ -46,9 +45,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
            
         }
-
-        // Carga masiva de cuentas SAP 
-        // return: errores y si no hay devuelve el objeto vacio        
+     
         public string CargeMasivoCuentaSAP(HttpPostedFileBase file)
         {
             CuentaSAP cuentasap = null;            
@@ -152,7 +149,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
         }
 
-        // GET: /CuentaSAP/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -167,17 +163,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentasap);
         }
 
-        // GET: /CuentaSAP/Create
         public ActionResult Create()
         {
-            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos.Where(cc => cc.IsActive == true), "Id", "Numero");         
+            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos.Where(cc => cc.IsActive == true).OrderBy(cc => cc.Numero), "Id", "Numero");         
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre");
             return View();
         }
 
-        // POST: /CuentaSAP/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP")] CuentaSAP cuentasap)
@@ -230,7 +222,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentasap);
         }
 
-        // GET: /CuentaSAP/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -242,7 +233,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
+            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos.Where(cc => cc.IsActive == true).OrderBy(cc => cc.Numero), "Id", "Numero", cuentasap.CuentaCognos);
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
             //ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
             //ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
@@ -250,9 +241,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentasap);
         }
 
-        // POST: /CuentaSAP/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
@@ -292,7 +280,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentasap);
         }
 
-        // GET: /CuentaSAP/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -307,7 +294,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentasap);
         }
 
-        // POST: /CuentaSAP/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

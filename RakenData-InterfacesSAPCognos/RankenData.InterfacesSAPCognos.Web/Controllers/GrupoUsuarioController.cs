@@ -17,7 +17,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
       
         public ActionResult Index()
         {
-            var grupousuario = db.GrupoUsuario.Include(g => g.Grupo).Include(g => g.User);
+            var grupousuario = db.GrupoUsuario.Include(g => g.Grupo)
+                .Include(u => u.User)
+                .OrderBy(u => u.IdUsuario);
+
             return View(grupousuario.ToList());
         }
                
@@ -37,8 +40,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
      
         public ActionResult Create()
         {
-            ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre");
-            ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username");
+            ViewBag.IdGrupo = new SelectList(db.Grupo.OrderBy(g => g.Nombre), "Id", "Nombre");
+            ViewBag.IdUsuario = new SelectList(db.User.OrderBy(u => u.Username), "Id", "Username");
             return View();
         }
       
@@ -46,6 +49,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="Id,IdUsuario,IdGrupo")] GrupoUsuario grupousuario)
         {
+            var grupoUsuarioExistente = db.GrupoUsuario
+                .Include(g => g.Grupo)
+                .Where(g => g.IdGrupo == grupousuario.IdGrupo)
+                .Include(g => g.User)
+                .Where(u => u.IdUsuario == grupousuario.IdUsuario).ToList();
+
+            if(grupoUsuarioExistente.Count > 0)
+                return RedirectToAction("Index");
+
             if (ModelState.IsValid)
             {
                 db.GrupoUsuario.Add(grupousuario);
@@ -53,8 +65,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre", grupousuario.IdGrupo);
-            ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
+            ViewBag.IdGrupo = new SelectList(db.Grupo.OrderBy(g => g.Nombre), "Id", "Nombre", grupousuario.IdGrupo);
+            ViewBag.IdUsuario = new SelectList(db.User.OrderBy(u => u.Username), "Id", "Username", grupousuario.IdUsuario);
             return View(grupousuario);
         }
                 
@@ -69,8 +81,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdGrupo = new SelectList(db.Grupo, "Id", "Nombre", grupousuario.IdGrupo);
-            ViewBag.IdUsuario = new SelectList(db.User, "Id", "Username", grupousuario.IdUsuario);
+            ViewBag.IdGrupo = new SelectList(db.Grupo.OrderBy(g => g.Nombre), "Id", "Nombre");
+            ViewBag.IdUsuario = new SelectList(db.User.OrderBy(u => u.Username), "Id", "Username");
             return View(grupousuario);
         }
      

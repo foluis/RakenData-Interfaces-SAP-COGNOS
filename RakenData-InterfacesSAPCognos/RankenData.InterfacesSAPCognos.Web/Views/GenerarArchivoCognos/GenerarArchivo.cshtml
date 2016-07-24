@@ -3,7 +3,6 @@
     ViewBag.Title = "Procesar Archivos Cognos";
 }
 
-
 @if (!ViewData.ModelState.IsValid)
 {
     <div>Mensaje</div>
@@ -19,46 +18,45 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <hr />    
+        <hr />
         @Html.ValidationSummary(true)
 
         <div class="form-group">
             @Html.Label("Sociedad", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-               @*@Html.DropDownList("LstIdCompaniasCognos")*@
-                @Html.DropDownList("LstIdCompaniasCognos", (MultiSelectList)ViewBag.LstIdCompaniasCognos, new { multiple = "multiple", size = 8 })
+            <div class="col-md-10">                
+                @Html.DropDownList("LstIdCompaniasCognos", ViewBag.LstIdCompaniasCognos as SelectList, null, new { @class = "form-control", multiple = "multiple", size = 8 })
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("Periodo", new { @class = "control-label col-md-2"})
+            @Html.Label("Periodo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.Periodo, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Periodo)
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("Año", new { @class = "control-label col-md-2"})
+            @Html.Label("Año", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.Anio, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Anio)
             </div>
-        </div>    
+        </div>
 
         <div class="form-group">
             @Html.Label("Tipo archivo", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("TipoArchivo", (MultiSelectList)ViewBag.TipoArchivo, new { multiple = "multiple", size = 3 })               
+                @Html.DropDownList("TipoArchivo", (MultiSelectList)ViewBag.TipoArchivo, new { @class = "form-control", multiple = "multiple", size = 3 })
                 @Html.ValidationMessageFor(model => model.TipoArchivo)
             </div>
-        </div>  
-        
+        </div>
+
         <div class="form-group">
             @Html.Label("Redondeos", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Redondeos", (MultiSelectList)ViewBag.Redondeos, new { multiple = "multiple", size = 3 })
+                @Html.DropDownList("Redondeos", (MultiSelectList)ViewBag.Redondeos, new { @class = "form-control", multiple = "multiple", size = 3 })
                 @Html.ValidationMessageFor(model => model.TipoArchivo)
             </div>
-        </div>      
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Procesar" class="btn btn-default" />

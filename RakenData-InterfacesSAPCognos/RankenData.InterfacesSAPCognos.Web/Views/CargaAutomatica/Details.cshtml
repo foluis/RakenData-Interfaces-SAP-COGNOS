@@ -10,18 +10,15 @@
     <h4>Programar Carga</h4>
 	<hr />
     <dl class="dl-horizontal">
-        <dt>
-            @*@Html.DisplayNameFor(model => model.FechaProgramada)*@
+        <dt>            
             @Html.DisplayName("Fecha programada")
         </dt>
 
-        <dd>            
-            @*@Html.DisplayFor(model => model.FechaProgramada)*@
+        <dd>
             @Model.FechaProgramada.ToString("dd/MM/yyyy")
         </dd>
 
-        <dt>
-            @*@Html.DisplayNameFor(model => model.RutaArchivo)*@
+        <dt>            
             @Html.DisplayName("Ruta archivo")
         </dt>
 
@@ -29,16 +26,13 @@
             @Html.DisplayFor(model => model.RutaArchivo)
         </dd>
 
-        <dt>
-            @*@Html.DisplayNameFor(model => model.RutaArchivo)*@
+        <dt>            
             @Html.DisplayName("Usuario")
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.User.Username)
-        </dd>
-
-      
+        </dd>              
 
         <dt>
             @Html.Label("Tipo archivo carga")
@@ -55,16 +49,13 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
 
-        <dt>
-            @*@Html.DisplayNameFor(model => model.WasLoaded)*@
+        <dt>            
             @Html.Label("Procesado")
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.WasLoaded)
         </dd>
-
-
     </dl>
 </div>
 <p>

@@ -45,11 +45,11 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public virtual DbSet<TipoModificacion> TipoModificacion { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<CuentaSAP> CuentaSAP { get; set; }
-        public virtual DbSet<CuentaCognos> CuentaCognos { get; set; }
         public virtual DbSet<CuentaRelacionada> CuentaRelacionada { get; set; }
         public virtual DbSet<CompaniaCognos> CompaniaCognos { get; set; }
         public virtual DbSet<SaldoInicial> SaldoInicial { get; set; }
         public virtual DbSet<CargaAutomatica> CargaAutomatica { get; set; }
+        public virtual DbSet<CuentaCognos> CuentaCognos { get; set; }
     
         public virtual ObjectResult<Nullable<int>> CreateArchivoBalance(string sociedadesCognos, Nullable<int> periodo, Nullable<int> anio, string tiposArchivoCreacionId, Nullable<int> usuario, Nullable<int> tipoRedondeo)
         {

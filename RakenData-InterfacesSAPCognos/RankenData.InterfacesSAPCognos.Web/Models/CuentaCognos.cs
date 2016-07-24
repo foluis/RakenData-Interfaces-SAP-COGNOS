@@ -11,8 +11,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class CuentaCognos
     {
         public CuentaCognos()
@@ -28,9 +27,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public string Descripcion { get; set; }
         public int AnexoId { get; set; }
         public bool IsActive { get; set; }
-
-        [Required]
-        public Nullable<bool> EsOpen { get; set; }
+        public bool EsOpen { get; set; }
         public Nullable<int> CuentaCargo { get; set; }
         public Nullable<int> CuentaAbono { get; set; }
     

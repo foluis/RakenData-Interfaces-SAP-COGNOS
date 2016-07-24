@@ -27,7 +27,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
         public int TipoCuentaSAP { get; set; }
     
         public virtual TipoCuentaSAP TipoCuentaSAP1 { get; set; }
-        public virtual CuentaCognos CuentaCognos1 { get; set; }
         public virtual ICollection<CuentaRelacionada> CuentaRelacionada { get; set; }
+        public virtual CuentaCognos CuentaCognos1 { get; set; }
     }
 }

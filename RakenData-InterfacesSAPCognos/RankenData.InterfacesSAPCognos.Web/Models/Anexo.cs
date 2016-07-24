@@ -11,8 +11,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Anexo
     {
         public Anexo()
@@ -22,8 +21,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
     
         public int id { get; set; }
         public string Clave { get; set; }
-
-        [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
         public bool IsActive { get; set; }
         public bool Modificable { get; set; }

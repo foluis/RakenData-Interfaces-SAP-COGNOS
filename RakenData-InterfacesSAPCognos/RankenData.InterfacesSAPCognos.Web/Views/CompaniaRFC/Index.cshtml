@@ -20,13 +20,9 @@
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.RFC)
-        </th>
+        </th>      
         <th>
-            @*@Html.DisplayNameFor(model => model.Descripcion)*@
-            @Html.Label("Descripción")
-        </th>
-        <th>
-            @Html.Label("Descripción Compañía Cognos")             
+            @Html.Label("Compañía Cognos")             
         </th>
         <th></th>
     </tr>
@@ -35,10 +31,7 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.RFC)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
+        </td>       
         <td>
             @Html.DisplayFor(modelItem => item.CompaniaCognos1.Descripcion)
         </td>

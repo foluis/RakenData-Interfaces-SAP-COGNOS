@@ -27,27 +27,19 @@
 
         <div class="form-group">            
             @Html.Label("Cuenta SAP", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CuentaSAPId", String.Empty)
+            <div class="col-md-10">                
+                @Html.DropDownList("CuentaSAPId", ViewBag.CuentaCargo as SelectList, "Seleccione...", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CuentaSAPId)
             </div>
         </div>
 
         <div class="form-group">            
             @Html.Label("Compañía Cognos", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("SociedadCognosId", String.Empty)
+            <div class="col-md-10">                
+                @Html.DropDownList("SociedadCognosId", ViewBag.CuentaCargo as SelectList, "Seleccione...", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SociedadCognosId)
             </div>
         </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsActive)
-                @Html.ValidationMessageFor(model => model.IsActive)
-            </div>
-        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

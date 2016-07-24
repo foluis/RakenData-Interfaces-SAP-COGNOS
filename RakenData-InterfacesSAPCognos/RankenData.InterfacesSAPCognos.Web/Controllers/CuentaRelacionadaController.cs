@@ -21,7 +21,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CuentaRelacionadaController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-        
+
         public ActionResult Index(HttpPostedFileBase file)
         {
             var cuentaRelacionada = db.CuentaRelacionada
@@ -33,7 +33,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 string errores = CargueMasivoCuentaRelacionada(file);
                 if (errores.Length > 0)
                 {
-                    ModelState.AddModelError("Error", errores);                    
+                    ModelState.AddModelError("Error", errores);
                 }
             }
 
@@ -88,9 +88,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                     if (cuentaRelacionadaExistente == null)
                     {
-                        cuentaSAPExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == numeroCuentaSAP);                        
+                        cuentaSAPExiste = db.CuentaSAP.FirstOrDefault(cc => cc.Numero == numeroCuentaSAP);
 
-                        if(cuentaSAPExiste == null)
+                        if (cuentaSAPExiste == null)
                         {
                             errores.AppendLine($"No. Registro {i + 1} ERROR: LA CUENTA SAP CON EL NÚMERO ({numeroCuentaSAP}) NO EXISTE.<br>");
                             updateSaveFile = false;
@@ -135,14 +135,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             updateSaveFile = false;
                         }
 
-                        if(updateSaveFile)
+                        if (updateSaveFile)
                         {
                             cuentaRelacionadaExistente.CompaniaCognos = companiaCognosExistente;
                             cuentaRelacionadaExistente.CuentaSAP = cuentaSAPExiste;
                             cuentaRelacionadaExistente.NumeroCuentaRelacionada = numeroCuentaRelacionada;
                             cuentaRelacionadaExistente.IsActive = true;
                             db.Entry(cuentaRelacionadaExistente).State = EntityState.Modified;
-                        }                        
+                        }
                     }
 
                     try
@@ -174,7 +174,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-        // GET: CuentaRelacionada/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -189,17 +188,16 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentaRelacionada);
         }
 
-        // GET: CuentaRelacionada/Create
         public ActionResult Create()
         {
-            ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos, "Id", "Descripcion");
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero");
+            var cuentasSap = db.CuentaSAP.OrderBy(cs => cs.Numero);
+            var companiasCognos = db.CompaniaCognos.OrderBy(cc => cc.Descripcion);
+
+            ViewBag.CuentaSAPId = new SelectList(cuentasSap, "Id", "Numero");
+            ViewBag.SociedadCognosId = new SelectList(companiasCognos, "Id", "Descripcion");
             return View();
         }
 
-        // POST: CuentaRelacionada/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,NumeroCuentaRelacionada,CuentaSAPId,SociedadCognosId,IsActive")] CuentaRelacionada cuentaRelacionada)
@@ -251,7 +249,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentaRelacionada);
         }
 
-        // GET: CuentaRelacionada/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -268,9 +265,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentaRelacionada);
         }
 
-        // POST: CuentaRelacionada/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,NumeroCuentaRelacionada,CuentaSAPId,SociedadCognosId,IsActive")] CuentaRelacionada cuentaRelacionada)
@@ -308,7 +302,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentaRelacionada);
         }
 
-        // GET: CuentaRelacionada/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -323,7 +316,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(cuentaRelacionada);
         }
 
-        // POST: CuentaRelacionada/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

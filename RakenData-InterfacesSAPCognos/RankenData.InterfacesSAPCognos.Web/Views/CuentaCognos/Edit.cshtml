@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Cuenta Cognos</h4>
         <hr />
@@ -21,14 +21,14 @@
         @Html.HiddenFor(model => model.IsActive)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Numero,"Número", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Numero, "Número", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.Numero)            
+                @Html.DisplayFor(model => model.Numero)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Descripcion,"Descripción", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Descripcion, "Descripción", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Descripcion)
@@ -45,24 +45,25 @@
 
         <div id="divCuentaCargo" class="form-group">
             @Html.Label("Cuenta cargo", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CuentaCargo", String.Empty)
+            <div class="col-md-10">         
+                @*@Html.DropDownList("CuentaCargo", String.Empty)*@                
+                @Html.DropDownList("CuentaCargo", null,"Seleccione...", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CuentaCargo)
             </div>
         </div>
 
         <div id="divCuentaAbono" class="form-group">
             @Html.Label("Cuenta abono", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CuentaAbono", String.Empty)
+            <div class="col-md-10">                
+                @*@Html.DropDownList("CuentaAbono", String.Empty)*@
+                @Html.DropDownList("CuentaAbono", null, "Seleccione...", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CuentaAbono)
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Anexo.Clave, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.Anexo.Clave)            
+                @Html.DisplayFor(model => model.Anexo.Clave)
             </div>
         </div>
 
@@ -81,3 +82,32 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+    $(document).ready(function (e) {
+        $('#divCuentaCargo').hide();
+        $('#divCuentaAbono').hide();
+
+        if ($('#EsOpen').is(":checked")) {
+            $('#divCuentaCargo').show();
+            $('#divCuentaAbono').show();
+        } else {
+            $('#divCuentaCargo').hide();
+            $('#divCuentaAbono').hide();
+            $('#CuentaCargo').val('')
+            $('#CuentaAbono').val('');
+        }
+
+        $('#EsOpen').change(function () {
+            if ($(this).is(":checked")) {
+                $('#divCuentaCargo').show();
+                $('#divCuentaAbono').show();
+                return;
+            }
+            $('#divCuentaCargo').hide();
+            $('#divCuentaAbono').hide();
+            $('#CuentaCargo').val('')
+            $('#CuentaAbono').val('');
+        });
+    });
+</script>
