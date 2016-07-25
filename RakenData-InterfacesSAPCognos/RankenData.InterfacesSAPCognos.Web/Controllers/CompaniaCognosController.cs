@@ -32,7 +32,9 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ModelState.AddModelError("Error", errores);                   
                 }
             }
-            return View(db.CompaniaCognos.ToList());
+            return View(db.CompaniaCognos
+                .OrderBy(cc => cc.Clave)
+                .ToList());
         }
                    
         public string CargeCompaniaCognos(HttpPostedFileBase file)

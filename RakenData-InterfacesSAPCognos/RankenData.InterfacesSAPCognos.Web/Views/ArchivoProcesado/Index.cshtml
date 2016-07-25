@@ -47,11 +47,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.ArchivoGenerado)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaArchivoGenerado)
+        <td>            
+            @string.Format("{0:dd/MM/yyyy}", item.FechaArchivoGenerado)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.FechaProcesoArchivo)
+            @string.Format("{0:dd/MM/yyyy}", item.FechaProcesoArchivo)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CompaniaCognos.Descripcion)

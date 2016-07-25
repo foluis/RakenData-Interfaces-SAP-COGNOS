@@ -32,7 +32,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ModelState.AddModelError("Error", errores);
                 }
             }
-            return View(db.Anexo.ToList().Where(a=> a.IsActive == true));
+            return View(db.Anexo.ToList().Where(a => a.IsActive == true).OrderBy(a => a.Clave));
         }
       
         public string CargeAnexo(HttpPostedFileBase file)

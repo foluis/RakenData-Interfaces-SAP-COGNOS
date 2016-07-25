@@ -25,7 +25,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             try
             {                
-                var cuentasap = db.CuentaSAP.Include(c => c.CuentaCognos1).Where(cc => cc.IsActive == true);
+                var cuentasap = db.CuentaSAP
+                    .OrderBy(cs => cs.Numero)
+                    .Include(c => c.CuentaCognos1)
+                    .Where(cc => cc.IsActive == true);
 
                 if (file != null && file.ContentLength > 0)
                 {
@@ -42,8 +45,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 string error =ex.ToString();
                 throw;
-            }
-           
+            }           
         }
      
         public string CargeMasivoCuentaSAP(HttpPostedFileBase file)

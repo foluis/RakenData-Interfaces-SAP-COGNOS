@@ -23,7 +23,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public ActionResult Index(HttpPostedFileBase file)
         {
-            var companiarfc = db.CompaniaRFC.Include(c => c.CompaniaCognos1);
+            var companiarfc = db.CompaniaRFC
+                .OrderBy(cSap => cSap.RFC)
+                .Include(c => c.CompaniaCognos1);
+
             if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeCompaniaRFC(file);

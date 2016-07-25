@@ -1,0 +1,6 @@
+No se pudo obtener informacion de la tabla de administracion para el proceso de Carga automatica, valide que tenga conección. Error: System.NullReferenceException: Object reference not set to an instance of an object.
+   at RankenData.InterfacesSAPCognos.Web.Controllers.TimerCargaAutomatica.Init() in C:\Users\LuisFernando\Documents\GitHub\RakenData-Interfaces-SAP-COGNOS\RakenData-InterfacesSAPCognos\RankenData.InterfacesSAPCognos.Web\Controllers\Utilidades\TimerCargaAutomatica.cs:line 38  Error: 						Time: 18:22:40
+
+Validation failed for one or more entities. See 'EntityValidationErrors' property for more details. Las validaciones del error son: The field Clave must be a string or array type with a maximum length of '4'.
+  Error: 						Time: 20:25:50
+

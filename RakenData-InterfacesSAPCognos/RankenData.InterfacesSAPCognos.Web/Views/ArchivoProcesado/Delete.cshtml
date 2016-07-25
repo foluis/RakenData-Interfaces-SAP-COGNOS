@@ -44,7 +44,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FechaArchivoGenerado)
+            @*@Html.DisplayFor(model => model.FechaArchivoGenerado)*@
+            @string.Format("{0:dd/MM/yyyy}", @Model.FechaArchivoGenerado)
         </dd>
 
         <dt>
@@ -52,7 +53,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FechaProcesoArchivo)
+            @*@Html.DisplayFor(model => model.FechaProcesoArchivo)*@
+            @string.Format("{0:dd/MM/yyyy}", @Model.FechaProcesoArchivo)
         </dd>
 
         <dt>

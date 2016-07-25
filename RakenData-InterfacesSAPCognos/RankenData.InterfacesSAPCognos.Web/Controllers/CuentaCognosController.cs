@@ -26,8 +26,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public ActionResult Index(HttpPostedFileBase file)
         {
-            var cuentacognos = db.CuentaCognos.
-                Include(c => c.Anexo).Where(cc => cc.IsActive == true);
+            var cuentacognos = db.CuentaCognos
+                .OrderBy(cc => cc.Numero)
+                .Include(c => c.Anexo)
+                .Where(cc => cc.IsActive == true);
 
             if (file != null && file.ContentLength > 0)
             {

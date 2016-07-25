@@ -11,11 +11,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class DatosCabecera
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
+
+        [StringLength(4, ErrorMessage = "Tamaño máximo de 4 caracteres")]
         public string Valor { get; set; }
     }
 }
