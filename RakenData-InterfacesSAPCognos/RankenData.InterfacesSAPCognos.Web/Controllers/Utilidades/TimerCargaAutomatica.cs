@@ -61,7 +61,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             //ConfigurationManager.AppSettings["procesaCargaAutomatica"]
 
-            var cargaAutomaticaInfo = db.CargaAutomatica;
+            var cargaAutomaticaInfo = db.CargaAutomatica.ToList();
 
             if (procesaCargaAutomatica == "1" && cargaAutomaticaInfo != null && cargaAutomaticaInfo.Count() > 0)
             {

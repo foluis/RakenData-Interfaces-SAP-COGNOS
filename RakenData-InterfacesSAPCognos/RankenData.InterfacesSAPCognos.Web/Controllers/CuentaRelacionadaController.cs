@@ -195,6 +195,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
             ViewBag.CuentaSAPId = new SelectList(cuentasSap, "Id", "Numero");
             ViewBag.SociedadCognosId = new SelectList(companiasCognos, "Id", "Descripcion");
+
             return View();
         }
 
@@ -204,7 +205,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                CuentaRelacionada cuentaRelacionadaExistente = db.CuentaRelacionada.FirstOrDefault(cc => cc.NumeroCuentaRelacionada == cuentaRelacionada.NumeroCuentaRelacionada);
+                var cuentaRelacionadaExistente = db.CuentaRelacionada.FirstOrDefault(
+                    cc => 
+                    cc.NumeroCuentaRelacionada == cuentaRelacionada.NumeroCuentaRelacionada && 
+                    cc.CuentaSAPId == cuentaRelacionada.CuentaSAPId &&
+                    cc.SociedadCognosId == cuentaRelacionada.SociedadCognosId);
+
                 if (cuentaRelacionadaExistente == null)
                 {
                     cuentaRelacionada.IsActive = true;
@@ -212,6 +218,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 else
                 {
+                    //CuentaRelacionada cuentaRelacionadaExistente = new CuentaRelacionada();
+
                     cuentaRelacionadaExistente.NumeroCuentaRelacionada = cuentaRelacionada.NumeroCuentaRelacionada;
                     cuentaRelacionadaExistente.SociedadCognosId = cuentaRelacionada.SociedadCognosId;
                     cuentaRelacionadaExistente.CuentaSAPId = cuentaRelacionada.CuentaSAPId;
@@ -244,8 +252,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos, "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+            ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
+            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.OrderBy(cs => cs.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
             return View(cuentaRelacionada);
         }
 
@@ -255,13 +263,15 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+                        
             CuentaRelacionada cuentaRelacionada = db.CuentaRelacionada.Find(id);
             if (cuentaRelacionada == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos, "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+            ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
+            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.OrderBy(cc => cc.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+
             return View(cuentaRelacionada);
         }
 
@@ -272,8 +282,26 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             StringBuilder errores = new StringBuilder();
             if (ModelState.IsValid)
             {
-                cuentaRelacionada.IsActive = true;
-                db.Entry(cuentaRelacionada).State = EntityState.Modified;
+                var cuentaRelacionadaExistente = db.CuentaRelacionada.FirstOrDefault(
+                    cc =>
+                    cc.NumeroCuentaRelacionada == cuentaRelacionada.NumeroCuentaRelacionada &&
+                    cc.CuentaSAPId == cuentaRelacionada.CuentaSAPId &&
+                    cc.SociedadCognosId == cuentaRelacionada.SociedadCognosId);
+
+                ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
+                ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.OrderBy(cc => cc.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+
+                if (cuentaRelacionadaExistente == null)
+                {
+                    cuentaRelacionada.IsActive = true;
+                    db.Entry(cuentaRelacionada).State = EntityState.Modified;
+                }
+                else
+                {
+                    ModelState.AddModelError("Error", "Esa combinación de cuenta relacionada ya existe");
+                    return View();
+                }               
+
                 try
                 {
                     db.SaveChanges();
@@ -297,8 +325,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos, "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP, "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+           
             return View(cuentaRelacionada);
         }
 
