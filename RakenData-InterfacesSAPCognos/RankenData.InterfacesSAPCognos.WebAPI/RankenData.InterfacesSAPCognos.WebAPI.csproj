@@ -310,20 +310,6 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ranken.ISC.Contracts\Ranken.ISC.Contracts.csproj">
-      <Project>{e3574300-95e7-4a4d-9665-1f62712f41c6}</Project>
-      <Name>Ranken.ISC.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RankenData.InterfacesSAPCognos.Domain\RankenData.InterfacesSAPCognos.Domain.csproj">
-      <Project>{97722c1c-ed20-44f4-ba92-cffb543b574f}</Project>
-      <Name>RankenData.InterfacesSAPCognos.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RankenData.InterfacesSAPCognos.Model\RankenData.InterfacesSAPCognos.Model.csproj">
-      <Project>{e4025af9-dce2-45e7-9d58-0940887e6703}</Project>
-      <Name>RankenData.InterfacesSAPCognos.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
