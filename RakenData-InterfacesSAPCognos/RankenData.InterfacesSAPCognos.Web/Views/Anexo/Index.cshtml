@@ -1,54 +1,144 @@
-﻿@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.Anexo>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@*@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.Anexo>*@
+@model IPagedList<RankenData.InterfacesSAPCognos.Web.Models.Anexo>
 
 @{
     ViewBag.Title = "Indice";
 }
 @if (!ViewData.ModelState.IsValid)
 {
-    <div>Mensaje:</div> 
+    <div>Mensaje:</div>
     @Html.ValidationMessage("Error")
 }
 <h2>Anexos</h2>
 
 <p>Administración de Anexos</p>
 
-<p>
+@*<div class="form-group">
+        @Html.Label("Buscar")
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Clave, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Clave)
+        </div>
+    </div>*@
+
+@using (@Html.BeginForm("Index", "Anexo", FormMethod.Get, new { @class = "form-inline" }))
+{
+    <div class="form-group" style="margin-top:20px">        
+        @Html.Label("Buscar por:")
+        <label class="radio-inline">
+            @Html.RadioButton("searchBy", "Clave", true) <text>Clave</text>
+        </label>
+        <label class="radio-inline">
+            @Html.RadioButton("searchBy", "Descripcion") <text>Descripción</text>
+        </label>
+        @Html.TextBox("search", "", new { @class = "form-control" }) 
+        <input type="submit" value="Buscar" class="btn btn-default" />
+    </div>
+}
+
+<div style="margin-top:20px">
     @Html.ActionLink("Crear Nuevo", "Create")
-</p>
+</div>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Clave)
+            @Html.DisplayNameFor(model => model.First().Clave)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Descripcion)
+            @Html.DisplayNameFor(model => model.First().Descripcion)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Modificable)
+            @Html.DisplayNameFor(model => model.First().Modificable)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Clave)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Modificable)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Detalle", "Details", new { id=item.id }) |
-            @Html.ActionLink("Borrar", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
-
+    @if (Model.Count() == 0)
+    {
+        <tr>
+            <td colspan="4">
+                No hay datos.
+            </td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Clave)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modificable)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                    @Html.ActionLink("Detalle", "Details", new { id = item.id }) |
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.id })
+                </td>
+            </tr>
+        }
+    }
 </table>
+
+@*Finally to display page numbers for paging*@
+@Html.PagedListPager(Model, pageIndex => Url.Action("Index",
+    new
+    {
+        pageIndex
+        ,searchBy = Request.QueryString["searchBy"],
+        search = Request.QueryString["search"]
+    }))
+
+@*If you want to display the pager, only if there are more than 1 page*@
+@*@Html.PagedListPager(Model, pageIndex => Url.Action("Index",
+    new
+    {
+        pageIndex
+        //,searchBy = Request.QueryString["searchBy"],
+        //search = Request.QueryString["search"]
+    }), new PagedListRenderOptions()
+    {
+        Display = PagedListDisplayMode.IfNeeded
+    })*@
+
+@*If you want to display, the current active page and the total number of pages*@
+@*@Html.PagedListPager(Model, pageIndex => Url.Action("Index",
+    new
+    {
+        pageIndex
+        //,searchBy = Request.QueryString["searchBy"],
+        //search = Request.QueryString["search"]
+    }), new PagedListRenderOptions()
+    {
+        Display = PagedListDisplayMode.IfNeeded,
+        DisplayPageCountAndCurrentLocation = true
+        //,LinkToPreviousPageFormat ="atras"
+        ,PageCountAndCurrentLocationFormat = "Pag {0} de {1}."
+    })*@
+
+@*If you want to display the number of rows displayed, of the total number of rows available.*@
+@*@Html.PagedListPager(Model, pageIndex => Url.Action("Index",
+    new
+    {
+        pageIndex
+        //,searchBy = Request.QueryString["searchBy"],
+        //search = Request.QueryString["search"]
+    }), new PagedListRenderOptions()
+    {
+        Display = PagedListDisplayMode.IfNeeded,
+        DisplayItemSliceAndTotal = true
+        ,ItemSliceAndTotalFormat = "Mostrando del elemento {0} al {1} de {2}."
+    })*@
+
+
+
 @using (Html.BeginForm("Index", "Anexo", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="file" name="file" id="file" /><br>

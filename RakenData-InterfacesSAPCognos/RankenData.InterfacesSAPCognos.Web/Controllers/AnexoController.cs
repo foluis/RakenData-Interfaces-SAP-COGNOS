@@ -14,6 +14,7 @@ using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades;
 using RankenData.InterfacesSAPCognos.Web.Models.Entidades;
+using PagedList;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
@@ -22,7 +23,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     {
         private EntitiesRakenData db = new EntitiesRakenData();
 
-        public ActionResult Index(HttpPostedFileBase file)
+        public ActionResult Index(HttpPostedFileBase file, string searchBy, string search = "", int pageIndex = 1, int pageSize = 5)
         {
             if (file != null && file.ContentLength > 0)
             {
@@ -32,9 +33,53 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     ModelState.AddModelError("Error", errores);
                 }
             }
-            return View(db.Anexo.ToList().Where(a => a.IsActive == true).OrderBy(a => a.Clave));
+
+            //IPagedList<Anexo> anexos;
+
+            //if (searchBy == "Clave")
+            //{
+            //    anexos = db.Anexo.
+            //        Where(a => a.IsActive == true && a.Clave.Contains(search)).
+            //        OrderBy(a => a.Clave).ToPagedList(pageIndex, pageSize);
+            //}
+            //else
+            //{
+            //    anexos = db.Anexo.
+            //        Where(a => a.IsActive == true && a.Descripcion.Contains(search)).
+            //        OrderBy(a => a.Clave).ToPagedList(pageIndex, pageSize);
+            //}
+            /*******************/
+            //anexos = db.Anexo.
+            //        Where(a => a.IsActive == true).
+            //        OrderBy(a => a.Clave).ToPagedList(pageIndex, pageSize);
+
+            //if (searchBy == "Clave")
+            //{
+            //    return View(anexos.Where(a => a.Clave.Contains(search)));
+            //}
+            //else
+            //{
+            //    return View(anexos.Where(a => a.Descripcion.Contains(search)));
+            //}
+
+            IQueryable<Anexo> ane;
+
+            var anexos = db.Anexo.
+                    Where(a => a.IsActive == true).
+                    OrderBy(a => a.Clave);
+
+            if (searchBy == "Clave")
+            {
+                ane = anexos.Where(a => a.Clave.Contains(search));
+            }
+            else
+            {
+                ane = anexos.Where(a => a.Descripcion.Contains(search));
+            }
+
+            return View(ane.ToPagedList(pageIndex, pageSize));
         }
-      
+
         public string CargeAnexo(HttpPostedFileBase file)
         {
             Anexo anexo = null;
@@ -65,20 +110,20 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 if (bool.TryParse(dato[2], out modificable) == false)
                 {
                     errores.AppendLine("No. Registro" + i + " ERROR: MODIFICABLE DEBE TENER EL VALOR (TRUE O FALSE)");
-         
+
                 }
                 if (errores.Length > 0)
                 {
                     return errores.ToString();
 
-                }                
+                }
 
                 anexo = new Anexo()
                 {
                     Clave = dato[0],
-                    Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper(): dato[1].Substring(0,35).ToUpper(),
+                    Descripcion = dato[1].Length <= 35 ? dato[1].ToUpper() : dato[1].Substring(0, 35).ToUpper(),
                     Modificable = modificable
-                   
+
                 };
                 if (ModelState.IsValid)
                 {
@@ -148,7 +193,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 Anexo anexoExiste = db.Anexo.FirstOrDefault(cc => cc.Clave == anexo.Clave);
 
                 if (anexoExiste == null)
-                {                    
+                {
                     anexo.Clave = anexo.Clave.ToUpper();
                     anexo.Descripcion = anexo.Descripcion.ToUpper();
                     anexo.IsActive = true;
@@ -161,7 +206,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     anexoExiste.Modificable = anexo.Modificable;
                     anexoExiste.IsActive = true;
                     db.Entry(anexoExiste).State = EntityState.Modified;
-                }                
+                }
 
                 try
                 {
@@ -239,13 +284,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Anexo anexo = db.Anexo.Find(id);
-            var cuentaCognos = db.CuentaCognos.Where(cc => cc.AnexoId == id && cc.IsActive == true ).ToList();
+            var cuentaCognos = db.CuentaCognos.Where(cc => cc.AnexoId == id && cc.IsActive == true).ToList();
             if (cuentaCognos.Count > 0)
             {
                 ModelState.AddModelError("Error", "Primero debe desasignar las cuentas cognos asociadas a este anexo");
                 return View(anexo);
             }
-            
+
             db.Entry(anexo).State = EntityState.Modified;
             anexo.IsActive = false;
             db.SaveChanges();
