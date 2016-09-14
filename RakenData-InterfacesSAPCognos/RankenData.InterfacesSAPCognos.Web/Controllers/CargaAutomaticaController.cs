@@ -45,14 +45,19 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre");
-            return View();
+
+            return View(new CargaAutomaticaViewModel
+            {
+                RutaArchivo = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica"
+            });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FechaProgramada,RutaArchivo,TipoArchivo,Email")] CargaAutomatica cargaautomatica)
+        //public ActionResult Create([Bind(Include = "Id,FechaProgramada,RutaArchivo,TipoArchivo,Email")] CargaAutomaticaViewModel cargaAutomatica)
+        public ActionResult Create(CargaAutomaticaViewModel cargaAutomatica)
         {
-            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaautomatica.TipoArchivo);
+            ViewBag.TipoArchivo = new SelectList(db.TipoArchivoCarga, "Id", "Nombre", cargaAutomatica.TipoArchivo);
             if (ModelState.IsValid)
             {
                 string currentUser = User.Identity.Name;
@@ -66,8 +71,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     }
                 }
 
-                cargaautomatica.UsuarioId = currentUserId;
-                db.CargaAutomatica.Add(cargaautomatica);
+                cargaAutomatica.UsuarioId = currentUserId;
+
+                CargaAutomatica ca = new CargaAutomatica();
+                
+                ca.FechaProgramada = Convert.ToDateTime(cargaAutomatica.FechaProgramadaFormateada);
+                ca.RutaArchivo = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica";
+                ca.UsuarioId = currentUserId;
+                ca.TipoArchivo = cargaAutomatica.TipoArchivo;
+                ca.Email = cargaAutomatica.Email;
+                ca.WasLoaded = false;
+
+                db.CargaAutomatica.Add(ca);
                 try
                 {
                     db.SaveChanges();
@@ -93,7 +108,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(cargaautomatica);
+            return View(cargaAutomatica);
         }
 
         public ActionResult Edit(int? id)
@@ -115,7 +130,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 Id = cargaAutomatica.Id,
                 FechaProgramada = cargaAutomatica.FechaProgramada,
                 FechaProgramadaFormateada = FechaProgramadaString,
-                RutaArchivo = cargaAutomatica.RutaArchivo,
+                RutaArchivo = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica",
                 UsuarioId = cargaAutomatica.UsuarioId,
                 User = cargaAutomatica.User,
                 TipoArchivo = cargaAutomatica.TipoArchivo,
@@ -142,7 +157,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     Id = cargaAutomaticaViewModel.Id,
                     FechaProgramada = fechaProgramada,
                     //FechaProgramadaFormateada = cargaAutomaticaViewModel.FechaProgramada.ToString("dd/mm/yyyy"),
-                    RutaArchivo = cargaAutomaticaViewModel.RutaArchivo,
+                    RutaArchivo = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica",//cargaAutomaticaViewModel.RutaArchivo,
                     UsuarioId = cargaAutomaticaViewModel.UsuarioId,
                     //User = cargaAutomaticaViewModel.User,
                     TipoArchivo = cargaAutomaticaViewModel.TipoArchivo,

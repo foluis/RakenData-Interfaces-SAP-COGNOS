@@ -13,22 +13,32 @@
 <p>
     @Html.ActionLink("Crear Nuevo", "Create")
 </p>
+
+@*@Html.Label(@Model.First().RutaArchivo, new { @class = "col-xs-4" })*@
+
+<p class="col-lg-9">
+   @Model.First().RutaArchivo
+</p>
+
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaProgramada)
+        <th>            
+            @Html.DisplayName("Fecha")
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RutaArchivo)
-        </th>
+        @*<th>
+            @Html.DisplayName("Ruta archivo")
+        </th>*@
         <th>
             @Html.DisplayName("Usuario")
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TipoArchivoCarga.Nombre)
+        <th>            
+            @Html.DisplayName("Tipo Archivo")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WasLoaded)
         </th>
         <th></th>
     </tr>
@@ -39,9 +49,9 @@
             @*@Html.DisplayFor(modelItem => item.FechaProgramada)*@
             @item.FechaProgramada.ToString("dd/MM/yyyy")
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.RutaArchivo)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.User.Username)
         </td>
@@ -50,6 +60,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WasLoaded)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |

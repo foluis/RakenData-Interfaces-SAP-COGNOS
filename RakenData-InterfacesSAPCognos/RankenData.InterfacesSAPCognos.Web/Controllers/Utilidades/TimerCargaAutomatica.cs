@@ -8,13 +8,15 @@ using System.Configuration;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Timers;
+using System.Web;
 
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
     public class TimerCargaAutomatica
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-        List<CargaAutomatica> lstCargaAutomatica = null;
+        //List<CargaAutomatica> lstCargaAutomatica = null;
         DAT_Reader datReader = new DAT_Reader();
         MailInfo mailInfo = new MailInfo();
         string ruta;
@@ -26,13 +28,22 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public void Init()
         {
             string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
-            System.Timers.Timer timer = new System.Timers.Timer();
-            int time = int.Parse(tiempoCargaAutomatica);
-            time = time < 0 ? 3 : time; //minimo cada 3 hora
-            // time = time * 3600000;
-            time = 30000; //TODO: Esta linea es de pruebas
+            Timer timer = new Timer();
+
+            double time = 0;
+            bool isNumber = double.TryParse(tiempoCargaAutomatica,out time);
+            time = time <= 0 ? 3 : time; //minimo cada 3 hora
+            time = time * 3600000;
+
+            #if DEBUG
+                time = 30000; //Valida cada 30 segundos en debug
+            #endif
+
             timer.Interval = time;
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
+            timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
+
+            CreateFolder();
+
             try
             {
                 procesaCargaAutomatica = db.AdministracionAplicacion.Where(aa => aa.Id == 1).FirstOrDefault().Valor;
@@ -43,8 +54,18 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             catch (Exception ex)
             {
-                Log.WriteLog("No se pudo obtener informacion de la tabla de administracion para el proceso de Carga automatica, valide que tenga conección. Error: "  + ex.ToString(), EnumTypeLog.Error, true);
-            }            
+                Log.WriteLog("No se pudo obtener informacion de la tabla de administracion para el proceso de Carga automatica, valide que tenga conección. Error: " + ex.ToString(), EnumTypeLog.Error, true);
+            }
+        }
+
+        private void CreateFolder()
+        {   
+            string folderName = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica";
+
+            if (!Directory.Exists(folderName))
+            {
+                Directory.CreateDirectory(folderName);
+            }
         }
 
         /// <summary>
@@ -57,59 +78,57 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             string nombreArchivo = string.Empty;
             string result = string.Empty;
             string errores = string.Empty;
-            this.lstCargaAutomatica = new List<CargaAutomatica>();
+            //this.lstCargaAutomatica = new List<CargaAutomatica>();
 
-            //ConfigurationManager.AppSettings["procesaCargaAutomatica"]
-
-            var cargaAutomaticaInfo = db.CargaAutomatica.ToList();
+            var cargaAutomaticaInfo = db.CargaAutomatica.Where(c => c.WasLoaded == false).ToList();
 
             if (procesaCargaAutomatica == "1" && cargaAutomaticaInfo != null && cargaAutomaticaInfo.Count() > 0)
             {
-                var registrosCargaAutomatica = cargaAutomaticaInfo.ToList();
+                //var registrosCargaAutomatica = cargaAutomaticaInfo.ToList();
                 bool hayArchivo = false;
-                foreach (CargaAutomatica cargaAutomatica in registrosCargaAutomatica)
-                {
-                    if (cargaAutomatica.FechaProgramada.Date == DateTime.Now.Date && cargaAutomatica.WasLoaded == false)
-                    {
-                        this.lstCargaAutomatica.Add(cargaAutomatica);
-                    }
-                }
+                //foreach (CargaAutomatica cargaAutomatica in registrosCargaAutomatica)
+                //{
+                //    if (cargaAutomatica.WasLoaded == false)
+                //    {
+                //        this.lstCargaAutomatica.Add(cargaAutomatica);
+                //    }
+                //}
 
-                if (lstCargaAutomatica != null && lstCargaAutomatica.Count > 0)
-                {
-                    foreach (CargaAutomatica cargaAutomatica in lstCargaAutomatica)
+                //if (lstCargaAutomatica != null && lstCargaAutomatica.Count > 0)
+                //{
+                    foreach (CargaAutomatica cargaAutomatica in cargaAutomaticaInfo)
                     {
                         if (cargaAutomatica.TipoArchivo == (int)EnumTipoArchivoCarga.Balance)
                         {
-                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
-                            ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
-                            if (System.IO.File.Exists(ruta))
-                            {
-                                result = System.IO.File.ReadAllText(ruta);
-                                CargarArchivo cargarArchivo = new CargarArchivo();
-                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Balance,1);
-                                hayArchivo = true;
-                            }
-                            else
-                            {
-                                hayArchivo = false;
-                            }
+                            //nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
+                            //ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
+                            //if (File.Exists(ruta))
+                            //{
+                            //    result = File.ReadAllText(ruta);
+                            //    CargarArchivo cargarArchivo = new CargarArchivo();
+                            //    //errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Balance, 1);
+                            //    hayArchivo = true;
+                            //}
+                            //else
+                            //{
+                            //    hayArchivo = false;
+                            //}
                         }
                         else // Si el archivo es intercompañias
                         {
-                            nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
-                            ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
-                            if (System.IO.File.Exists(ruta))
-                            {
-                                result = System.IO.File.ReadAllText(ruta);
-                                CargarArchivo cargarArchivo = new CargarArchivo();
-                                errores = cargarArchivo.CargarArchivoBD("nombreArchivo", result, EnumTipoArchivoCarga.Intercompanias,1);
-                                hayArchivo = true;
-                            }
-                            else
-                            {
-                                hayArchivo = false;
-                            }
+                            //nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
+                            //ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
+                            //if (File.Exists(ruta))
+                            //{
+                            //    result = File.ReadAllText(ruta);
+                            //    CargarArchivo cargarArchivo = new CargarArchivo();
+                            //    //errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Intercompanias, 1);
+                            //    hayArchivo = true;
+                            //}
+                            //else
+                            //{
+                            //    hayArchivo = false;
+                            //}
                         }
 
                         if (string.IsNullOrEmpty(errores) && hayArchivo)
@@ -122,10 +141,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                             mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
                             mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
-                            mailInfo.Message = ConfigurationManager.AppSettings["emailSubject"]; ;
+                            mailInfo.Message = ConfigurationManager.AppSettings["emailMessage"]; ;
                             AdmMail.Enviar(mailInfo);
                         }
-                        else if(errores!= string.Empty)
+                        else if (errores != string.Empty)
                         {
                             Log.WriteLog("El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores, EnumTypeLog.Event, true);
                             mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
@@ -134,7 +153,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                             AdmMail.Enviar(mailInfo);
                         }
                     }
-                }
+                //}
             }
         }
     }

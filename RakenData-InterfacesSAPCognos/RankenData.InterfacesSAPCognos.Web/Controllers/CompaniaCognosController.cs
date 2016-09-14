@@ -192,10 +192,17 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             CompaniaCognos companiacognos = db.CompaniaCognos.Find(id);
 
             List<ArchivoProcesado> archivosProcesados = db.ArchivoProcesado.Where(x => x.CompaniaCognosId == id).ToList();
+            List<CuentaRelacionada> cuentaRelacionada = db.CuentaRelacionada.Where(x => x.SociedadCognosId == id).ToList();
 
-            if(archivosProcesados.Count > 0)
+            if (archivosProcesados.Count > 0)
             {
                 errores.AppendLine("Ya existen archivos procesados con esta compañía. Por esta razón no se puede borrar.");
+                ModelState.AddModelError("Error", errores.ToString());
+                return View(companiacognos);
+            }
+            else if(cuentaRelacionada.Count > 0)
+            {
+                errores.AppendLine("Existen cuentas relacionadas con esta compañía. Por esta razón no se puede borrar.");
                 ModelState.AddModelError("Error", errores.ToString());
                 return View(companiacognos);
             }

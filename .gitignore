@@ -194,3 +194,5 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+/RakenData-InterfacesSAPCognos/RankenData.InterfacesSAPCognos.Web/Log/Log Error 2016-09-14.txt
+/RakenData-InterfacesSAPCognos/RankenData.InterfacesSAPCognos.Web/Log/Log Error 2016-08-29.txt
