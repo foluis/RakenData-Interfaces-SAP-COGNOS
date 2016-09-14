@@ -31,13 +31,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             Timer timer = new Timer();
 
             double time = 0;
-            bool isNumber = double.TryParse(tiempoCargaAutomatica,out time);
+            bool isNumber = double.TryParse(tiempoCargaAutomatica, out time);
             time = time <= 0 ? 3 : time; //minimo cada 3 hora
             time = time * 3600000;
 
-            #if DEBUG
-                time = 30000; //Valida cada 30 segundos en debug
-            #endif
+#if DEBUG
+            time = 30000; //Valida cada 30 segundos en debug
+#endif
 
             timer.Interval = time;
             timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
@@ -59,7 +59,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         }
 
         private void CreateFolder()
-        {   
+        {
             string folderName = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica";
 
             if (!Directory.Exists(folderName))
@@ -96,63 +96,64 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                 //if (lstCargaAutomatica != null && lstCargaAutomatica.Count > 0)
                 //{
-                    foreach (CargaAutomatica cargaAutomatica in cargaAutomaticaInfo)
+                foreach (CargaAutomatica cargaAutomatica in cargaAutomaticaInfo)
+                {                    
+                    CargarArchivo cargarArchivo = new CargarArchivo();
+                    string fechaExtencion = cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString("00") + ".DAT";
+
+                    if (cargaAutomatica.TipoArchivo == (int)EnumTipoArchivoCarga.Balance)
                     {
-                        if (cargaAutomatica.TipoArchivo == (int)EnumTipoArchivoCarga.Balance)
+                        nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + fechaExtencion;
+                        ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
+                        if (File.Exists(ruta))
                         {
-                            //nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoBalance"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
-                            //ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
-                            //if (File.Exists(ruta))
-                            //{
-                            //    result = File.ReadAllText(ruta);
-                            //    CargarArchivo cargarArchivo = new CargarArchivo();
-                            //    //errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Balance, 1);
-                            //    hayArchivo = true;
-                            //}
-                            //else
-                            //{
-                            //    hayArchivo = false;
-                            //}
+                            result = File.ReadAllText(ruta);
+                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Balance, 1);
+                            hayArchivo = true;
                         }
-                        else // Si el archivo es intercompañias
+                        else
                         {
-                            //nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString() + ".DAT";
-                            //ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
-                            //if (File.Exists(ruta))
-                            //{
-                            //    result = File.ReadAllText(ruta);
-                            //    CargarArchivo cargarArchivo = new CargarArchivo();
-                            //    //errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Intercompanias, 1);
-                            //    hayArchivo = true;
-                            //}
-                            //else
-                            //{
-                            //    hayArchivo = false;
-                            //}
-                        }
-
-                        if (string.IsNullOrEmpty(errores) && hayArchivo)
-                        {
-                            cargaAutomatica.WasLoaded = true;
-                            db.Entry(cargaAutomatica).State = EntityState.Modified;
-                            db.SaveChanges();
-
-                            Log.WriteLog("El archivo : " + nombreArchivo + " se cargó exitosamente", EnumTypeLog.Event, true);
-
-                            mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
-                            mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
-                            mailInfo.Message = ConfigurationManager.AppSettings["emailMessage"]; ;
-                            AdmMail.Enviar(mailInfo);
-                        }
-                        else if (errores != string.Empty)
-                        {
-                            Log.WriteLog("El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores, EnumTypeLog.Event, true);
-                            mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
-                            mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
-                            mailInfo.Message = "El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores; ;
-                            AdmMail.Enviar(mailInfo);
+                            hayArchivo = false;
                         }
                     }
+                    else // Si el archivo es intercompañias
+                    {
+                        nombreArchivo = ConfigurationManager.AppSettings["nombreArchivoIntercomania"] + fechaExtencion;
+                        ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
+                        if (File.Exists(ruta))
+                        {
+                            result = File.ReadAllText(ruta);
+                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Intercompanias, 1);
+                            hayArchivo = true;
+                        }
+                        else
+                        {
+                            hayArchivo = false;
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(errores) && hayArchivo)
+                    {
+                        cargaAutomatica.WasLoaded = true;
+                        db.Entry(cargaAutomatica).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        Log.WriteLog("El archivo : " + nombreArchivo + " se cargó exitosamente", EnumTypeLog.Event, true);
+
+                        mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
+                        mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
+                        mailInfo.Message = ConfigurationManager.AppSettings["emailMessage"]; ;
+                        AdmMail.Enviar(mailInfo);
+                    }
+                    else if (errores != string.Empty)
+                    {
+                        Log.WriteLog("El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores, EnumTypeLog.Event, true);
+                        mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
+                        mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
+                        mailInfo.Message = "El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores; ;
+                        AdmMail.Enviar(mailInfo);
+                    }
+                }
                 //}
             }
         }

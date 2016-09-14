@@ -155,7 +155,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             }
             catch (MissingFieldException ex)
             {
-
                 Log.WriteLog(string.Format(Environment.NewLine + "**********  PARAMETROS DEL EMAIL NO CONFIGURADOS. REVISE EL APP.CONFIG FILE **********" + Environment.NewLine), EnumTypeLog.Event, false);
                 IsMailEnabled = false;
                 result.WasSuccessful = false;
@@ -164,14 +163,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             }
             catch (SmtpException ex)
             {
-                Log.WriteLog("EL SERVIDOR DE EMAIL NO ES VALIDO", EnumTypeLog.Event, true, ex);
+                Log.WriteLog("EL SERVIDOR DE EMAIL NO ES VALIDO. ", EnumTypeLog.Event, true, ex);
                 result.WasSuccessful = false;
                 result.Message = ex.Message;
                 result.Exception = ex;
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                Log.WriteLog(string.Format("PARAMETROS DEL EMAIL NO CONFIGURADOS. REVISE EL APP.CONFIG FILE"), EnumTypeLog.Event, false);
+                Log.WriteLog(string.Format("PARAMETROS DEL EMAIL NO CONFIGURADOS. REVISE EL APP.CONFIG FILE. "), EnumTypeLog.Event, false);
                 result.WasSuccessful = false;
                 result.Message = ex.Message;
                 result.Exception = ex;

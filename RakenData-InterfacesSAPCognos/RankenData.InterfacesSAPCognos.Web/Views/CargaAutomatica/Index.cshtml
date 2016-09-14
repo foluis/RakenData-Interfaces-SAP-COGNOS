@@ -14,20 +14,18 @@
     @Html.ActionLink("Crear Nuevo", "Create")
 </p>
 
-@*@Html.Label(@Model.First().RutaArchivo, new { @class = "col-xs-4" })*@
-
-<p class="col-lg-9">
-   @Model.First().RutaArchivo
-</p>
+@if (Model.Any())
+{
+    <p class="col-lg-9">
+        @Html.Label("Ruta en el servidor: ", new { @class = "control-label" }) @Model.First().RutaArchivo
+    </p>
+}
 
 <table class="table">
     <tr>
         <th>            
             @Html.DisplayName("Fecha")
         </th>
-        @*<th>
-            @Html.DisplayName("Ruta archivo")
-        </th>*@
         <th>
             @Html.DisplayName("Usuario")
         </th>
@@ -45,13 +43,9 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @*@Html.DisplayFor(modelItem => item.FechaProgramada)*@
+        <td>          
             @item.FechaProgramada.ToString("dd/MM/yyyy")
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.RutaArchivo)
-        </td>*@
+        </td>      
         <td>
             @Html.DisplayFor(modelItem => item.User.Username)
         </td>
