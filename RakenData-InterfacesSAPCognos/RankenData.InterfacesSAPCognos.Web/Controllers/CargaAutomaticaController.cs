@@ -81,6 +81,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 ca.Email = cargaAutomatica.Email;
                 ca.WasLoaded = false;
 
+                cargaAutomatica.RutaArchivo = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica";
+
                 db.CargaAutomatica.Add(ca);
                 try
                 {
@@ -89,25 +91,23 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 catch (DbEntityValidationException e)
                 {
                     Log.WriteLog(ManejoErrores.ErrorValidacion(e), EnumTypeLog.Error, true);
-                    ModelState.AddModelError("Error", "No se pudo realizar la programacion automatica");
-                    return View();
+                    ModelState.AddModelError("Error", "No se pudo realizar la programación automatica");
+                    return View(cargaAutomatica);
                 }
                 catch (DbUpdateException e)
                 {
                     Log.WriteLog(ManejoErrores.ErrorValidacionDb(e), EnumTypeLog.Error, true);
-                    ModelState.AddModelError("Error", "No se pudo realizar la programacion automatica");
-                    return View();
+                    ModelState.AddModelError("Error", "No se pudo realizar la programación automatica, valide que la fecha no exista actualmente");
+                    return View(cargaAutomatica);
                 }
                 catch (Exception e)
                 {
                     Log.WriteLog(ManejoErrores.ErrorExepcion(e), EnumTypeLog.Error, true);
-                    ModelState.AddModelError("Error", "No se pudo realizar la programacion automatica");
-                    return View();
+                    ModelState.AddModelError("Error", "No se pudo realizar la programación automatica");
+                    return View(cargaAutomatica);
                 }
                 return RedirectToAction("Index");
-            }
-
-            cargaAutomatica.RutaArchivo = AppDomain.CurrentDomain.BaseDirectory + "ArchivosCargaAutomatica";            
+            }                       
 
             return View(cargaAutomatica);
         }

@@ -142,7 +142,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
                         mailInfo.Subject = ConfigurationManager.AppSettings["emailSubject"];
                         mailInfo.To = cargaAutomatica.Email.Replace(",", ";").Split(';').ToList();
-                        mailInfo.Message = ConfigurationManager.AppSettings["emailMessage"]; ;
+                        mailInfo.Message = string.Format(ConfigurationManager.AppSettings["emailMessage"], nombreArchivo);
                         AdmMail.Enviar(mailInfo);
                     }
                     else if (errores != string.Empty)

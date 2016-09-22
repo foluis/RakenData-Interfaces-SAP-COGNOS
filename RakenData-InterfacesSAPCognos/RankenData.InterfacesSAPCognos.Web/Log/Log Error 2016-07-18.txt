@@ -1,3 +1,0 @@
-Validation failed for one or more entities. See 'EntityValidationErrors' property for more details. Las validaciones del error son: The RutaArchivo field is required.
-  Error: 						Time: 01:21:09
-
