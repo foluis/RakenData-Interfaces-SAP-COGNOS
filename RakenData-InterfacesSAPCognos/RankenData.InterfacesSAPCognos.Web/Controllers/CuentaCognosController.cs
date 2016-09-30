@@ -190,8 +190,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Create()
         {
 
-            ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave");
-            var cuentasCognos = db.CuentaCognos.OrderBy(x => x.Numero);
+            ViewBag.AnexoId = new SelectList(db.Anexo.Where(a => a.IsActive), "id", "Clave");
+            var cuentasCognos = db.CuentaCognos.Where(c => c.IsActive).OrderBy(x => x.Numero);           
             ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero");
             ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero");
 
@@ -202,8 +202,8 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,AnexoId,IsActive,EsOpen,CuentaCargo,CuentaAbono")] CuentaCognos cuentacognos)
         {
-            ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
-            var cuentasCognos = db.CuentaCognos;
+            ViewBag.AnexoId = new SelectList(db.Anexo.Where(a => a.IsActive), "id", "Clave", cuentacognos.AnexoId);
+            var cuentasCognos = db.CuentaCognos.Where(c => c.IsActive).OrderBy(x => x.Numero);
             ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero");
             ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero");
 
@@ -269,10 +269,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {
                 return HttpNotFound();
             }
-            var cuentasCognos = db.CuentaCognos.OrderBy(x => x.Numero);            
+            var cuentasCognos = db.CuentaCognos.Where(c => c.IsActive).OrderBy(x => x.Numero);            
             ViewBag.CuentaCargo = new SelectList(cuentasCognos, "Id", "Numero", cuentacognos.CuentaCargo);
             ViewBag.CuentaAbono = new SelectList(cuentasCognos, "Id", "Numero", cuentacognos.CuentaAbono);
-            ViewBag.AnexoId = new SelectList(db.Anexo, "id", "Clave", cuentacognos.AnexoId);
+            ViewBag.AnexoId = new SelectList(db.Anexo.Where(a => a.IsActive), "id", "Clave", cuentacognos.AnexoId);
             return View(cuentacognos);
         }
 

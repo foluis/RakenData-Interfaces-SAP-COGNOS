@@ -190,7 +190,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public ActionResult Create()
         {
-            var cuentasSap = db.CuentaSAP.OrderBy(cs => cs.Numero);
+            var cuentasSap = db.CuentaSAP.Where(cs => cs.IsActive).OrderBy(cs => cs.Numero);
             var companiasCognos = db.CompaniaCognos.OrderBy(cc => cc.Descripcion);
 
             ViewBag.CuentaSAPId = new SelectList(cuentasSap, "Id", "Numero");
@@ -253,7 +253,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
 
             ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.OrderBy(cs => cs.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.Where(cs => cs.IsActive).OrderBy(cs => cs.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
             return View(cuentaRelacionada);
         }
 
@@ -270,7 +270,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
-            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.OrderBy(cc => cc.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+            ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.Where(cs => cs.IsActive).OrderBy(cc => cc.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
 
             return View(cuentaRelacionada);
         }
@@ -289,7 +289,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     cc.SociedadCognosId == cuentaRelacionada.SociedadCognosId);
 
                 ViewBag.SociedadCognosId = new SelectList(db.CompaniaCognos.OrderBy(cc => cc.Descripcion), "Id", "Descripcion", cuentaRelacionada.SociedadCognosId);
-                ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.OrderBy(cc => cc.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
+                ViewBag.CuentaSAPId = new SelectList(db.CuentaSAP.Where(cs => cs.IsActive).OrderBy(cc => cc.Numero), "Id", "Numero", cuentaRelacionada.CuentaSAPId);
 
                 if (cuentaRelacionadaExistente == null)
                 {

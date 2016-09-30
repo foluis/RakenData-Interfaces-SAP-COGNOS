@@ -15,16 +15,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
     public class TimerCargaAutomatica
     {
-        private EntitiesRakenData db = new EntitiesRakenData();
-        //List<CargaAutomatica> lstCargaAutomatica = null;
+        private EntitiesRakenData db = new EntitiesRakenData();      
         DAT_Reader datReader = new DAT_Reader();
         MailInfo mailInfo = new MailInfo();
         string ruta;
         string procesaCargaAutomatica = "0";
-
-        /// <summary>
-        /// Inicalizar timer
-        /// </summary>
+     
         public void Init()
         {
             string tiempoCargaAutomatica = ConfigurationManager.AppSettings["tiempoCargaAutomatica"];
@@ -34,10 +30,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             bool isNumber = double.TryParse(tiempoCargaAutomatica, out time);
             time = time <= 0 ? 3 : time; //minimo cada 3 hora
             time = time * 3600000;
-
-#if DEBUG
-            time = 30000; //Valida cada 30 segundos en debug
-#endif
 
             timer.Interval = time;
             timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
@@ -67,35 +59,19 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 Directory.CreateDirectory(folderName);
             }
         }
-
-        /// <summary>
-        /// Cada ciclo valida si hay archivos para cargar
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
+      
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
             string nombreArchivo = string.Empty;
             string result = string.Empty;
             string errores = string.Empty;
-            //this.lstCargaAutomatica = new List<CargaAutomatica>();
-
+            
             var cargaAutomaticaInfo = db.CargaAutomatica.Where(c => c.WasLoaded == false).ToList();
 
             if (procesaCargaAutomatica == "1" && cargaAutomaticaInfo != null && cargaAutomaticaInfo.Count() > 0)
-            {
-                //var registrosCargaAutomatica = cargaAutomaticaInfo.ToList();
+            {                
                 bool hayArchivo = false;
-                //foreach (CargaAutomatica cargaAutomatica in registrosCargaAutomatica)
-                //{
-                //    if (cargaAutomatica.WasLoaded == false)
-                //    {
-                //        this.lstCargaAutomatica.Add(cargaAutomatica);
-                //    }
-                //}
 
-                //if (lstCargaAutomatica != null && lstCargaAutomatica.Count > 0)
-                //{
                 foreach (CargaAutomatica cargaAutomatica in cargaAutomaticaInfo)
                 {                    
                     CargarArchivo cargarArchivo = new CargarArchivo();
@@ -153,8 +129,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         mailInfo.Message = "El archivo : " + nombreArchivo + " presentó los siguientes errores: " + errores; ;
                         AdmMail.Enviar(mailInfo);
                     }
-                }
-                //}
+                }                
             }
         }
     }

@@ -176,7 +176,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP")] CuentaSAP cuentasap)
         {
-            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);           
+            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos.Where(cc => cc.IsActive == true).OrderBy(cc => cc.Numero), "Id", "Numero", cuentasap.CuentaCognos);           
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
 
             if (ModelState.IsValid)
@@ -236,9 +236,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.CuentaCognos = new SelectList(db.CuentaCognos.Where(cc => cc.IsActive == true).OrderBy(cc => cc.Numero), "Id", "Numero", cuentasap.CuentaCognos);
-            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);
-            //ViewBag.CuentaCargo = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCargo);
-            //ViewBag.CuentaAbono = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaAbono);
+            ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);           
 
             return View(cuentasap);
         }
@@ -248,7 +246,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         public ActionResult Edit([Bind(Include = "Id,Numero,Descripcion,CuentaCognos,IsActive,TipoCuentaSAP,EsOpen,CuentaCargo,CuentaAbono")] CuentaSAP cuentasap)
         {
             StringBuilder errores = new StringBuilder();
-            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos, "Id", "Numero", cuentasap.CuentaCognos);
+            ViewBag.CuentaCognos = new SelectList(db.CuentaCognos.Where(cc => cc.IsActive == true).OrderBy(cc => cc.Numero), "Id", "Numero", cuentasap.CuentaCognos);
             ViewBag.TipoCuentaSAP = new SelectList(db.TipoCuentaSAP, "id", "Nombre", cuentasap.TipoCuentaSAP);           
 
             if (ModelState.IsValid)

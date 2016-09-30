@@ -19,8 +19,7 @@ namespace RankenData.InterfacesSAPCognos.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             TimerCargaAutomatica timerCargaAutomatica = new TimerCargaAutomatica();
-            timerCargaAutomatica.Init();
- 
-        }
+            timerCargaAutomatica.Init(); 
+        }      
     }
 }

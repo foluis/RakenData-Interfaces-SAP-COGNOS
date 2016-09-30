@@ -25,7 +25,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public ActionResult Index(HttpPostedFileBase file, string searchBy, string search = "", int pageIndex = 1, int pageSize = 5)
         {
-            if (file != null && file.ContentLength > 0)
+            if (!Request.IsAuthenticated)
+            {
+                ModelState.AddModelError("Error", "No se pudo crear el anexo");
+                return View();
+            }
+
+                if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeAnexo(file);
                 if (errores.Length > 0)

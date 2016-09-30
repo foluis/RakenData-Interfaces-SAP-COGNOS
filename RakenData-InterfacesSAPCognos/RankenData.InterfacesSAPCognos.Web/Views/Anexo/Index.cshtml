@@ -1,6 +1,5 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
-@*@model IEnumerable<RankenData.InterfacesSAPCognos.Web.Models.Anexo>*@
 @model IPagedList<RankenData.InterfacesSAPCognos.Web.Models.Anexo>
 
 @{
@@ -15,15 +14,7 @@
 
 <p>Administración de Anexos</p>
 
-@*<div class="form-group">
-        @Html.Label("Buscar")
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Clave, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Clave)
-        </div>
-    </div>*@
-
-@using (@Html.BeginForm("Index", "Anexo", FormMethod.Get, new { @class = "form-inline" }))
+@*@using (@Html.BeginForm("Index", "Anexo", FormMethod.Get, new { @class = "form-inline" }))
 {
     <div class="form-group" style="margin-top:20px">        
         @Html.Label("Buscar por:")
@@ -36,7 +27,7 @@
         @Html.TextBox("search", "", new { @class = "form-control" }) 
         <input type="submit" value="Buscar" class="btn btn-default" />
     </div>
-}
+}*@
 
 <div style="margin-top:20px">
     @Html.ActionLink("Crear Nuevo", "Create")
@@ -87,14 +78,14 @@
     }
 </table>
 
-@*Finally to display page numbers for paging*@
-@Html.PagedListPager(Model, pageIndex => Url.Action("Index",
+
+@*@Html.PagedListPager(Model, pageIndex => Url.Action("Index",
     new
     {
         pageIndex
         ,searchBy = Request.QueryString["searchBy"],
         search = Request.QueryString["search"]
-    }))
+    }))*@
 
 @*If you want to display the pager, only if there are more than 1 page*@
 @*@Html.PagedListPager(Model, pageIndex => Url.Action("Index",
