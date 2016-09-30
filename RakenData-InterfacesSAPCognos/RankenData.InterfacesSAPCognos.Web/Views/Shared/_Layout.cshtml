@@ -22,81 +22,81 @@
                 @Html.ActionLink("Interface SAP Cognos", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav">
 
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            Datos Maestros <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Anexo", "Index", "Anexo")</li>
-                            <li>
-                                <a href="#">Cuentas de mayor</a>
-                                <ul>
-                                    <li>@Html.ActionLink("Cuenta Cognos", "Index", "CuentaCognos")</li>
-                                    <li>@Html.ActionLink("Cuenta SAP", "Index", "CuentaSAP")</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Sociedades</a>
-                                <ul>
-                                    <li>@Html.ActionLink("Sociedad Cognos", "Index", "CompaniaCognos")</li>
-                                    <li>@Html.ActionLink("Sociedad por RFC", "Index", "CompaniaRFC")</li>
-                                </ul>
-                            </li>
-                            <li>@Html.ActionLink("Año Fiscal", "Index", "AnioFiscal")</li>
-                            <li>@Html.ActionLink("Saldos Iniciales", "Index", "SaldoInicial")</li>
-                            <li>@Html.ActionLink("Cuentas Relacionadas", "Index", "CuentaRelacionada")</li>                            
-                            <li>@Html.ActionLink("Datos de Cabecera", "Index", "DatosCabecera")</li>
-                        </ul>
-                    </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Datos Maestros <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Anexo", "Index", "Anexo")</li>
+                                <li>
+                                    <a href="#">Cuentas de mayor</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("Cuenta Cognos", "Index", "CuentaCognos")</li>
+                                        <li>@Html.ActionLink("Cuenta SAP", "Index", "CuentaSAP")</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">Sociedades</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("Sociedad Cognos", "Index", "CompaniaCognos")</li>
+                                        <li>@Html.ActionLink("Sociedad por RFC", "Index", "CompaniaRFC")</li>
+                                    </ul>
+                                </li>
+                                <li>@Html.ActionLink("Año Fiscal", "Index", "AnioFiscal")</li>
+                                <li>@Html.ActionLink("Saldos Iniciales", "Index", "SaldoInicial")</li>
+                                <li>@Html.ActionLink("Cuentas Relacionadas", "Index", "CuentaRelacionada")</li>
+                                <li>@Html.ActionLink("Datos de Cabecera", "Index", "DatosCabecera")</li>
+                            </ul>
+                        </li>
 
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            Carga Información <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">Balance/Resultados</a>
-                                <ul>
-                                    <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaBalance")</li>
-                                    <li>@Html.ActionLink("Eliminar Carga", "EliminarBalance", "CargaBalance")</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Intercompañia</a>
-                                <ul>
-                                    <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaIntercompanias")</li>
-                                    <li>@Html.ActionLink("Eliminar Intercompañia", "EliminarIntercompanias", "CargaIntercompanias")</li>
-                                </ul>
-                            </li>
-                            <li>@Html.ActionLink("Programar Carga", "Index", "CargaAutomatica")</li>
-                            <li>@Html.ActionLink("Monitor de Carga", "Index", "ArchivoCarga")</li>
-                        </ul>
-                    </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Carga Información <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Balance/Resultados</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaBalance")</li>
+                                        <li>@Html.ActionLink("Eliminar Carga", "EliminarBalance", "CargaBalance")</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#">Intercompañia</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("Carga Archivo Nuevo", "Index", "CargaIntercompanias")</li>
+                                        <li>@Html.ActionLink("Eliminar Intercompañia", "EliminarIntercompanias", "CargaIntercompanias")</li>
+                                    </ul>
+                                </li>
+                                <li>@Html.ActionLink("Programar Carga", "Index", "CargaAutomatica")</li>
+                                <li>@Html.ActionLink("Monitor de Carga", "Index", "ArchivoCarga")</li>
+                            </ul>
+                        </li>
 
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            Generación de archivos <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Generar archivos Cognos", "GenerarArchivo", "GenerarArchivoCognos")</li>
-                            <li>@Html.ActionLink("Monitor Archivos Generados", "Index", "ArchivoProcesado")</li>
-                        </ul>
-                    </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Generación de archivos <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Generar archivos Cognos", "GenerarArchivo", "GenerarArchivoCognos")</li>
+                                <li>@Html.ActionLink("Monitor Archivos Generados", "Index", "ArchivoProcesado")</li>
+                            </ul>
+                        </li>
 
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            Administración <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Administrar Usuarios Grupo", "Index", "GrupoUsuario")</li>
-                        </ul>
-                    </li>
-
-
-                </ul>
-
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Administración <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Administrar Usuarios Grupo", "Index", "GrupoUsuario")</li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
