@@ -25,7 +25,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
             if (startDate != null && endDate != null)
             {
-                var archivocarga = db.ArchivoCarga.Where(s => DbFunctions.TruncateTime(s.Fecha) >= startDate.Value && EntityFunctions.TruncateTime(s.Fecha) <= endDate.Value);
+                var archivocarga = db.ArchivoCarga.Where(s => DbFunctions.TruncateTime(s.Fecha) >= startDate.Value && DbFunctions.TruncateTime(s.Fecha) <= endDate.Value);
                 return View(archivocarga.ToList());
             }
           
@@ -70,7 +70,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivocarga);
         }
 
-        // GET: /ArchivoCarga/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -87,9 +86,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivocarga);
         }
 
-        // POST: /ArchivoCarga/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="Id,Nombre,Identificador,Fecha,TipoArchivoCarga,Anio_Col3,Mes_Col4,Usuario")] ArchivoCarga archivocarga)
@@ -105,7 +101,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivocarga);
         }
 
-        // GET: /ArchivoCarga/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -120,7 +115,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivocarga);
         }
 
-        // POST: /ArchivoCarga/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

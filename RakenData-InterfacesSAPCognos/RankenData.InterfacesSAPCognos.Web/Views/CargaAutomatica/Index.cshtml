@@ -61,12 +61,9 @@
                 @if (item.WasLoaded != true)
                 {
                     @Html.ActionLink("Editar", "Edit", new { id = item.Id }) @:|
-                }            
-                @Html.ActionLink("Detalles", "Details", new { id = item.Id }) 
-                @if (item.WasLoaded != true)
-                {
-                   @:| @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
                 }
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id }) | @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
+
             </td>
         </tr>
     }
