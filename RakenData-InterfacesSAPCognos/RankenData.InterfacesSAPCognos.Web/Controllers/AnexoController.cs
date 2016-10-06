@@ -19,6 +19,7 @@ using PagedList;
 namespace RankenData.InterfacesSAPCognos.Web.Controllers
 {
     [Authorize(Roles = "1")]
+    //[MyAuthorizeAttribute(Roles = "1")]
     public class AnexoController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
@@ -31,7 +32,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 return View();
             }
 
-                if (file != null && file.ContentLength > 0)
+            if (file != null && file.ContentLength > 0)
             {
                 string errores = CargeAnexo(file);
                 if (errores.Length > 0)
