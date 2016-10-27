@@ -17,14 +17,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
     {
 
         private  EntitiesRakenData db = new EntitiesRakenData();
-
-        /// <summary>
-        /// Carga los archivos segun su tipo en la base de datos
-        /// </summary>
-        /// <param name="nombreArchivo">Nombre del archivo a cargar</param>
-        /// <param name="datosCargar">Datos del archivo</param>
-        /// <param name="tipoArchivo">tipo de archivo Balance  o  Intercompanias</param>
-        /// <returns></returns>
+       
         public string CargarArchivoBD(string nombreArchivo, string datosCargar, EnumTipoArchivoCarga tipoArchivo, int UserId)
         {
             ArchivoCarga archivoCarga = new ArchivoCarga();
@@ -78,7 +71,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
                     archivoCarga.TipoArchivoCarga = (int)tipoArchivo;
                     archivoCarga.Anio_Col3 = anio;
                     archivoCarga.Mes_Col4 = mes;
-                    archivoCarga.Usuario = UserId; //TODO: id del usuario
+                    archivoCarga.Usuario = UserId;
                   
                     db.ArchivoCarga.Add(archivoCarga);                   
                    
@@ -150,11 +143,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             return string.Empty;
         }
 
-        /// <summary>
-        /// Mapea el objeto mexsalcta en la lista archivo carga detalle
-        /// </summary>
-        /// <param name="Mexsalcta"></param>
-        /// <returns></returns>
         private static List<ArchivoCargaDetalle> MapeaDetalleBalance(MEXSALCTA[] Mexsalcta, int archivoCargaID)
         {
             List<ArchivoCargaDetalle> lstarchivoCargaDetalle = new List<ArchivoCargaDetalle>();
@@ -190,12 +178,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers.Utilidades
             return lstarchivoCargaDetalle;
         }
 
-        /// <summary>
-        /// Mapea el objeto mexsalcta en la lista archivo carga detalle
-        /// </summary>
-        /// <param name="Mexsalcta"></param>
-        /// <param name="archivoCargaID"></param>
-        /// <returns></returns>
         private static List<ArchivoCargaDetalle> MapeaDetalleIntercompania(MEX_SALINT[] Mexsalint, int archivoCargaID)
         {
             List<ArchivoCargaDetalle> lstarchivoCargaDetalle = new List<ArchivoCargaDetalle>();

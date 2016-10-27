@@ -99,7 +99,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         if (File.Exists(ruta))
                         {
                             result = File.ReadAllText(ruta);
-                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Intercompanias, 1);
+                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Intercompanias, 99999);
                             hayArchivo = true;
                         }
                         else
