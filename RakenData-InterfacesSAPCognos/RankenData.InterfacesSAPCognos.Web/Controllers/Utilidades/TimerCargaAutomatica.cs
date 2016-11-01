@@ -72,10 +72,13 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             {                
                 bool hayArchivo = false;
 
+                CargarArchivo cargarArchivo = new CargarArchivo();
+                string fechaExtencion = string.Empty;
+                int userId = 99999;
+
                 foreach (CargaAutomatica cargaAutomatica in cargaAutomaticaInfo)
-                {                    
-                    CargarArchivo cargarArchivo = new CargarArchivo();
-                    string fechaExtencion = cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString("00") + ".DAT";
+                {              
+                    fechaExtencion = cargaAutomatica.FechaProgramada.Year.ToString() + cargaAutomatica.FechaProgramada.ToString("MM") + cargaAutomatica.FechaProgramada.Day.ToString("00") + ".DAT";
 
                     if (cargaAutomatica.TipoArchivo == (int)EnumTipoArchivoCarga.Balance)
                     {
@@ -83,8 +86,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
                         if (File.Exists(ruta))
                         {
+                            userId = cargaAutomatica.UsuarioId;
+
                             result = File.ReadAllText(ruta);
-                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Balance, 1);
+                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Balance, userId);
                             hayArchivo = true;
                         }
                         else
@@ -98,8 +103,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                         ruta = Path.Combine(cargaAutomatica.RutaArchivo, nombreArchivo);
                         if (File.Exists(ruta))
                         {
+                            userId = cargaAutomatica.UsuarioId;
+
                             result = File.ReadAllText(ruta);
-                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Intercompanias, 99999);
+                            errores = cargarArchivo.CargarArchivoBD(nombreArchivo, result, EnumTipoArchivoCarga.Intercompanias, userId);
                             hayArchivo = true;
                         }
                         else

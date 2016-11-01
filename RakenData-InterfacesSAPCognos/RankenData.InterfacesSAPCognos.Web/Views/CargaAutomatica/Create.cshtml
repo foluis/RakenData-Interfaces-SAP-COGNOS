@@ -22,7 +22,7 @@
         <div class="form-group">            
             @Html.Label("Fecha de Archivo a Cargar", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.FechaProgramadaFormateada, new { @class = "form-control", type = "datetime" })
+                @Html.TextBoxFor(model => model.FechaProgramadaFormateada, new { @class = "form-control", type = "datetime", autocomplete = "off" })
                 @Html.ValidationMessageFor(model => model.FechaProgramadaFormateada)
             </div>
         </div>        
