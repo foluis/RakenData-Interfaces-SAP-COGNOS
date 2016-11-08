@@ -334,7 +334,4 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             base.Dispose(disposing);
         }
     }
-
-
-
 }

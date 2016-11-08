@@ -30,8 +30,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
-        //
-        // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -39,8 +37,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -94,16 +90,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -128,8 +120,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/Disassociate
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
@@ -147,8 +137,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return RedirectToAction("Manage", new { Message = message });
         }
 
-        //
-        // GET: /Account/Manage
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -162,8 +150,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
@@ -213,8 +199,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -224,8 +208,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
-        //
-        // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -251,8 +233,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             }
         }
 
-        //
-        // POST: /Account/LinkLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
@@ -261,8 +241,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
         }
 
-        //
-        // GET: /Account/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
@@ -278,8 +256,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
         }
 
-        //
-        // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -316,8 +292,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -329,8 +303,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             //return RedirectToAction("Index", "Home");
         }
 
-        //
-        // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {

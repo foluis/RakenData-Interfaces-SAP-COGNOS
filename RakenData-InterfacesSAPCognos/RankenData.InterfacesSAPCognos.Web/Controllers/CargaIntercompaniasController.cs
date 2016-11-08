@@ -19,14 +19,12 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class CargaIntercompaniasController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-     
-        //[Authorize(Roles = "2")]
+
         public ActionResult Index()
         {
             return View();
         }     
 
-        //[Authorize(Roles = "2")]
         [HttpPost]
         public string CargarIntercompania()
         {
@@ -99,10 +97,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-
-
-        //
-        // GET: /EliminarBalance/Default1
         public ActionResult EliminarIntercompanias()
         {
             ViewBag.Identificador = new SelectList(db.ArchivoCarga.Where(aa => aa.TipoArchivoCarga == (int)EnumTipoArchivoCarga.Intercompanias), "Id", "Identificador");

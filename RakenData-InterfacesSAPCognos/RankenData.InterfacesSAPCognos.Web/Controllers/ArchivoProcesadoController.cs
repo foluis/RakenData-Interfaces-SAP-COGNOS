@@ -112,13 +112,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(archivoprocesado);
         }
 
-        /*
-            EXEC aspnet_Roles_CreateRole 'MyApplication', '7'
-
-            INSERT INTO [dbo].[Grupo] ([Id],[Nombre],[Descripcion])
-            VALUES (7 ,'Borrar archivos procesados' ,'Borrar archivos procesados')
-        */
-
         //[Authorize(Roles = "7")]
         public ActionResult Delete(int? id)
         {
@@ -138,10 +131,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
-        {
-            //ArchivoProcesado archivoprocesado = db.ArchivoProcesado.Find(id);
-            //db.ArchivoProcesado.Remove(archivoprocesado);
-
+        {          
             db.EliminarArchivoProcesado(id);
 
             try

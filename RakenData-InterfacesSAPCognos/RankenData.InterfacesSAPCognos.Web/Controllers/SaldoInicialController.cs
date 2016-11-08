@@ -22,7 +22,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
     public class SaldoInicialController : Controller
     {
         private EntitiesRakenData db = new EntitiesRakenData();
-                
+
         public ActionResult Index(HttpPostedFileBase file, string error = null)
         {
             if (error != null)
@@ -42,7 +42,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             var saldoInicial = db.SaldoInicial.Include(s => s.AnioFiscal).Include(s => s.CompaniaCognos).Include(s => s.CuentaCognos);
             return View(saldoInicial.ToList());
         }
-
         public string CargarSaldoInicial(HttpPostedFileBase file)
         {
             SaldoInicial saldoInicial = null;
@@ -107,9 +106,7 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                     AnioFiscalValue = Convert.ToInt16(dato[2]),
                     Saldo = Convert.ToDecimal(dato[3]),
                     EsCargaMasiva = true
-
                 };
-
 
                 if (ModelState.IsValid)
                 {
@@ -149,7 +146,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return errores.ToString();
         }
 
-        // GET: SaldoInicial/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -164,7 +160,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // GET: SaldoInicial/Create
         public ActionResult Create()
         {
             ViewBag.AnioFiscalId = new SelectList(db.AnioFiscal, "Id", "Id");
@@ -193,7 +188,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // GET: SaldoInicial/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -211,13 +205,10 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // POST: SaldoInicial/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "id,CuentaCognosId,CuentaCognosValue,CompaniaCognosId,CompaniaCognosValue,AnioFiscalId,AnioFiscalValue,Saldo,EsCargaMasiva")] SaldoInicial saldoInicial)
-        {     
+        {
             if (ModelState.IsValid)
             {
                 saldoInicial.EsCargaMasiva = false;
@@ -231,7 +222,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // GET: SaldoInicial/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -246,7 +236,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             return View(saldoInicial);
         }
 
-        // POST: SaldoInicial/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -256,31 +245,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        //public ActionResult ActualizarSaldoInicial(string anioFiscal)
-        //{
-        //    int añoFiscal = Convert.ToInt32(anioFiscal);
-        //    var oAnioFiscal = db.AnioFiscal.FirstOrDefault(a => a.AnioInicio == añoFiscal);
-
-        //    if (oAnioFiscal == null)
-        //    {
-        //        return RedirectToAction("Index", new { error = "El año fiscal seleccionado no existe" });
-        //    }
-        //    else
-        //    {
-        //        List<int?> result;
-        //        result = db.ActualizarSaldosIniciales(añoFiscal).ToList();
-
-        //        if (result != null && result.Count() > 0 && result.First().Value == 1)
-        //        {
-        //            return RedirectToAction("Index", new { error = "No hay datos para crear saldo inicial automatico " + anioFiscal });
-        //        }
-        //        else
-        //        {
-        //            return RedirectToAction("Index", new { error = "Se calculó exitosamente el saldo inicial para el año " + anioFiscal });
-        //        }
-        //    }
-        //}
 
         protected override void Dispose(bool disposing)
         {

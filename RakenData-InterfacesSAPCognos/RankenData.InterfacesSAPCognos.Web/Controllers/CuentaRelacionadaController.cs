@@ -218,8 +218,6 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
                 }
                 else
                 {
-                    //CuentaRelacionada cuentaRelacionadaExistente = new CuentaRelacionada();
-
                     cuentaRelacionadaExistente.NumeroCuentaRelacionada = cuentaRelacionada.NumeroCuentaRelacionada;
                     cuentaRelacionadaExistente.SociedadCognosId = cuentaRelacionada.SociedadCognosId;
                     cuentaRelacionadaExistente.CuentaSAPId = cuentaRelacionada.CuentaSAPId;

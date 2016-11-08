@@ -120,5 +120,14 @@ namespace RankenData.InterfacesSAPCognos.Web.Controllers
             ViewBag.Identificador = new SelectList(db.ArchivoCarga, "Id", "Identificador");
             return View();
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
